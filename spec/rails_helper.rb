@@ -3,7 +3,6 @@ require 'spec_helper'
 require 'simplecov'
 SimpleCov.start
 require 'faker'
-require 'support/factory_bot'
 
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'

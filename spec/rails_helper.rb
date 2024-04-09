@@ -3,7 +3,6 @@ require 'spec_helper'
 require 'simplecov'
 SimpleCov.start
 require 'faker'
-require 'support/factory_bot'
 
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
@@ -71,5 +70,9 @@ RSpec.configure do |config|
       with.test_framework :rspec
       with.library :rails
     end
+  end
+
+  RSpec.configure do |config|
+    config.include FactoryBot::Syntax::Methods
   end
 end

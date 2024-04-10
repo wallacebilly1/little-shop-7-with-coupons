@@ -23,6 +23,7 @@ RSpec.describe "Admin Dashboard" do
     @invoice1_transactions = create_list(:transaction, 4, invoice: @invoice1)
     @invoice4_transactions = create_list(:transaction, 3, invoice: @invoice4)
     @invoice5_transactions = create_list(:transaction, 2, invoice: @invoice5)
+
     @transaction1 = @invoice1_transactions[0]
     @transaction2 = @invoice1_transactions[1]
     @transaction3 = @invoice1_transactions[2]
@@ -37,12 +38,11 @@ RSpec.describe "Admin Dashboard" do
     @transaction12 = create(:transaction, invoice_id: @invoice6.id)
     @transaction13 = create(:transaction, invoice_id: @invoice7.id)
 
+    visit admin_path
   end
 
   describe '#US 19' do
     it 'displays the dashboard' do
-      # When I visit the admin dashboard (/admin)
-      visit admin_path
       # Then I see a header indicating that I am on the admin dashboard
       expect(page).to have_content("Admin Dashboard")
     end
@@ -50,8 +50,6 @@ RSpec.describe "Admin Dashboard" do
 
   describe '#20' do
     it 'displays links to the admin merchants and invoices pages' do
-      # When I visit the admin dashboard (/admin)
-      visit admin_path
       # Then I see a link to the admin merchants index (/admin/merchants)
       # And I see a link to the admin invoices index (/admin/invoices)
       expect(page).to have_link("Merchants", href: admin_merchants_path)
@@ -61,8 +59,6 @@ RSpec.describe "Admin Dashboard" do
 
   describe '#21' do
     it 'shows the names of the top 5 customers in terms of successful transactions' do
-      # When I visit the admin dashboard (/admin)
-      visit admin_path
       # Then I see the names of the top 5 customers
       # who have conducted the largest number of successful transactions
       within "#top-customers" do
@@ -79,7 +75,6 @@ RSpec.describe "Admin Dashboard" do
     end
 
     it 'shows the number of successful transactions they have conducted' do
-      visit admin_path
       # And next to each customer name I see the number of successful transactions they have
       # conducted
       within "#customer-#{@customer1.id}" do
@@ -100,6 +95,37 @@ RSpec.describe "Admin Dashboard" do
       
       within "#customer-#{@customer5.id}" do
         expect(page).to have_content ("#{@customer5.name} - #{@customer5.transactions.count} purchases")
+      end
+    end
+  end
+
+  describe "#22" do
+    it "displays a section for Incomplete Invoices" do
+      # Then I see a section for "Incomplete Invoices"
+      within "#incomplete-invoices" do
+        expect(page).to have_content("Incomplete Invoices")
+      end
+    end
+
+    xit "shows a list of the ID's of all invoices with items that have not shipped" do
+      # In that section I see a list of the ids of all invoices
+      # That have items that have not yet been shipped (status of invoice_item)
+      within "#incomplete-invoices" do
+        #need to update these once I've updated setup to have invoice_items with
+        # different statuses
+        expect(page).to have_content("#{@invoice1.id}")
+        expect(page).to have_content("#{@invoice2.id}")
+        expect(page).to have_content("#{@invoice3.id}")
+        expect(page).to_not have_content("#{@invoice4.id}")
+      end
+    end
+
+    it "when I click that ID's link, I am taken to that invoices' admin show page" do
+      # And each invoice id links to that invoice's admin show page
+      within "#incomplete-invoices" do
+        click_on("Invoice #{@invoice1.id}")
+
+        expect(page).to have_current_path(admin_invoice_path(@invoice1))
       end
     end
   end

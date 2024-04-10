@@ -17,10 +17,40 @@ RSpec.describe Customer, type: :model do
     @customer4 = @customers[3]
     @customer5 = @customers[4]
     @customer6 = @customers[5]
+
+    @invoices = create_list(:invoice, 3, customer: @customer1)
+    @invoice1 = @invoices[0]
+    @invoice2 = @invoices[1]
+    @invoice3 = @invoices[2]
+    @invoice4 = create(:invoice, customer_id: @customer2.id)
+    @invoice5 = create(:invoice, customer_id: @customer3.id)
+    @invoice6 = create(:invoice, customer_id: @customer4.id)
+    @invoice7 = create(:invoice, customer_id: @customer5.id)
+    @invoice8 = create(:invoice, customer_id: @customer6.id)
+
+    @invoice1_transactions = create_list(:transaction, 4, invoice: @invoice1)
+    @invoice4_transactions = create_list(:transaction, 3, invoice: @invoice4)
+    @invoice5_transactions = create_list(:transaction, 2, invoice: @invoice5)
+    @transaction1 = @invoice1_transactions[0]
+    @transaction2 = @invoice1_transactions[1]
+    @transaction3 = @invoice1_transactions[2]
+    @transaction4 = @invoice1_transactions[3]
+    @transaction5 = @invoice4_transactions[0]
+    @transaction6 = @invoice4_transactions[1]
+    @transaction7 = @invoice4_transactions[2]
+    @transaction8 = @invoice5_transactions[0]
+    @transaction9 = @invoice5_transactions[1]
+    @transaction10 = create(:transaction, invoice_id: @invoice2.id)
+    @transaction11 = create(:transaction, invoice_id: @invoice3.id)
+    @transaction12 = create(:transaction, invoice_id: @invoice6.id)
+    @transaction13 = create(:transaction, invoice_id: @invoice7.id)
   end
 
   describe "class methods" do
-
+    it "#successful_transactions_count" do
+      expect(@customer1.successful_transactions_count).to eq(6)
+      expect(@customer3.successful_transactions_count).to eq(2)
+    end
   end
 
   describe "instance methods" do

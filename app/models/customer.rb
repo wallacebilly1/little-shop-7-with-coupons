@@ -8,4 +8,12 @@ class Customer < ApplicationRecord
   def name
     "#{self.first_name} #{self.last_name}"
   end
+
+  def self.top_customers
+
+  end
+
+  def successful_transactions_count
+    transactions.count("transactions.result = 0")
+  end
 end

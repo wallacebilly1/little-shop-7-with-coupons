@@ -12,7 +12,7 @@ RSpec.describe "Admin Dashboard" do
   end
 
   describe '#20' do
-    it 'see mechants link' do
+    it 'see merchants and invoices link' do
       # When I visit the admin dashboard (/admin)
       visit admin_path
       # Then I see a link to the admin merchants index (/admin/merchants)

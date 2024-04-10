@@ -8,4 +8,12 @@ class Invoice < ApplicationRecord
   enum status: { "in progress" => 0, 
                  "completed" => 1, 
                  "cancelled" => 2 }
+
+  def self.incomplete_invoices
+    select("invoices.*")
+      .joins(:invoice_items)
+      .where("invoice_items.status != 2")
+      .distinct
+      .order(:id)
+  end
 end

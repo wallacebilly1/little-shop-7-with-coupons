@@ -14,8 +14,6 @@ RSpec.describe "Merchant Dashboard" do
     @invoice1 = @invoices[0]
     @invoice2 = @invoices[1]
     @invoice3 = @invoices[2]
-
-
   end
 
   describe 'User Story 1' do

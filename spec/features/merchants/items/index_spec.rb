@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Merchant Items" do
+RSpec.describe "Merchant Items Index" do
   before(:each) do
     @merchant1 = create(:merchant, id: 1)
     @merchant2 = create(:merchant, id: 2)

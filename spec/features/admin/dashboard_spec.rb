@@ -83,23 +83,23 @@ RSpec.describe "Admin Dashboard" do
       # And next to each customer name I see the number of successful transactions they have
       # conducted
       within "#customer-#{@customer1.id}" do
-        expect(page).to have_content ("#{@customer1.name} - #{@customer1.succesful_transactions} purchases")
+        expect(page).to have_content ("#{@customer1.name} - #{@customer1.transactions.count} purchases")
       end
 
       within "#customer-#{@customer2.id}" do
-        expect(page).to have_content ("#{@customer2.name} - #{@customer2.succesful_transactions} purchases")
+        expect(page).to have_content ("#{@customer2.name} - #{@customer2.transactions.count} purchases")
       end
 
       within "#customer-#{@customer3.id}" do
-        expect(page).to have_content ("#{@customer3.name} - #{@customer3.succesful_transactions} purchases")
+        expect(page).to have_content ("#{@customer3.name} - #{@customer3.transactions.count} purchases")
       end
 
       within "#customer-#{@customer4.id}" do
-        expect(page).to have_content ("#{@customer4.name} - #{@customer4.succesful_transactions} purchases")
+        expect(page).to have_content ("#{@customer4.name} - #{@customer4.transactions.count} purchases")
       end
       
       within "#customer-#{@customer5.id}" do
-        expect(page).to have_content ("#{@customer5.name} - #{@customer5.succesful_transactions} purchases")
+        expect(page).to have_content ("#{@customer5.name} - #{@customer5.transactions.count} purchases")
       end
     end
   end

@@ -47,9 +47,11 @@ RSpec.describe Customer, type: :model do
   end
 
   describe "class methods" do
-    it "#successful_transactions_count" do
-      expect(@customer1.successful_transactions_count).to eq(6)
-      expect(@customer3.successful_transactions_count).to eq(2)
+    it "#top_customers" do
+      top_customers = Customer.top_customers
+      
+      customer_1_transactions = top_customers[0].transactions.count
+      expect(customer_1_transactions).to eq 6
     end
   end
 

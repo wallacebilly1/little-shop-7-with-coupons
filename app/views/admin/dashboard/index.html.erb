@@ -5,4 +5,9 @@
 
 <div id="top-customers">
   <h1> Top Customers </h1>
+  <ol><% @top_5_customers.each do |customer| %>
+    <div id="customer-<%= customer.id %>">
+      <li> <%= customer.name %> - <%= customer.transactions.count %> purchases</li>
+    </div>
+  <% end %> </ol>
 </div>

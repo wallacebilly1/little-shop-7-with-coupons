@@ -57,7 +57,7 @@ RSpec.describe "Admin Dashboard Index" do
     visit admin_path
   end
 
-  describe '#US 19' do
+  describe '#19' do
     it 'displays the dashboard' do
       # Then I see a header indicating that I am on the admin dashboard
       expect(page).to have_content("Admin Dashboard")

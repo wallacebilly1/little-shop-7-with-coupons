@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Admin Merchants show page" do
+RSpec.describe "Admin Merchants Show" do
   before(:each) do
     @merchants = create_list(:merchant, 3)
     @merchant1 = @merchants[0]

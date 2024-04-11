@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Merchants Index Page " do
+RSpec.describe "Admin Merchants Index" do
   before(:each) do
     @merchant1 = Merchant.create(name: "Amazon")
     @merchant2 = Merchant.create(name: "Walmart")

@@ -22,7 +22,11 @@ class Invoice < ApplicationRecord
       .joins(:invoice_items)
       .where("invoice_items.status != 2")
       .distinct
-      .order(:id)
+      .order(:created_at)
+  end
+
+  def format_date
+    self.created_at.strftime("%A, %B %d, %Y")
   end
 
 end

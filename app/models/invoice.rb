@@ -12,4 +12,9 @@ class Invoice < ApplicationRecord
   def format_date
     self.created_at.strftime("%A, %B %d, %Y")
   end
+
+  def self.merchant_invoices
+    # possibly move to merchant model; if moved to merchant model, it will be an instance method
+    distinct
+  end
 end

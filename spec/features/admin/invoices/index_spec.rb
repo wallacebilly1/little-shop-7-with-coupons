@@ -54,13 +54,29 @@ RSpec.describe "Admin Invoices Index" do
     @invoice_item6 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice4.id, status: 1)
     @invoice_item7 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice5.id, status: 1)
 
-    visit admin_path
+    
   end
 
-  describe '#US 19' do
-    it 'displays the dashboard' do
-      # Then I see a header indicating that I am on the admin dashboard
-      expect(page).to have_content("Admin Dashboard")
+  describe '#US 32' do
+    it 'displays a list of all invoices in the system with a link to that admin invoices show page' do
+      visit admin_invoices_path
+
+      expect(page).to have_content("Invoices")
+
+      within "#invoices" do
+        expect(page).to have_link("Invoice ##{@invoice1.id}")
+        expect(page).to have_link("Invoice ##{@invoice2.id}")
+        expect(page).to have_link("Invoice ##{@invoice3.id}")
+        expect(page).to have_link("Invoice ##{@invoice4.id}")
+        expect(page).to have_link("Invoice ##{@invoice5.id}")
+        expect(page).to have_link("Invoice ##{@invoice6.id}")
+        expect(page).to have_link("Invoice ##{@invoice7.id}")
+        expect(page).to have_link("Invoice ##{@invoice8.id}")
+      end
+
+      click_on("Invoice ##{@invoice1.id}")
+
+      expect(page).to have_current_path(admin_invoice_path(@invoice1.id))
     end
   end
 end

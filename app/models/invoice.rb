@@ -12,4 +12,9 @@ class Invoice < ApplicationRecord
   def format_date
     self.created_at.strftime("%A, %B %d, %Y")
   end
+
+  # @invoice_items = @invoice.invoice_items.joins(:item).where(items: {merchant_id: @merchant.id})
+  # @total_revenue = @invoice_items.sum("invoice_items.unit_price * quantity")
+  # self.sum { |item| item.quantity * item.unit_price }
+
 end

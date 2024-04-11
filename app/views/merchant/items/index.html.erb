@@ -2,6 +2,7 @@
 
 <% @items.each do |item| %>
   <%= item.name %>
+  <%= item.status %>
 <% end %>
 
 <%= link_to 'Create a New Item', new_merchant_item_path(@merchant) %>

@@ -1,0 +1,15 @@
+<h1>New Merchant Item Page</h1>
+
+<ol>
+<%= form_with URL: merchant_items_path(@merchant, @item), data: { turbo: false }, local: true do |f| %>
+  <p><%= f.label :name, 'Name:' %></p>
+  <p><%= f.text_field :name %></p>
+  <p><%= f.label :description, 'Description:' %></p>
+  <p><%= f.text_field :description %></p>
+  <p><%= f.label :unit_price, 'Unit Price:' %></p>
+  <p><%= f.text_field :unit_price %></p>
+  <p><%= f.label :merchant_id, 'Merchant ID:' %></p>
+  <p><%= f.text_field :merchant_id %></p>
+  <p><%= f.submit 'Create a New Item' %></p>
+<% end %>
+</ol>

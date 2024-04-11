@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Merchant Invoices Index" do
+RSpec.describe "New Merchant Item Page" do
   before(:each) do
     @customers = create_list(:customer, 10)
     @customer1 = @customers[0]
@@ -54,27 +54,44 @@ RSpec.describe "Merchant Invoices Index" do
     @invoice_item6 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice4.id, status: 1)
     @invoice_item7 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice5.id, status: 1)
   end
+  
+  describe 'User story 11' do
+    it 'has a form to create a new item' do
+      visit new_merchant_item_path(@merchant1)
 
-  describe 'User Story 14' do
-    it "displays all of the invoices with links to show" do
-      visit merchant_invoices_path(@merchant1)
+      expect(page).to have_field('Name')
+      expect(page).to have_field('Description')
+      expect(page).to have_field('Unit Price')
+      expect(page).to have_field('Merchant ID')
+    end
+      
 
-      expect(page).to have_content(@invoice1.id)
-      expect(page).to have_content(@invoice2.id)
-      expect(page).to_not have_content(@invoice3.id)
-      expect(page).to have_content(@invoice4.id)
-      expect(page).to have_content(@invoice5.id)   
+    it 'redirects to the items index page after successful creation and displays new item' do
+      visit new_merchant_item_path(@merchant1)
+
+      fill_in 'Name', with: 'Blah'
+      fill_in 'Description', with: 'LDLKSDJLK'
+      fill_in 'Unit Price', with: '20'
+      fill_in 'Merchant ID', with: "#{@merchant1.id}"
+      click_on 'Create a New Item'
+
+      expect(page).to have_content(@merchant1.id)      
+      expect(page).to have_content('Blah')      
+      expect(page).to have_content('LDLKSDJLK')      
+      expect(page).to have_content('20')      
     end
 
-    it "can link to invoice show page" do
-      visit merchant_invoices_path(@merchant1)
+    xit 'creates an item with a default status of disabled' do
+      visit new_merchant_item_path(@merchant1)
 
-      within "#invoice-#{@invoice1.id}" do
-        expect(page).to have_link(@invoice1.id)
-        click_on "#{@invoice1.id}"
-      end  
+      fill_in 'Name', with: 'Blah'
+      fill_in 'Description', with: 'LDLKSDJLK'
+      fill_in 'Unit Price', with: '20'
+      fill_in 'Merchant ID', with: "#{@merchant1.id}"
+      click_on 'Create a New Item'
 
-      expect(current_path).to eq(merchant_invoice_path(@merchant1, @invoice1))
+      expect(page).to have_content('disabled')
+      expect(current_path).to eq merchant_items_path(@merchant1)
     end
   end
 end

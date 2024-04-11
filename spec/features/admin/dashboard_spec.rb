@@ -38,6 +38,23 @@ RSpec.describe "Admin Dashboard" do
     @transaction12 = create(:transaction, invoice_id: @invoice6.id)
     @transaction13 = create(:transaction, invoice_id: @invoice7.id)
 
+    @merchant1 = create(:merchant, name: "Amazon")
+
+    @item1 = create(:item, unit_price: 1, merchant_id: @merchant1.id)
+    @item2 = create(:item, unit_price: 23, merchant_id: @merchant1.id)
+    @item3 = create(:item, unit_price: 100, merchant_id: @merchant1.id)
+    @item4 = create(:item, unit_price: 5, merchant_id: @merchant1.id)
+    @item5 = create(:item, unit_price: 12, merchant_id: @merchant1.id)
+
+    @invoice_item1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice1.id, status: 0)
+    @invoice_item2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice1.id, status: 2)
+    @invoice_item3 = create(:invoice_item, item_id: @item3.id, invoice_id: @invoice2.id, status: 2)
+    @invoice_item4 = create(:invoice_item, item_id: @item4.id, invoice_id: @invoice3.id, status: 1)
+    @invoice_item5 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice3.id, status: 1)
+    @invoice_item6 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice3.id, status: 1)
+    #invoice 1-one pending invoice_item, one shipped
+    #invoice 2-one shipped invoice_item
+    #invoice 3-all pending invoice_items
     visit admin_path
   end
 
@@ -107,14 +124,13 @@ RSpec.describe "Admin Dashboard" do
       end
     end
 
-    xit "shows a list of the ID's of all invoices with items that have not shipped" do
+    it "shows a list of the ID's of all invoices with items that have not shipped" do
       # In that section I see a list of the ids of all invoices
       # That have items that have not yet been shipped (status of invoice_item)
       within "#incomplete-invoices" do
         #need to update these once I've updated setup to have invoice_items with
         # different statuses
         expect(page).to have_content("#{@invoice1.id}")
-        expect(page).to have_content("#{@invoice2.id}")
         expect(page).to have_content("#{@invoice3.id}")
         expect(page).to_not have_content("#{@invoice4.id}")
       end
@@ -123,6 +139,7 @@ RSpec.describe "Admin Dashboard" do
     it "when I click that ID's link, I am taken to that invoices' admin show page" do
       # And each invoice id links to that invoice's admin show page
       within "#incomplete-invoices" do
+
         click_on("Invoice #{@invoice1.id}")
 
         expect(page).to have_current_path(admin_invoice_path(@invoice1))

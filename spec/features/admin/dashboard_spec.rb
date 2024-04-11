@@ -14,8 +14,8 @@ RSpec.describe "Admin Dashboard" do
     @invoice1 = @invoices[0]
     @invoice2 = @invoices[1]
     @invoice3 = @invoices[2]
-    @invoice4 = create(:invoice, customer_id: @customer2.id)
-    @invoice5 = create(:invoice, customer_id: @customer3.id)
+    @invoice4 = create(:invoice, customer_id: @customer2.id, created_at: Time.utc(2004, 9, 13, 12, 0, 0))
+    @invoice5 = create(:invoice, customer_id: @customer3.id, created_at: Time.utc(2006, 1, 12, 1, 0, 0))
     @invoice6 = create(:invoice, customer_id: @customer4.id)
     @invoice7 = create(:invoice, customer_id: @customer5.id)
     @invoice8 = create(:invoice, customer_id: @customer6.id)
@@ -49,9 +49,10 @@ RSpec.describe "Admin Dashboard" do
     @invoice_item1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice1.id, status: 0)
     @invoice_item2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice1.id, status: 2)
     @invoice_item3 = create(:invoice_item, item_id: @item3.id, invoice_id: @invoice2.id, status: 2)
-    @invoice_item4 = create(:invoice_item, item_id: @item4.id, invoice_id: @invoice3.id, status: 1)
-    @invoice_item5 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice3.id, status: 1)
-    @invoice_item6 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice3.id, status: 1)
+    @invoice_item4 = create(:invoice_item, item_id: @item4.id, invoice_id: @invoice4.id, status: 1)
+    @invoice_item5 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice4.id, status: 1)
+    @invoice_item6 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice4.id, status: 1)
+    @invoice_item7 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice5.id, status: 1)
 
     visit admin_path
   end
@@ -129,8 +130,12 @@ RSpec.describe "Admin Dashboard" do
         #need to update these once I've updated setup to have invoice_items with
         # different statuses
         expect(page).to have_content("#{@invoice1.id}")
-        expect(page).to have_content("#{@invoice3.id}")
-        expect(page).to_not have_content("#{@invoice4.id}")
+        expect(page).to have_content("#{@invoice4.id}")
+        expect(page).to have_content("#{@invoice5.id}")
+        
+        expect(page).to_not have_content("#{@invoice3.id}")
+        expect(page).to_not have_content("#{@invoice2.id}")
+        expect(page).to_not have_content("#{@invoice6.id}")
       end
     end
 
@@ -146,13 +151,23 @@ RSpec.describe "Admin Dashboard" do
   end
 
   describe "#23" do
-  # Admin Dashboard Invoices sorted by least recent
+    it "shows the creation date for all invoices next to the invoice id" do
+      # In the section for "Incomplete Invoices",
+      # Next to each invoice id I see the date that the invoice was created
+      # And I see the date formatted like "Monday, July 18, 2019"
+      within "#incomplete-invoices" do
+        expect(page).to have_content("Invoice #{@invoice4.id} - Monday, September 13, 2004")
+        expect(page).to have_content("Invoice #{@invoice5.id} - Thursday, January 12, 2006")
+      end
 
-  # As an admin,
-  # When I visit the admin dashboard (/admin)
-  # In the section for "Incomplete Invoices",
-  # Next to each invoice id I see the date that the invoice was created
-  # And I see the date formatted like "Monday, July 18, 2019"
-  # And I see that the list is ordered from oldest to newest
+    end
+
+    it "shows the incomplete invoices ordered from oldest to newest" do
+      # And I see that the list is ordered from oldest to newest
+      # within "#incomplete-invoices" do
+      expect("Invoice #{@invoice4.id}").to appear_before("Invoice #{@invoice5.id}")
+      expect("Invoice #{@invoice5.id}").to appear_before("Invoice #{@invoice1.id}")
+      # end
+    end
   end
 end

@@ -28,7 +28,8 @@ RSpec.describe Invoice, type: :model do
     @invoice6 = create(:invoice, customer_id: @customer4.id)
     @invoice7 = create(:invoice, customer_id: @customer5.id)
     @invoice8 = create(:invoice, customer_id: @customer6.id)
-
+    @invoice9 = create(:invoice, customer_id: @customer6.id, created_at: Time.utc(2004, 9, 13, 12, 0, 0))
+    
     @invoice1_transactions = create_list(:transaction, 4, invoice: @invoice1)
     @invoice4_transactions = create_list(:transaction, 3, invoice: @invoice4)
     @invoice5_transactions = create_list(:transaction, 2, invoice: @invoice5)
@@ -71,6 +72,8 @@ RSpec.describe Invoice, type: :model do
   end
 
   describe "instance methods" do
-    
+    it "formats date day, month, year" do
+      expect(@invoice9.format_date).to eq("Monday, September 13, 2004")
+    end
   end
 end

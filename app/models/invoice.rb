@@ -16,5 +16,13 @@ class Invoice < ApplicationRecord
   # @invoice_items = @invoice.invoice_items.joins(:item).where(items: {merchant_id: @merchant.id})
   # @total_revenue = @invoice_items.sum("invoice_items.unit_price * quantity")
   # self.sum { |item| item.quantity * item.unit_price }
+  
+  def self.incomplete_invoices
+    select("invoices.*")
+      .joins(:invoice_items)
+      .where("invoice_items.status != 2")
+      .distinct
+      .order(:id)
+  end
 
 end

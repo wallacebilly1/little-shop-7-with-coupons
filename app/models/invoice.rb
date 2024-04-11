@@ -9,6 +9,7 @@ class Invoice < ApplicationRecord
                  "completed" => 1, 
                  "cancelled" => 2 }
 
+
   def format_date
     self.created_at.strftime("%A, %B %d, %Y")
   end
@@ -16,5 +17,13 @@ class Invoice < ApplicationRecord
   def self.merchant_invoices
     # possibly move to merchant model; if moved to merchant model, it will be an instance method
     distinct
+  end
+  
+  def self.incomplete_invoices
+    select("invoices.*")
+      .joins(:invoice_items)
+      .where("invoice_items.status != 2")
+      .distinct
+      .order(:created_at)
   end
 end

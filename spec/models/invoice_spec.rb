@@ -66,8 +66,7 @@ RSpec.describe Invoice, type: :model do
 
   describe "class methods" do
     it "#incomplete_invoices" do
-      expect(Invoice.incomplete_invoices).to eq ([@invoice1, @invoice3])
-      expect(Invoice.incomplete_invoices).to_not eq (@invoice2)
+      expect(Invoice.incomplete_invoices).to contain_exactly(@invoice1, @invoice3)
     end
   end
 

@@ -144,4 +144,15 @@ RSpec.describe "Admin Dashboard" do
       end
     end
   end
+
+  describe "#23" do
+  # Admin Dashboard Invoices sorted by least recent
+
+  # As an admin,
+  # When I visit the admin dashboard (/admin)
+  # In the section for "Incomplete Invoices",
+  # Next to each invoice id I see the date that the invoice was created
+  # And I see the date formatted like "Monday, July 18, 2019"
+  # And I see that the list is ordered from oldest to newest
+  end
 end

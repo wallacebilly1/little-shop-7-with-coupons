@@ -8,4 +8,8 @@ class Invoice < ApplicationRecord
   enum status: { "in progress" => 0, 
                  "completed" => 1, 
                  "cancelled" => 2 }
+
+  def format_date
+    self.created_at.strftime("%A, %B %d, %Y")
+  end
 end

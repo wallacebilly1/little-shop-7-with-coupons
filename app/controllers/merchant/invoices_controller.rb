@@ -5,6 +5,6 @@ class Merchant::InvoicesController < ApplicationController
   end
 
   def show
-
+    
   end
 end

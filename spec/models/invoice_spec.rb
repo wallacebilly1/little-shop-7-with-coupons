@@ -16,7 +16,8 @@ RSpec.describe Invoice, type: :model do
     @customer3 = @customers[2]
     @customer4 = @customers[3]
 
-    @invoice1 = create(:invoice, customer: @customer1, created_at: "2004-13-09")
+    @invoice1 = create(:invoice, customer: @customer1, created_at:  Time.utc(2004, 9, 13, 12, 0, 0) )
+    @invoice2 = Invoice.create
   end
 
   describe "class methods" do

@@ -16,7 +16,7 @@ RSpec.describe "Merchant Invoices Show" do
     @customer3 = @customers[2]
     @customer4 = @customers[3]
 
-    @invoice1 = create(:invoice, customer: @customer1, created_at: "2004-13-09")
+    @invoice1 = create(:invoice, customer: @customer1, created_at: "2004-13-09 01:45")
   end
 
   describe 'User Story 15' do

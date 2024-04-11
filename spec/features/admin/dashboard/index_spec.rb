@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Admin Dashboard" do
+RSpec.describe "Admin Dashboard Index" do
   before(:each) do
     @customers = create_list(:customer, 10)
     @customer1 = @customers[0]

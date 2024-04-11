@@ -1,0 +1,11 @@
+<h1>Merchant Item Edit Page</h1>
+
+<%= form_with url: "/merchants/#{@item.merchant_id}/items/#{@item.id}", method: :patch,  local: true, data: { turbo: false } do |f| %>
+  <p><%= f.label :name, 'Name:' %></p>
+  <%= f.text_field :name %>
+  <p><%= f.label :description, 'Description:' %>
+  <%= f.text_field :description %>
+  <p><%= f.label :unit_price, 'Unit Price' %></p>
+  <%= f.text_field :unit_price %>
+  <p><%= f.submit 'Submit' %></p>
+<% end %>

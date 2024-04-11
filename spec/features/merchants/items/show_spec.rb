@@ -26,4 +26,16 @@ RSpec.describe "Merchant Items Show" do
       expect(page).to_not have_content(@item2.unit_price)
     end
   end
+  
+  describe 'User story 8' do
+    it 'has a link to edit the item and redirects to edit item page' do
+      visit merchant_item_path(@merchant1, @item1)
+
+      expect(page).to have_content("Edit Item")
+      
+      click_on "Edit Item"
+      
+      expect(current_path).to eq edit_merchant_item_path(@merchant1, @item1)
+    end
+  end
 end

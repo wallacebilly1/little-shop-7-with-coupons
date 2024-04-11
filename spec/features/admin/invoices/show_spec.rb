@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Admin Invoices Index" do
+RSpec.describe "Admin Invoices Show" do
   before(:each) do
     @customers = create_list(:customer, 10)
     @customer1 = @customers[0]
@@ -57,26 +57,25 @@ RSpec.describe "Admin Invoices Index" do
     
   end
 
-  describe '#32' do
+  describe '#33' do
     it 'displays a list of all invoices in the system with a link to that admin invoices show page' do
-      visit admin_invoices_path
+      visit admin_invoice_path(@invoice1.id)
 
-      expect(page).to have_content("Invoices")
-
-      within "#invoices" do
-        expect(page).to have_link("Invoice ##{@invoice1.id}")
-        expect(page).to have_link("Invoice ##{@invoice2.id}")
-        expect(page).to have_link("Invoice ##{@invoice3.id}")
-        expect(page).to have_link("Invoice ##{@invoice4.id}")
-        expect(page).to have_link("Invoice ##{@invoice5.id}")
-        expect(page).to have_link("Invoice ##{@invoice6.id}")
-        expect(page).to have_link("Invoice ##{@invoice7.id}")
-        expect(page).to have_link("Invoice ##{@invoice8.id}")
-      end
-
-      click_on("Invoice ##{@invoice1.id}")
-
-      expect(page).to have_current_path(admin_invoice_path(@invoice1.id))
+      expect(page).to have_content("Invoice ##{@invoice1.id}")
+      expect(page).to have_content("Status: #{@invoice1.status}")
+      expect(page).to have_content("Created On: #{@invoice1.format_date}")
+      expect(page).to have_content("Customer: #{@invoice1.customer.name}")
+      
+      expect(page).to_not have_content("Invoice ##{@invoice2.id}")
+      expect(page).to_not have_content("Invoice ##{@invoice3.id}")
     end
   end
 end
+
+
+
+
+
+
+
+

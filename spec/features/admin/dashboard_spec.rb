@@ -52,9 +52,7 @@ RSpec.describe "Admin Dashboard" do
     @invoice_item4 = create(:invoice_item, item_id: @item4.id, invoice_id: @invoice3.id, status: 1)
     @invoice_item5 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice3.id, status: 1)
     @invoice_item6 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice3.id, status: 1)
-    #invoice 1-one pending invoice_item, one shipped
-    #invoice 2-one shipped invoice_item
-    #invoice 3-all pending invoice_items
+
     visit admin_path
   end
 

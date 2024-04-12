@@ -1,8 +1,11 @@
 <h1> Invoice #<%= @invoice.id %></h1>
 
-<p> Status: <%= @invoice.status %> </p>
-<p> Created On: <%= @invoice.format_date %> </p>
-<p> Customer: <%= @invoice.customer.name %> </p>
+<div id="invoice-summary">
+  <p> Status: <%= @invoice.status %> </p>
+  <p> Created On: <%= @invoice.format_date %> </p>
+  <p> Customer: <%= @invoice.customer.name %> </p>
+  <p> Total Revenue: <%= number_to_currency(@invoice.total_revenue_dollars, unit: "$") %>
+</div>
 
 <div id="invoice-items">
   <h3> Items on this Invoice </h3>

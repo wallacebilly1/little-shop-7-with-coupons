@@ -54,29 +54,29 @@ RSpec.describe "Admin Invoices Show" do
     @invoice_item6 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice4.id, status: 1)
     @invoice_item7 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice5.id, status: 1)
 
-    
+    visit admin_invoice_path(@invoice1.id)
   end
 
   describe '#33' do
     it 'displays all information related to that invoice, including status, created_on date, and customer name' do
-      visit admin_invoice_path(@invoice1.id)
-
       expect(page).to have_content("Invoice ##{@invoice1.id}")
-      expect(page).to have_content("Status: #{@invoice1.status}")
-      expect(page).to have_content("Created On: #{@invoice1.format_date}")
-      expect(page).to have_content("Customer: #{@invoice1.customer.name}")
       
-      expect(page).to_not have_content("Invoice ##{@invoice2.id}")
-      expect(page).to_not have_content("Invoice ##{@invoice3.id}")
+      within "#invoice-summary" do
+        expect(page).to have_content("Status: #{@invoice1.status}")
+        expect(page).to have_content("Created On: #{@invoice1.format_date}")
+        expect(page).to have_content("Customer: #{@invoice1.customer.name}")
+        
+        expect(page).to_not have_content("Invoice ##{@invoice2.id}")
+        expect(page).to_not have_content("Invoice ##{@invoice3.id}")
+      end
     end
   end
 
   describe '#34' do
     it 'displays all items from that invoice, including item name, quantity, price, and invoice item status' do
-      visit admin_invoice_path(@invoice1.id)
-
-      expect(page).to have_content("Items on this Invoice")
       within "#invoice-items" do
+        expect(page).to have_content("Items on this Invoice")
+      
         expect(page).to have_content("#{@item1.name}")
         expect(page).to have_content("#{@item2.name}")
         expect(page).to_not have_content("#{@item3.name}")
@@ -93,6 +93,16 @@ RSpec.describe "Admin Invoices Show" do
         expect(page).to have_content("#{@invoice_item2.quantity}")
         expect(page).to have_content("#{@invoice_item2.unit_price}")
         expect(page).to have_content("#{@invoice_item2.status}")
+      end
+    end
+  end
+
+  describe '#35' do
+    it 'displays the total revenue that will be generated for an invoice' do
+      #not sure how to test this since number_to_currency is a Rails helper
+      @expected_revenue = number_to_currency(@invoice1.total_revenue_dollars, unit: "$")
+      within "#invoice-summary" do
+        expect(page).to have_content("Total Revenue: #{@expected_revenue}")
       end
     end
   end

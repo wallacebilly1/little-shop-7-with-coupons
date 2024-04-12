@@ -5,6 +5,7 @@ RSpec.describe "Merchants Index Page " do
     @merchant1 = Merchant.create(name: "Amazon")
     @merchant2 = Merchant.create(name: "Walmart")
     @merchant3 = Merchant.create(name: "Target")
+   
   end
 
   describe '#us 24' do
@@ -24,6 +25,7 @@ RSpec.describe "Merchants Index Page " do
       visit admin_merchants_path
       # When I click on the name of a merchant from the admin merchants index page (/admin/merchants),
       expect(page).to have_link("#{@merchant1.name}")
+      # require 'pry'; binding.pry
       click_on("#{@merchant1.name}")
       # Then I am taken to that merchant's admin show page (/admin/merchants/:merchant_id)
       expect(current_path).to eq(admin_merchant_path(@merchant1.id))

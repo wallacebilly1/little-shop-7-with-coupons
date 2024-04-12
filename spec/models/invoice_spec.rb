@@ -81,5 +81,13 @@ RSpec.describe Invoice, type: :model do
         expect(@invoice1.format_date).to eq("Monday, September 13, 2004")
       end
     end
+
+    describe ".total_revenue_dollars" do
+      it "returns the total revenue from all invoice items in dollars" do
+        #need to figure out how to best do set up for this test
+        #need to handroll items
+        #
+      end
+    end
   end
 end

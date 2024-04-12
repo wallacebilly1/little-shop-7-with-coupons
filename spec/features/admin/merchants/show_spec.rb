@@ -25,7 +25,7 @@ RSpec.describe "Admin Merchants Show" do
       # Then I am redirected back to the merchant's admin show page where I see the updated information
       expect(current_path).to eq(admin_merchant_path(@merchant1.id))
       # And I see a flash message stating that the information has been successfully updated.
-      expect(page).to have_content("Succefully Updated")
+      expect(page).to have_content("Succesfully Updated")
 
     end
   end

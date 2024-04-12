@@ -3,3 +3,15 @@
 <p> Status: <%= @invoice.status %> </p>
 <p> Created On: <%= @invoice.format_date %> </p>
 <p> Customer: <%= @invoice.customer.name %> </p>
+
+<div id="invoice-items">
+  <h3> Items on this Invoice </h3>
+  <ul><% @invoice.invoice_items.each do |invoice_item| %>
+    <div id="item-<%= invoice_item.id %>">
+      <li> Name: <%= invoice_item.item.name %> - 
+      Quantity: <%= invoice_item.quantity %> - 
+      Unit Price: <%= invoice_item.unit_price %> - 
+      Status: <%= invoice_item.status %> </li>
+    </div>
+  <% end %> </ul>
+</div>

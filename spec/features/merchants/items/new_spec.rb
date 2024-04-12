@@ -62,7 +62,6 @@ RSpec.describe "New Merchant Item Page" do
       expect(page).to have_field('Name')
       expect(page).to have_field('Description')
       expect(page).to have_field('Unit Price')
-      expect(page).to have_field('Merchant ID')
     end
       
 
@@ -72,10 +71,11 @@ RSpec.describe "New Merchant Item Page" do
       fill_in 'Name', with: 'Blah'
       fill_in 'Description', with: 'LDLKSDJLK'
       fill_in 'Unit Price', with: '20'
-      fill_in 'Merchant ID', with: "#{@merchant1.id}"
-      click_on 'Create a New Item'
 
-      expect(page).to have_content(@merchant1.id)      
+      expect(page).to have_button("Create a New Item")
+      click_on 'Create a New Item'
+      expect(current_path).to eq("/merchants/#{@merchant1.id}/items")
+    
       expect(page).to have_content('Blah')      
       expect(page).to have_content('LDLKSDJLK')      
       expect(page).to have_content('20')      

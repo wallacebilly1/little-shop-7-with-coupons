@@ -20,6 +20,7 @@ class Merchant::ItemsController < ApplicationController
       redirect_to "/merchants/#{@merchant.id}/items"
     else
       redirect_to new_merchant_item_path(@merchant)
+      flash[:notice] = "Failed to Create item :("
     end
   end
 
@@ -43,6 +44,6 @@ class Merchant::ItemsController < ApplicationController
   private
 
   def item_params
-    params.permit(:name, :description, :unit_price, :status)
+    params.permit(:id, :name, :description, :unit_price, :merchant_id, :status)
   end
 end

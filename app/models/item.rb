@@ -5,6 +5,10 @@ class Item < ApplicationRecord
   has_many :transactions, through: :invoices
   has_many :customers, through: :invoices
 
+  validates_presence_of :name, presence: true
+  validates_presence_of :description, presence: true
+  validates_presence_of :unit_price, presence: true
+
   enum status: { "enabled" => 0, 
   "disabled" => 1 }
 end

@@ -34,7 +34,7 @@ class Merchant::ItemsController < ApplicationController
 
     if item.update(item_params)
       redirect_to merchant_item_path
-      flash.now[:alert] = "Item successfully updated! :)"
+      flash[:notice] = "Item successfully updated! :)"
     else
       redirect_to edit_merchant_item_path(merchant, item)      
     end

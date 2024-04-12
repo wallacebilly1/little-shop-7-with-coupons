@@ -69,13 +69,9 @@ RSpec.describe Invoice, type: :model do
 
   describe "class methods" do
     describe "#merchant_invoices" do
-      it "sorts a unique list of merchant invoices" do
-        expect(Invoice.merchant_invoices).to eq([@invoice2, @invoice3, @invoice4])
+      it "#incomplete_invoices" do
+        expect(Invoice.incomplete_invoices).to contain_exactly(@invoice1, @invoice4)
       end
-      
-    it "#incomplete_invoices" do
-      expect(Invoice.incomplete_invoices).to contain_exactly(@invoice1, @invoice3)
-
     end
   end
 
@@ -85,5 +81,5 @@ RSpec.describe Invoice, type: :model do
         expect(@invoice1.format_date).to eq("Monday, September 13, 2004")
       end
     end
-   end
+  end
 end

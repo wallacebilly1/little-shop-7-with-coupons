@@ -1,6 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Invoice, type: :model do
+
   describe "relationships" do
     it { should belong_to(:customer) }
     it { should have_many(:transactions) }
@@ -10,8 +11,6 @@ RSpec.describe Invoice, type: :model do
   end
 
   before(:each) do
-    @customers = create_list(:customer, 4)
-    #probably don't need all this setup-leave for now
     @customers = create_list(:customer, 10)
     @customer1 = @customers[0]
     @customer2 = @customers[1]
@@ -20,17 +19,17 @@ RSpec.describe Invoice, type: :model do
     @customer5 = @customers[4]
     @customer6 = @customers[5]
 
-    @invoices = create_list(:invoice, 3, customer: @customer1)
-    @invoice1 = @invoices[0]
-    @invoice2 = @invoices[1]
-    @invoice3 = @invoices[2]
-    @invoice4 = create(:invoice, customer_id: @customer2.id)
-    @invoice5 = create(:invoice, customer_id: @customer3.id)
+
+    @invoice1 = create(:invoice, customer: @customer1, created_at:  Time.utc(2004, 9, 13, 12, 0, 0) )
+    @invoices = create_list(:invoice, 2, customer: @customer1)
+    @invoice2 = @invoices[0]
+    @invoice3 = @invoices[1]
+    @invoice4 = create(:invoice, customer_id: @customer2.id, created_at: Time.utc(2004, 9, 13, 12, 0, 0))
+    @invoice5 = create(:invoice, customer_id: @customer3.id, created_at: Time.utc(2006, 1, 12, 1, 0, 0))
     @invoice6 = create(:invoice, customer_id: @customer4.id)
     @invoice7 = create(:invoice, customer_id: @customer5.id)
     @invoice8 = create(:invoice, customer_id: @customer6.id)
-    @invoice9 = create(:invoice, customer: @customer1, created_at:  Time.utc(2004, 9, 13, 12, 0, 0) )
-    
+
     @invoice1_transactions = create_list(:transaction, 4, invoice: @invoice1)
     @invoice4_transactions = create_list(:transaction, 3, invoice: @invoice4)
     @invoice5_transactions = create_list(:transaction, 2, invoice: @invoice5)
@@ -60,22 +59,30 @@ RSpec.describe Invoice, type: :model do
     @invoice_item1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice1.id, status: 0)
     @invoice_item2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice1.id, status: 2)
     @invoice_item3 = create(:invoice_item, item_id: @item3.id, invoice_id: @invoice2.id, status: 2)
-    @invoice_item4 = create(:invoice_item, item_id: @item4.id, invoice_id: @invoice3.id, status: 1)
-    @invoice_item5 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice3.id, status: 1)
-    @invoice_item6 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice3.id, status: 1)
+
+    @invoice_item4 = create(:invoice_item, item_id: @item4.id, invoice_id: @invoice4.id, status: 1)
+    @invoice_item5 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice4.id, status: 1)
+    @invoice_item6 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice4.id, status: 1)
+
 
   end
 
   describe "class methods" do
+    describe "#merchant_invoices" do
+      it "sorts a unique list of merchant invoices" do
+        expect(Invoice.merchant_invoices).to eq([@invoice2, @invoice3, @invoice4])
+      end
+      
     it "#incomplete_invoices" do
       expect(Invoice.incomplete_invoices).to contain_exactly(@invoice1, @invoice3)
+
     end
   end
 
   describe "instance methods" do
     describe ".format_date" do
       it "formats date day, month, year" do
-        expect(@invoice9.format_date).to eq("Monday, September 13, 2004")
+        expect(@invoice1.format_date).to eq("Monday, September 13, 2004")
       end
     end
    end

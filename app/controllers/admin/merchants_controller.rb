@@ -17,11 +17,11 @@ class Admin::MerchantsController < ApplicationController
     merchant = Merchant.find(params[:id])
     # require 'pry'; binding.pry
     if merchant.update(admin_merchant_params)
-      flash[:notice] = "Succefully Updated"
+      flash[:notice] = "Succesfully Updated"
       redirect_to admin_merchant_path(merchant.id)
       # merchant.save
     else 
-      flash[:alart] = "Error: All Fields Must Be Filled In"
+      flash[:alert] = "Error: All Fields Must Be Filled In"
     end
   end
 

@@ -14,10 +14,10 @@ class Invoice < ApplicationRecord
   end
 
 
-  def self.merchant_invoices
-    # possibly move to merchant model; if moved to merchant model, it will be an instance method
-    distinct
-  end
+  # def self.merchant_invoices
+  #   # possibly move to merchant model; if moved to merchant model, it will be an instance method
+  #   distinct
+  # end
 
   def self.incomplete_invoices
     select("invoices.*")

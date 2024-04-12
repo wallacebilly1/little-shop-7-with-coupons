@@ -22,7 +22,6 @@ RSpec.describe "Admin Merchants Show" do
       # fill_in :name, with: "Dollar General"
       # When I update the information in the form and I click ‘submit’
       click_on "Submit"
-      save_and_open_page
       # Then I am redirected back to the merchant's admin show page where I see the updated information
       expect(current_path).to eq(admin_merchant_path(@merchant1.id))
       # And I see a flash message stating that the information has been successfully updated.

@@ -8,4 +8,25 @@ class Invoice < ApplicationRecord
   enum status: { "in progress" => 0, 
                  "completed" => 1, 
                  "cancelled" => 2 }
+
+  def format_date
+    self.created_at.strftime("%A, %B %d, %Y")
+  end
+
+  # @invoice_items = @invoice.invoice_items.joins(:item).where(items: {merchant_id: @merchant.id})
+  # @total_revenue = @invoice_items.sum("invoice_items.unit_price * quantity")
+  # self.sum { |item| item.quantity * item.unit_price }
+  
+  def self.incomplete_invoices
+    select("invoices.*")
+      .joins(:invoice_items)
+      .where("invoice_items.status != 2")
+      .distinct
+      .order(:created_at)
+  end
+
+  def format_date
+    self.created_at.strftime("%A, %B %d, %Y")
+  end
+
 end

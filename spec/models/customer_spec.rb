@@ -44,14 +44,14 @@ RSpec.describe Customer, type: :model do
     @transaction11 = create(:transaction, invoice_id: @invoice3.id)
     @transaction12 = create(:transaction, invoice_id: @invoice6.id)
     @transaction13 = create(:transaction, invoice_id: @invoice7.id)
+    @transaction14 = create(:transaction, invoice_id: @invoice7.id)
   end
 
   describe "class methods" do
     it "#top_customers" do
       top_customers = Customer.top_customers
-      
-      customer_1_transactions = top_customers[0].transactions.count
-      expect(customer_1_transactions).to eq 6
+
+      expect(top_customers).to contain_exactly(@customer1, @customer2, @customer3, @customer4, @customer5)
     end
   end
 

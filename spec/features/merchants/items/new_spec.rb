@@ -81,17 +81,16 @@ RSpec.describe "New Merchant Item Page" do
       expect(page).to have_content('20')      
     end
 
-    xit 'creates an item with a default status of disabled' do
+    it 'creates an item with a default status of disabled' do
       visit new_merchant_item_path(@merchant1)
 
       fill_in 'Name', with: 'Blah'
       fill_in 'Description', with: 'LDLKSDJLK'
       fill_in 'Unit Price', with: '20'
-      fill_in 'Merchant ID', with: "#{@merchant1.id}"
       click_on 'Create a New Item'
 
       expect(page).to have_content('disabled')
-      expect(current_path).to eq merchant_items_path(@merchant1)
+      expect(current_path).to eq(merchant_items_path(@merchant1))
     end
   end
 end

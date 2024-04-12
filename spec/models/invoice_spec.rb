@@ -85,5 +85,5 @@ RSpec.describe Invoice, type: :model do
         expect(@invoice1.format_date).to eq("Monday, September 13, 2004")
       end
     end
-  end
+   end
 end

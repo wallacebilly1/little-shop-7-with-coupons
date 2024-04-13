@@ -21,7 +21,13 @@ class Invoice < ApplicationRecord
       .order(:created_at)
   end
 
-  def total_revenue_dollars
-    invoice_items.sum("quantity * unit_price")/100.00
+  def total_revenue
+    invoice_items.sum("quantity * unit_price")
+  end
+
+  def total_revenue_in_dollars
+    cents = self.total_revenue
+    formatted_dollars = cents / 100.00
+    formatted_dollars
   end
 end

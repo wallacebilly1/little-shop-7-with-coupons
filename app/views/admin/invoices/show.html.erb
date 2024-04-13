@@ -4,7 +4,7 @@
   <p> Status: <%= @invoice.status %> </p>
   <p> Created On: <%= @invoice.format_date %> </p>
   <p> Customer: <%= @invoice.customer.name %> </p>
-  <p> Total Revenue: <%= number_to_currency(@invoice.total_revenue_dollars, unit: "$") %>
+  <p> Total Revenue: <%= number_to_currency(@invoice.total_revenue_in_dollars, unit: "$") %>
 </div>
 
 <div id="invoice-items">
@@ -13,7 +13,7 @@
     <div id="item-<%= invoice_item.id %>">
       <li> Name: <%= invoice_item.item.name %> - 
       Quantity: <%= invoice_item.quantity %> - 
-      Unit Price: <%= invoice_item.unit_price %> - 
+      Unit Price: <%= number_to_currency(invoice_item.unit_price_in_dollars, unit: "$") %> - 
       Status: <%= invoice_item.status %> </li>
     </div>
   <% end %> </ul>

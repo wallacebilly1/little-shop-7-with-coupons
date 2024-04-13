@@ -1,5 +1,13 @@
 <h1>Merchants</h1>
 
 <% @merchants.each do |merchant| %>
-<%= link_to "#{merchant.name}", admin_merchant_path(merchant.id), method: :get %>
+  <div id="merchant-<%= merchant.id %>">
+    <%= link_to "#{merchant.name}", admin_merchant_path(merchant), method: :get %>
+    <p>Status: <%= merchant.status %></p>
+    <% if merchant.status == "Enabled" %>
+      <%= button_to 'Disable', admin_merchant_path(merchant), method: :patch, params: {status: "Disabled"}  %>
+    <% else %>
+      <%= button_to 'Enable', admin_merchant_path(merchant), method: :patch, params: {status: "Enabled"}  %>
+    <% end %>
+  </div>
 <% end %>

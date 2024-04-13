@@ -10,14 +10,15 @@ class Admin::InvoicesController < ApplicationController
   def update
     @invoice = Invoice.find(params[:id])
 
-    @invoice.update!(invoice_params)
-    redirect_to admin_invoice_path(@invoice)
+    if @invoice.update(invoice_params)
+      redirect_to admin_invoice_path(@invoice), notice: "Successfully updated status"
+    else
+      render :show
+    end
   end
 
   private
   def invoice_params
-    params.require(:invoice).permit(:status).transform_values do |value|
-      value.to_i
-    end
+    params.require(:invoice).permit(:status).transform_values { |value| value.to_i }
   end
 end

@@ -68,8 +68,8 @@ RSpec.describe Invoice, type: :model do
   end
 
   describe "class methods" do
-    describe "#merchant_invoices" do
-      it "#incomplete_invoices" do
+    describe "#incomplete_invoices" do
+      it "displays all invoices that haven't been shipped" do
         expect(Invoice.incomplete_invoices).to contain_exactly(@invoice1, @invoice4)
       end
     end
@@ -82,7 +82,25 @@ RSpec.describe Invoice, type: :model do
       end
     end
 
-    describe ".total_revenue_dollars" do
+    describe ".total_revenue" do
+      it "returns the total revenue from all invoice items" do
+        @cust1 = create(:customer)
+        @inv1 = create(:invoice, customer_id: @cust1.id)
+        @merch1 = create(:merchant)
+        @it1 = create(:item, unit_price: 10000, merchant_id: @merch1.id)
+        @it2 = create(:item, unit_price: 500, merchant_id: @merch1.id)
+        @it3 = create(:item, unit_price: 7500, merchant_id: @merch1.id)
+        @inv_it1 = @inv1.invoice_items.create!(item_id: @it1.id, quantity: 5, unit_price: @it1.unit_price, status: 0)
+        @inv_it2 = @inv1.invoice_items.create!(item_id: @it2.id, quantity: 10, unit_price: @it2.unit_price, status: 0)
+        @inv_it3 = @inv1.invoice_items.create!(item_id: @it3.id, quantity: 1, unit_price: @it3.unit_price, status: 0)
+
+        expected_revenue = ((10000*5)+(500*10)+(7500*1))
+
+        expect(@inv1.total_revenue).to eq(expected_revenue)
+      end
+    end
+
+    describe ".total_revenue_in_dollars" do
       it "returns the total revenue from all invoice items in dollars" do
         @cust1 = create(:customer)
         @inv1 = create(:invoice, customer_id: @cust1.id)
@@ -93,10 +111,10 @@ RSpec.describe Invoice, type: :model do
         @inv_it1 = @inv1.invoice_items.create!(item_id: @it1.id, quantity: 5, unit_price: @it1.unit_price, status: 0)
         @inv_it2 = @inv1.invoice_items.create!(item_id: @it2.id, quantity: 10, unit_price: @it2.unit_price, status: 0)
         @inv_it3 = @inv1.invoice_items.create!(item_id: @it3.id, quantity: 1, unit_price: @it3.unit_price, status: 0)
-    
-        expected_revenue = ((10000*5)+(500*10)+(7500*1))/100
 
-        expect(@inv1.total_revenue_dollars).to eq(expected_revenue)
+        expected_revenue = ((10000*5)+(500*10)+(7500*1))/100.00
+
+        expect(@inv1.total_revenue_in_dollars).to eq(expected_revenue)
       end
     end
   end

@@ -85,13 +85,13 @@ RSpec.describe "Admin Invoices Show" do
 
       within "#item-#{@invoice_item1.id}" do
         expect(page).to have_content("#{@invoice_item1.quantity}")
-        expect(page).to have_content("#{@invoice_item1.unit_price}")
+        expect(page).to have_content("#{number_to_currency(@invoice_item1.unit_price_in_dollars, unit: "$")}")
         expect(page).to have_content("#{@invoice_item1.status}")
       end
 
       within "#item-#{@invoice_item2.id}" do
         expect(page).to have_content("#{@invoice_item2.quantity}")
-        expect(page).to have_content("#{@invoice_item2.unit_price}")
+        expect(page).to have_content("#{number_to_currency(@invoice_item2.unit_price_in_dollars, unit: "$")}")
         expect(page).to have_content("#{@invoice_item2.status}")
       end
     end
@@ -99,7 +99,7 @@ RSpec.describe "Admin Invoices Show" do
 
   describe '#35' do
     it 'displays the total revenue that will be generated for an invoice' do
-      @expected_revenue = number_to_currency(@invoice1.total_revenue_dollars, unit: "$")
+      @expected_revenue = number_to_currency(@invoice1.total_revenue_in_dollars, unit: "$")
       within "#invoice-summary" do
         expect(page).to have_content("Total Revenue: #{@expected_revenue}")
       end

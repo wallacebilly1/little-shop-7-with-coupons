@@ -84,9 +84,19 @@ RSpec.describe Invoice, type: :model do
 
     describe ".total_revenue_dollars" do
       it "returns the total revenue from all invoice items in dollars" do
-        #need to figure out how to best do set up for this test
-        #need to handroll items
-        #
+        @cust1 = create(:customer)
+        @inv1 = create(:invoice, customer_id: @cust1.id)
+        @merch1 = create(:merchant)
+        @it1 = create(:item, unit_price: 10000, merchant_id: @merch1.id)
+        @it2 = create(:item, unit_price: 500, merchant_id: @merch1.id)
+        @it3 = create(:item, unit_price: 7500, merchant_id: @merch1.id)
+        @inv_it1 = @inv1.invoice_items.create!(item_id: @it1.id, quantity: 5, unit_price: @it1.unit_price, status: 0)
+        @inv_it2 = @inv1.invoice_items.create!(item_id: @it2.id, quantity: 10, unit_price: @it2.unit_price, status: 0)
+        @inv_it3 = @inv1.invoice_items.create!(item_id: @it3.id, quantity: 1, unit_price: @it3.unit_price, status: 0)
+    
+        expected_revenue = ((10000*5)+(500*10)+(7500*1))/100
+
+        expect(@inv1.total_revenue_dollars).to eq(expected_revenue)
       end
     end
   end

@@ -81,6 +81,19 @@ RSpec.describe "New Merchant Item Page" do
       expect(page).to have_content('20')      
     end
 
+    it "redirects back to the new page if form is not properly filled out" do
+      visit new_merchant_item_path(@merchant1)
+
+      fill_in 'Name', with: ''
+      fill_in 'Description', with: 'LDLKSDJLK'
+      fill_in 'Unit Price', with: '20'
+
+      expect(page).to have_button("Create a New Item")
+      click_on 'Create a New Item'
+      expect(current_path).to eq(new_merchant_item_path(@merchant1))
+      expect(page).to have_content("Failed to Create item :(")
+    end
+
     it 'creates an item with a default status of disabled' do
       visit new_merchant_item_path(@merchant1)
 

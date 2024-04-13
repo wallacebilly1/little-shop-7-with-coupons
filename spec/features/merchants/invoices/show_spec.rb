@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "Merchant Invoices Show" do
   before(:each) do
     @merchant1 = create(:merchant, id: 1)
+    @merchant2 = create(:merchant, id: 2)
 
     @items_list1 = create_list(:item, 4, merchant: @merchant1 )
     @item1 = @items_list1[0]
@@ -10,13 +11,24 @@ RSpec.describe "Merchant Invoices Show" do
     @item3 = @items_list1[2]
     @item4 = @items_list1[3]
 
+    @items_list2 = create_list(:item, 2, merchant: @merchant2 )
+    @item5 = @items_list2[0]
+    @item6 = @items_list2[1]
+
     @customers = create_list(:customer, 4)
     @customer1 = @customers[0]
     @customer2 = @customers[1]
     @customer3 = @customers[2]
     @customer4 = @customers[3]
+    @customer5 = create(:customer, merchant: @merchant2) 
 
     @invoice1 = create(:invoice, customer: @customer1, created_at: Time.utc(2004, 9, 13, 12, 0, 0))
+    @invoice2 = create(:invoice, customer: @customer5, created_at: Time.utc(2006, 1, 12, 1, 0, 0))
+
+
+    @invoice_item1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice1.id, status: 0)
+    @invoice_item2 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice2.id, status: 2)
+
   end
 
   describe 'User Story 15' do
@@ -38,6 +50,27 @@ RSpec.describe "Merchant Invoices Show" do
 
       expect(page).to have_content(@customer1.first_name)
       expect(page).to have_content(@customer1.last_name)
+    end
+  end
+
+  describe 'User Story 16' do
+    it "Displays an item name" do
+      visit merchant_invoice_path(@merchant1, @invoice1)
+
+      expect(page).to have_content(@item1.name)
+      expect(page).to_not have_content(@item5.name)
+    end
+
+    it "Displays a invoice items quantity, unit price, and status" do
+      visit merchant_invoice_path(@merchant1, @invoice1)
+
+      expect(page).to have_content(@invoice_item1.quantity)
+      expect(page).to have_content(@invoice_item1.unit_price)
+      expect(page).to have_content(@invoice_item1.status)
+
+      expect(page).to_not have_content(@invoice_item2.quantity)
+      expect(page).to_not have_content(@invoice_item2.unit_price)
+      expect(page).to_not have_content(@invoice_item2.status)
     end
   end
 end

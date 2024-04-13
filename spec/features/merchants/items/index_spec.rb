@@ -23,4 +23,12 @@ RSpec.describe "Merchant Items Index" do
       expect(page).to_not have_content(@item4.name)
     end
   end
+
+  describe 'User story 11' do
+    it 'has a link to create a new item' do
+      visit merchant_items_path(@merchant1)
+
+      expect(page).to have_link('Create a New Item', href: new_merchant_item_path(@merchant1))
+    end
+  end
 end

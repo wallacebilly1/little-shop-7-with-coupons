@@ -8,4 +8,7 @@ class Item < ApplicationRecord
   validates_presence_of :name, presence: true
   validates_presence_of :description, presence: true
   validates_presence_of :unit_price, presence: true
+
+  enum status: { "enabled" => 0, 
+  "disabled" => 1 }
 end

@@ -45,5 +45,18 @@ RSpec.describe "Merchant Items Index" do
 
       expect(page).to have_content('Item successfully updated! :)')
     end
+
+    it "redirects back to form page if the form is not fully filled in" do
+      visit edit_merchant_item_path(@merchant1, @item1)
+
+      
+      fill_in 'Name', with: ''
+      fill_in 'Description', with: 'Whatever'
+      fill_in 'Unit Price', with: '666'
+
+      expect(page).to have_button("Submit")
+      click_on 'Submit'
+      expect(current_path).to eq(edit_merchant_item_path(@merchant1, @item1))
+    end
   end
 end

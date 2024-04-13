@@ -58,7 +58,7 @@ RSpec.describe "Admin Invoices Show" do
   end
 
   describe '#33' do
-    it 'displays a list of all invoices in the system with a link to that admin invoices show page' do
+    it 'displays all information related to that invoice, including status, created_on date, and customer name' do
       visit admin_invoice_path(@invoice1.id)
 
       expect(page).to have_content("Invoice ##{@invoice1.id}")
@@ -70,8 +70,33 @@ RSpec.describe "Admin Invoices Show" do
       expect(page).to_not have_content("Invoice ##{@invoice3.id}")
     end
   end
-end
 
+  describe '#34' do
+    it 'displays all items from that invoice, including item name, quantity, price, and invoice item status' do
+      visit admin_invoice_path(@invoice1.id)
+
+      expect(page).to have_content("Items on this Invoice")
+      within "#invoice-items" do
+        expect(page).to have_content("#{@item1.name}")
+        expect(page).to have_content("#{@item2.name}")
+        expect(page).to_not have_content("#{@item3.name}")
+        expect(page).to_not have_content("#{@item5.name}")
+      end
+
+      within "#item-#{@invoice_item1.id}" do
+        expect(page).to have_content("#{@invoice_item1.quantity}")
+        expect(page).to have_content("#{@invoice_item1.unit_price}")
+        expect(page).to have_content("#{@invoice_item1.status}")
+      end
+
+      within "#item-#{@invoice_item2.id}" do
+        expect(page).to have_content("#{@invoice_item2.quantity}")
+        expect(page).to have_content("#{@invoice_item2.unit_price}")
+        expect(page).to have_content("#{@invoice_item2.status}")
+      end
+    end
+  end
+end
 
 
 

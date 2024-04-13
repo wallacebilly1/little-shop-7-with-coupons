@@ -62,6 +62,7 @@ RSpec.describe "Admin Invoices Show" do
       expect(page).to have_content("Invoice ##{@invoice1.id}")
       
       within "#invoice-summary" do
+        #need to update to find the specific selected value, rather than just it appearing
         expect(page).to have_content("Status: #{@invoice1.status}")
         expect(page).to have_content("Created On: #{@invoice1.format_date}")
         expect(page).to have_content("Customer: #{@invoice1.customer.name}")
@@ -103,6 +104,27 @@ RSpec.describe "Admin Invoices Show" do
       within "#invoice-summary" do
         expect(page).to have_content("Total Revenue: #{@expected_revenue}")
       end
+    end
+  end
+
+  describe '#36' do
+    it 'displays the invoice status as a select field, where I see the current invoice status selected' do
+      expect(page).to have_content("In Progress")
+      # I see the invoice status is a select field
+      # And I see that the invoice's current status is selected
+    end
+
+    it 'can change the status of an invoice through this button and be returned to the invoice show page, seeing the changes made' do
+      within "#update-invoice" do
+        select 0, from: :status
+        click_button 'Submit'
+      end
+      # When I click this select field,
+      # Then I can select a new status for the Invoice,
+      # And next to the select field I see a button to "Update Invoice Status"
+      # When I click this button
+      # I am taken back to the admin invoice show page
+      # And I see that my Invoice's status has now been updated
     end
   end
 end

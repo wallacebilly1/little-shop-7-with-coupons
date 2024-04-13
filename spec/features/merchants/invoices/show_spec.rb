@@ -20,7 +20,7 @@ RSpec.describe "Merchant Invoices Show" do
     @customer2 = @customers[1]
     @customer3 = @customers[2]
     @customer4 = @customers[3]
-    @customer5 = create(:customer, merchant: @merchant2) 
+    @customer5 = create(:customer) 
 
     @invoice1 = create(:invoice, customer: @customer1, created_at: Time.utc(2004, 9, 13, 12, 0, 0))
     @invoice2 = create(:invoice, customer: @customer5, created_at: Time.utc(2006, 1, 12, 1, 0, 0))

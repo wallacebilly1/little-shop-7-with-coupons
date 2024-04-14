@@ -9,6 +9,21 @@ class Merchant::ItemsController < ApplicationController
     @item = @merchant.items.find(params[:id])
   end
 
+  def new
+    @merchant = Merchant.find(params[:merchant_id])
+  end
+
+  def create
+    @merchant = Merchant.find(params[:merchant_id])
+    item = Item.new(item_params)
+    if item.save
+      redirect_to "/merchants/#{@merchant.id}/items"
+    else
+      redirect_to new_merchant_item_path(@merchant)
+      flash[:notice] = "Failed to Create item :("
+    end
+  end
+
   def edit
     @merchant = Merchant.find(params[:merchant_id])
     @item = @merchant.items.find(params[:id])
@@ -29,6 +44,6 @@ class Merchant::ItemsController < ApplicationController
   private
 
   def item_params
-    params.permit(:name, :description, :unit_price)
+    params.permit(:id, :name, :description, :unit_price, :merchant_id, :status)
   end
 end

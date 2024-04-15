@@ -2,9 +2,9 @@ require "rails_helper"
 
 RSpec.describe "Admin Merchants Index" do
   before(:each) do
-    @merchant1 = Merchant.create(name: "Amazon")
-    @merchant2 = Merchant.create(name: "Walmart")
-    @merchant3 = Merchant.create(name: "Target")
+    @merchant1 = Merchant.create(name: "Amazon", status: 0)
+    @merchant2 = Merchant.create(name: "Walmart", status: 0)
+    @merchant3 = Merchant.create(name: "Target", status: 1)
    
   end
 
@@ -39,38 +39,38 @@ RSpec.describe "Admin Merchants Index" do
       # When I visit the admin merchants index (/admin/merchants)
       visit admin_merchants_path
       # Then next to each merchant name I see a button to disable or enable that merchant.
-      within "#merchant-#{@merchant1.id}" do
-        expect(page).to have_button("Enable")
+      within ".enabled" do
+        expect(page).to have_button("Disable #{@merchant1.name}")
         # When I click this button
-        click_on("Enable")
+        click_on("Disable #{@merchant1.name}")
       end
       # Then I am redirected back to the admin merchants index
       expect(current_path).to eq(admin_merchants_path)
       # And I see that the merchant's status has changed
-      within "#merchant-#{@merchant1.id}" do
-        expect(page).to have_button("Disable")
-        expect(page).to have_content("Enabled")
+      within ".disabled" do
+        expect(page).to have_button("Enable #{@merchant1.name}")
+        # expect(page).to have_content("Status: Disabled")
       end
     end
+  end
 
-    describe '#us29' do
-      it 'creates a new merchant' do
+  describe '#us 28' do
+    it 'Has a section one for enabled merchants and the other for disabled merchants' do
 
-        # When I visit the admin merchants index (/admin/merchants)
-        visit admin_merchants_path
-        # I see a link to create a new merchant.
-        expect(page).to have_link("Create Merchant")
-        # When I click on the link,
-        click_on("Create Merchant")
-        # I am taken to a form that allows me to add merchant information.
-         # expect(current_path).to eq()
-        fill_in :name, with: "Nike"
-        # When I fill out the form I click ‘Submit’
+      # When I visit the admin merchants index (/admin/merchants)
+      visit admin_merchants_path
+      # Then I see two sections, one for "Enabled Merchants" and one for "Disabled Merchants"
+      within ".enabled" do
+        expect(page).to have_content("Enabled Merchants:")
+        expect(page).to have_content("Amazon")
+        expect(page).to have_content("Walmart")
 
-        # Then I am taken back to the admin merchants index page
-        # And I see the merchant I just created displayed
-        # And I see my merchant was created with a default status of disabled.
-        expect().to eq()
+      end
+      # And I see that each Merchant is listed in the appropriate section
+      # save_and_open_page
+      within '.disabled' do
+        expect(page).to have_content("Disabled Merchants:")
+        expect(page).to have_content("Target")
       end
     end
   end

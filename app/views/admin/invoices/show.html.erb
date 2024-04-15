@@ -1,8 +1,18 @@
 <h1> Invoice #<%= @invoice.id %></h1>
 
-<p> Status: <%= @invoice.status %> </p>
-<p> Created On: <%= @invoice.format_date %> </p>
-<p> Customer: <%= @invoice.customer.name %> </p>
+<div id="invoice-summary">
+  <div id="update-invoice">
+    <p> <%= form_with(model: [ :admin, @invoice ]) do |f| %> </p>
+      <p> Status: <%= f.select(:status, [['In Progress', 0], ['Completed', 1], ['Cancelled', 2]], 
+        { selected: @invoice.status_before_type_cast }, 
+        { name: 'invoice[status]' }) %> </p>
+      <p> <%= f.submit "Update Invoice Status" %> </p>
+    <% end %>
+  </div>
+  <p> Created On: <%= @invoice.format_date %> </p>
+  <p> Customer: <%= @invoice.customer.name %> </p>
+  <p> Total Revenue: <%= number_to_currency(@invoice.total_revenue_in_dollars, unit: "$") %>
+</div>
 
 <div id="invoice-items">
   <h3> Items on this Invoice </h3>
@@ -10,7 +20,7 @@
     <div id="item-<%= invoice_item.id %>">
       <li> Name: <%= invoice_item.item.name %> - 
       Quantity: <%= invoice_item.quantity %> - 
-      Unit Price: <%= invoice_item.unit_price %> - 
+      Unit Price: <%= number_to_currency(invoice_item.unit_price_in_dollars, unit: "$") %> - 
       Status: <%= invoice_item.status %> </li>
     </div>
   <% end %> </ul>

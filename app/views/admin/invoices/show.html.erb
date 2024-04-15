@@ -3,8 +3,10 @@
 <div id="invoice-summary">
   <div id="update-invoice">
     <p> <%= form_with(model: [ :admin, @invoice ]) do |f| %> </p>
-      <p> Status: <%= f.select(:status, [['In Progress', 0], ['Completed', 1], ['Cancelled', 2]], { selected: @invoice.status_before_type_cast }, { name: 'invoice[status]' }) %> </p>
-      <p> <%= f.submit %> </p>
+      <p> Status: <%= f.select(:status, [['In Progress', 0], ['Completed', 1], ['Cancelled', 2]], 
+        { selected: @invoice.status_before_type_cast }, 
+        { name: 'invoice[status]' }) %> </p>
+      <p> <%= f.submit "Update Invoice Status" %> </p>
     <% end %>
   </div>
   <p> Created On: <%= @invoice.format_date %> </p>

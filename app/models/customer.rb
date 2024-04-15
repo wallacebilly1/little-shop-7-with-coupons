@@ -13,4 +13,6 @@ class Customer < ApplicationRecord
     select("customers.*, count(*)").joins(:transactions)
     .group(:id).order("count desc").limit(5)
   end
+
+  
 end

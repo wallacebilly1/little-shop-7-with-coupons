@@ -86,9 +86,9 @@ RSpec.describe Merchant, type: :model do
 
   describe "instance methods" do
     describe ".top_5_customers" do
-    it "Returns the Top 5 Customers" do
-      expect(@merchant1.top_5_customers).to eq([@customer1, @customer2, @customer3, @customer4, @customer5])
-    end
+      it "Returns the Top 5 Customers" do
+        expect(@merchant1.top_5_customers).to eq([@customer1, @customer2, @customer3, @customer4, @customer5])
+      end
   end
   end
 end

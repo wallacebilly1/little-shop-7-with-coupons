@@ -109,25 +109,29 @@ RSpec.describe "Merchant Dashboard" do
     it "Displays the Merchants Top 5 Customers names (successful transactions)" do
       visit merchant_dashboard_index_path(@merchant1)
 
-      expect(page).to have_content(@customer1.name)
-      expect(page).to have_content(@customer2.name)
-      expect(page).to have_content(@customer3.name)
-      
-      expect(page).to have_content(@customer4.name)
-      expect(page).to have_content(@customer5.name)
+      within "#top-5-customers" do
+        expect(page).to have_content(@customer1.name)
+        expect(page).to have_content(@customer2.name)
+        expect(page).to have_content(@customer3.name)
+        
+        expect(page).to have_content(@customer4.name)
+        expect(page).to have_content(@customer5.name)
 
-      expect(page).to_not have_content(@customer6.name)
+        expect(page).to_not have_content(@customer6.name)
 
-      expect(@customer1.name).to appear_before(@customer2.name)
-      expect(@customer2.name).to appear_before(@customer3.name)
-      expect(@customer3.name).to appear_before(@customer4.name)
-      expect(@customer4.name).to appear_before(@customer5.name)
+        expect(@customer1.name).to appear_before(@customer2.name)
+        expect(@customer2.name).to appear_before(@customer3.name)
+        expect(@customer3.name).to appear_before(@customer4.name)
+        expect(@customer4.name).to appear_before(@customer5.name)
+      end
     end
 
-    xit "Displays the number of transactions" do
+    it "Displays the number of transactions" do
       visit merchant_dashboard_index_path(@merchant1)
 
-
+      within "#merchant-#{@customer1.id}" do
+        expect(page).to have_content("Number of Transactions: 7")
+      end
     end
   end
 end

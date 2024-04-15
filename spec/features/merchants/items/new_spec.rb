@@ -102,7 +102,7 @@ RSpec.describe "New Merchant Item Page" do
       fill_in 'Unit Price', with: '20'
       click_on 'Create a New Item'
 
-      expect(page).to have_content('disabled')
+      expect(page).to have_content('Disabled')
       expect(current_path).to eq(merchant_items_path(@merchant1))
     end
   end

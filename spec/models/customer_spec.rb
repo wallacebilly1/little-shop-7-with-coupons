@@ -62,11 +62,5 @@ RSpec.describe Customer, type: :model do
         expect(@customer2.name).to eq("#{@customer2.first_name} #{@customer2.last_name}")
       end
     end
-
-    describe ".count_transactions" do
-      it "counts number of successful transactions" do 
-        expect(@customer1.count_transactions).to eq(6)
-      end
-    end
   end
 end

@@ -62,7 +62,8 @@ RSpec.describe "Admin Invoices Show" do
       expect(page).to have_content("Invoice ##{@invoice1.id}")
       
       within "#invoice-summary" do
-        expect(page).to have_content("Status: #{@invoice1.status}")
+        #need to update to find the specific selected value, rather than just it appearing
+        expect(page).to have_field("invoice_status", with: 0)
         expect(page).to have_content("Created On: #{@invoice1.format_date}")
         expect(page).to have_content("Customer: #{@invoice1.customer.name}")
         
@@ -103,6 +104,23 @@ RSpec.describe "Admin Invoices Show" do
       within "#invoice-summary" do
         expect(page).to have_content("Total Revenue: #{@expected_revenue}")
       end
+    end
+  end
+
+  describe '#36' do
+    it 'displays the invoice status as a select field, where I see the current invoice status selected' do
+      expect(page).to have_field("invoice_status", with: 0)
+    end
+
+    it 'can change the status of an invoice through this button and be returned to the invoice show page, seeing the changes made' do
+      within "#update-invoice" do
+        page.select "Completed", from: 'invoice_status'
+        click_button 'Update Invoice Status'
+      end
+
+      expect(current_path).to eq(admin_invoice_path(@invoice1.id))
+      expect(page).to have_field("invoice_status", with: 1)
+      expect(page).to_not have_field("invoice_status", with: 0)
     end
   end
 end

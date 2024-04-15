@@ -10,9 +10,20 @@ class Merchant < ApplicationRecord
   
   def top_5_customers
     #binding.pry
-    self.customers.select("customers.*, count(*)").joins(:transactions)
-    .group(:id).order("count desc").limit(5)
-    
-   
+    self.customers.select("customers.*, count(*) as count_transactions")
+    .where("result = 0")
+    .joins(:transactions)
+    .group(:id)
+    .order("count_transactions desc")
+    .limit(5)
+  end
+
+  def self.top_five_merchants
+    Merchant.joins(:transactions)
+            .where("result = 1")
+            .select("merchants.*, sum(invoice_items.quantity*invoice_items.unit_price) as total_revenue")
+            .group(:id)
+            .order("total_revenue desc")
+            .limit(5)
   end
 end

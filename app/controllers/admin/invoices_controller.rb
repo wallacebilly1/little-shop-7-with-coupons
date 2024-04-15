@@ -12,8 +12,6 @@ class Admin::InvoicesController < ApplicationController
 
     if @invoice.update(invoice_params)
       redirect_to admin_invoice_path(@invoice), notice: "Successfully updated status"
-    else
-      render :show
     end
   end
 

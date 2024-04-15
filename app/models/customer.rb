@@ -14,5 +14,8 @@ class Customer < ApplicationRecord
     .group(:id).order("count desc").limit(5)
   end
 
+  def count_transactions
+    self.transactions.count
+  end
   
 end

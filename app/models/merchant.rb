@@ -8,4 +8,11 @@ class Merchant < ApplicationRecord
   enum status: {"Enabled" => 0, "Disabled" => 1}
 
   
+  def top_5_customers
+    #binding.pry
+    self.customers.select("customers.*, count(*)").joins(:transactions)
+    .group(:id).order("count desc").limit(5)
+    
+   
+  end
 end

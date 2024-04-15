@@ -1,6 +1,14 @@
 <h1>Merchant Dashboard</h1>
 
 <p><%= @merchant.name %></p>
-
 <%= link_to 'Merchant Items', merchant_items_path %>
 <%= link_to 'Merchant Invoices', merchant_invoices_path %>
+
+<div id="top-5-customers">
+  <h2>Top 5 <%= @merchant.name %> Customers</h2>
+  <ol>
+    <% @merchant.top_5_customers.each do |customer| %>
+      <li><%= customer.first_name %> <%= customer.last_name %></li>
+    <% end %>
+  </ol>
+</div>

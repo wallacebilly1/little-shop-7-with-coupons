@@ -4,7 +4,7 @@ RSpec.describe "Admin Merchants Index" do
   before(:each) do
     @merchant1 = Merchant.create(name: "Amazon")
     @merchant2 = Merchant.create(name: "Walmart")
-    @merchant3 = Merchant.create(name: "Target")
+    @merchant3 = Merchant.create(name: "Target", status: 1)
    
   end
 
@@ -39,17 +39,39 @@ RSpec.describe "Admin Merchants Index" do
       # When I visit the admin merchants index (/admin/merchants)
       visit admin_merchants_path
       # Then next to each merchant name I see a button to disable or enable that merchant.
-      within "#merchant-#{@merchant1.id}" do
-        expect(page).to have_button("Disable")
+      within ".enabled" do
+        expect(page).to have_button("Disable #{@merchant1.name}")
         # When I click this button
-        click_on("Disable")
+        click_on("Disable #{@merchant1.name}")
       end
       # Then I am redirected back to the admin merchants index
       expect(current_path).to eq(admin_merchants_path)
       # And I see that the merchant's status has changed
-      within "#merchant-#{@merchant1.id}" do
-        expect(page).to have_button("Enable")
-        expect(page).to have_content("Disabled")
+      within ".disabled" do
+        expect(page).to have_button("Enable #{@merchant1.name}")
+        # expect(page).to have_content("Status: Disabled")
+      end
+    end
+  end
+
+  describe '#us 28' do
+    it 'Has a section one for enabled merchants and the other for disabled merchants' do
+
+      # When I visit the admin merchants index (/admin/merchants)
+      visit admin_merchants_path
+      # Then I see two sections, one for "Enabled Merchants" and one for "Disabled Merchants"
+      within ".enabled" do
+        expect(page).to have_content("Enabled Merchants:")
+        expect(page).to have_content("Amazon")
+        expect(page).to have_content("Walmart")
+
+      end
+      # And I see that each Merchant is listed in the appropriate section
+
+      within '.disabled' do
+        expect(page).to have_content("Disabled Merchants:")
+        expect(page).to have_content("Target")
+        save_and_open_page
       end
     end
   end

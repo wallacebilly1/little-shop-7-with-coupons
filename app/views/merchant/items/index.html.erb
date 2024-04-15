@@ -1,10 +1,17 @@
-<h1>Merchant Items</h1>
-
-<% @items.each do |item| %>
-  <%= item.name %>
-  <%= item.description %>
-  <%= item.unit_price %>
-  <%= item.status %>
-<% end %>
+<h1><%= @merchant.name %> Items</h1>
 
 <%= link_to 'Create a New Item', new_merchant_item_path(@merchant) %>
+
+<% @items.each do |item| %>
+  <div id="item-<%= item.id %>">
+    <h3><%= item.name %></h3>
+    Description: <%= item.description %></br>
+    Price: <%= item.unit_price %></br>
+    Status: <%= item.status %></br>
+    <% if item.status == "Enabled" %>
+      <%= button_to 'Disable', merchant_item_path(@merchant, item), method: :patch, params: {status: "Disabled"} %>
+    <% else %>
+      <%= button_to 'Enable', merchant_item_path(@merchant, item), method: :patch, params: {status: "Enabled"} %>
+    <% end %>
+  </div>
+<% end %>

@@ -1,7 +1,6 @@
 <h1>Merchants</h1>
-
 <section class="enabled" >
-<p><%= "Enabled Merchants:" %></p>
+  <h2><%= "Enabled Merchants:" %></h2>
   <% @merchants.each do |merchant| %>
     <% if merchant.status == "Enabled" %>
       <%= link_to "#{merchant.name}", admin_merchant_path(merchant), method: :get %><br>
@@ -11,9 +10,8 @@
   <% end %>
 </section>
 
-
 <section class="disabled">
-<p><%= "Disabled Merchants:" %></p>
+  <h2><%= "Disabled Merchants:" %></h2>
   <% @merchants.each do |merchant| %>
     <% if merchant.status == "Disabled" %>
 

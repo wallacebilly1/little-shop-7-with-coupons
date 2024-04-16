@@ -1,33 +1,37 @@
 <h1>Merchants</h1>
-<h3><%= link_to 'New Merchant', new_admin_merchant_path , method: :get %></h3><br>
+<h3> <%= link_to 'New Merchant', 
+         new_admin_merchant_path , 
+         method: :get 
+     %> </h3> <br>
+
 <section class="enabled" >
-  <h2><%= "Enabled Merchants:" %></h2>
+  <h2>Enabled Merchants:</h2>
   <% @merchants.each do |merchant| %>
     <% if merchant.status == "Enabled" %>
-      <%= link_to "#{merchant.name}", admin_merchant_path(merchant), method: :get %><br>
-
-      <%= button_to "Disable #{merchant.name}", admin_merchant_path(merchant), method: :patch, params: {status: "Disabled"}  %><br>
+      <%= render partial: 'admin/merchants/merchant', 
+          locals: { merchant: merchant } %>
     <% end %>
   <% end %>
 </section>
 
 <section class="disabled">
-  <h2><%= "Disabled Merchants:" %></h2>
+  <h2>Disabled Merchants:</h2>
   <% @merchants.each do |merchant| %>
     <% if merchant.status == "Disabled" %>
-
-      <%= link_to "#{merchant.name}", admin_merchant_path(merchant), method: :get %>
-     
-      <%= button_to "Enable #{merchant.name} ", admin_merchant_path(merchant), method: :patch, params: {status: "Enabled"}  %> 
+      <%= render partial: 'admin/merchants/merchant', 
+          locals: { merchant: merchant } %>
     <% end %>
   <% end %>
 </section>
 
-
-<section class="top_merchants"> 
+<section class="top-merchants"> 
   <h2> Top Merchants: </h2>
   <ul> <% @merchants.top_five_merchants.each do |merchant| %>
-    <li> <%= link_to "#{merchant.name}", admin_merchant_path(merchant) %> - <%= number_to_currency(merchant.total_revenue / 100.00) %> in sales</li>
+    <li> <%= link_to "#{merchant.name}", 
+             admin_merchant_path(merchant) %> - 
+         <%= number_to_currency(merchant.total_revenue / 100.00) %> 
+             in sales
+    </li>
   <% end %>
   </ul>
 </section>

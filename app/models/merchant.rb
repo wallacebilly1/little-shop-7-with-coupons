@@ -9,7 +9,6 @@ class Merchant < ApplicationRecord
 
   
   def top_5_customers
-    #binding.pry
     self.customers.select("customers.*, count(*) as count_transactions")
     .where("result = 0")
     .joins(:transactions)
@@ -25,5 +24,11 @@ class Merchant < ApplicationRecord
             .group(:id)
             .order("total_revenue desc")
             .limit(5)
+  end
+
+  def packaged_items
+    self.items.joins(:invoice_items)
+    .where("invoice_items.status = 1")
+    .select("invoice_items.invoice_id, items.*")
   end
 end

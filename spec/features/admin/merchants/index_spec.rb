@@ -93,7 +93,7 @@ RSpec.describe "Admin Merchants Index" do
       within '.disabled' do
         
         expect(page).to have_content("Nike")
-        save_and_open_page
+        # save_and_open_page
       end
       # And I see my merchant was created with a default status of disabled.
 

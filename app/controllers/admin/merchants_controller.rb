@@ -13,8 +13,6 @@ class Admin::MerchantsController < ApplicationController
   end
   
   def update 
-    # require 'pry'; binding.pry
-    
     merchant = Merchant.find(params[:id])
     merchant.update!(admin_merchant_params)
     if params[:status]

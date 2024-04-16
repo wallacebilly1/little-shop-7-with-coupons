@@ -2,7 +2,7 @@ class Admin::InvoicesController < ApplicationController
   def index
     @invoices = Invoice.all
   end
-  
+
   def show 
     @invoice = Invoice.find(params[:id])
   end
@@ -11,12 +11,15 @@ class Admin::InvoicesController < ApplicationController
     @invoice = Invoice.find(params[:id])
 
     if @invoice.update(invoice_params)
-      redirect_to admin_invoice_path(@invoice), notice: "Successfully updated status"
+      redirect_to admin_invoice_path(@invoice),
+      notice: "Successfully updated status"
     end
   end
 
   private
   def invoice_params
-    params.require(:invoice).permit(:status).transform_values { |value| value.to_i }
+    params.require(:invoice)
+          .permit(:status)
+          .transform_values { |value| value.to_i }
   end
 end

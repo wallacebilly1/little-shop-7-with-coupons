@@ -1,0 +1,6 @@
+<%= form_with(url: admin_merchants_path, method: :post) do |form| %>
+  <%= form.label :name %>
+  <%= form.text_field :name %>
+
+  <%= form.submit 'Submit' %>
+<% end %>

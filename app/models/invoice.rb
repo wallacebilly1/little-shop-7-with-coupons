@@ -30,4 +30,5 @@ class Invoice < ApplicationRecord
     formatted_dollars = cents / 100.00
     formatted_dollars
   end
+
 end

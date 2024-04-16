@@ -7,9 +7,20 @@
 
 <h3>Invoice Items</h3>
 <% @invoice.invoice_items.each do |invoice_item|%>
-  <p><%= invoice_item.item.name %></p>
-  <p><%= invoice_item.quantity %></p>
-  <p><%= invoice_item.unit_price %></p>
-  <p><%= invoice_item.status %></p>
+  <div id="invoice-item<%= invoice_item.id %>">
+    <p>Items Name: <%= invoice_item.item.name %></p>
+    <p>Quantity: <%= invoice_item.quantity %></p>
+    <p>Total Price: <%= invoice_item.unit_price %></p>
+    <p>Invoice Items Status: <%= invoice_item.status %></p>
+
+    <%= form_with url: merchant_invoice_item_path(params[:merchant_id], invoice_item.id), method: :patch, data: { turbo: false } do |f| %>
+      <%= f.label :status, "Status" %>
+      <%= f.select :status, ["pending", "packaged", "shipped"], selected: invoice_item.status %>
+      
+      <%= f.submit "Update Item Status" %>
+    <% end %>
+  </div>
 <% end %>
+
+
 

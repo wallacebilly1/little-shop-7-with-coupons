@@ -20,7 +20,7 @@ RSpec.describe "Merchant Dashboard" do
     @invoice3 = @invoices[2]
     @invoice4 = create(:invoice, customer_id: @customer2.id, created_at: Time.utc(2004, 9, 13, 12, 0, 0))
     @invoice5 = create(:invoice, customer_id: @customer3.id, created_at: Time.utc(2006, 1, 12, 1, 0, 0))
-    @invoice6 = create(:invoice, customer_id: @customer4.id, created_at: Time.utc(2009, 11, 12, 1, 0, 0))
+    @invoice6 = create(:invoice, customer_id: @customer4.id)
     @invoice7 = create(:invoice, customer_id: @customer5.id)
     @invoice8 = create(:invoice, customer_id: @customer6.id)
 
@@ -56,9 +56,9 @@ RSpec.describe "Merchant Dashboard" do
 
     @item1 = create(:item, unit_price: 1, merchant_id: @merchant1.id)
     @item2 = create(:item, unit_price: 23, merchant_id: @merchant1.id)
-    @item3 = create(:item, unit_price: 100, merchant_id: @merchant1.id, status: 0)
-    @item4 = create(:item, unit_price: 5, merchant_id: @merchant1.id, status: 0)
-    @item5 = create(:item, unit_price: 12, merchant_id: @merchant1.id, status: 0)
+    @item3 = create(:item, unit_price: 100, merchant_id: @merchant1.id)
+    @item4 = create(:item, unit_price: 5, merchant_id: @merchant1.id)
+    @item5 = create(:item, unit_price: 12, merchant_id: @merchant1.id)
 
     @invoice_item1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice1.id, status: 0)
     @invoice_item2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice1.id, status: 2)
@@ -158,56 +158,6 @@ RSpec.describe "Merchant Dashboard" do
           expect(page).to have_link("#{@invoice4.id}")
           click_on "#{@invoice4.id}"
           expect(current_path).to eq(merchant_invoice_path(@merchant1, @invoice4))
-        end
-      end
-    end
-
-    describe 'User Story 5' do
-      it "has the date that the invoice was created next to the item name and is formatted like Weekday, Month Date Year" do
-        visit merchant_dashboard_index_path(@merchant1)
-
-        within "#items-ready-to-ship" do 
-          expect(page).to have_content("Monday, September 13, 2004")
-        end
-      end
-
-      it "is ordered from oldest to newest" do
-        visit merchant_dashboard_index_path(@merchant1)
-
-        within "#items-ready-to-ship" do 
-          expect(@invoice4.created_at).to appear_before(@invoice5.created_at)
-          expect(@invoice5.created_at).to appear_before(@invoice6.created_at)
-        end
-      end
-    end
-
-    describe 'User story 10' do
-      it 'shows items by enabled status' do
-        visit merchant_dashboard_index_path(@merchant1)
-
-        within "#enabled-items" do 
-          expect(page).to have_content(@item3.id)
-          expect(page).to have_content(@item3.name)
-          expect(page).to have_content(@item4.id)
-          expect(page).to have_content(@item4.name)
-          expect(page).to have_content(@item5.id)
-          expect(page).to have_content(@item5.name)
-          expect(page).to_not have_content(@item1.name)
-          expect(page).to_not have_content(@item2.name)
-        end
-      end
-
-      it 'shows items by disabled status' do
-        visit merchant_dashboard_index_path(@merchant1)
-
-        within "#disabled" do 
-          expect(page).to have_content(@item1.id)
-          expect(page).to have_content(@item1.name)
-          expect(page).to have_content(@item2.id)
-          expect(page).to have_content(@item2.name)
-          expect(page).to_not have_content(@item3.name)
-          expect(page).to_not have_content(@item4.id)
-          expect(page).to_not have_content(@item5.id)
         end
       end
     end

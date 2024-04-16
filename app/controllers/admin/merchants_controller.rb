@@ -26,8 +26,15 @@ class Admin::MerchantsController < ApplicationController
       flash[:alart] = "Error: All Fields Must Be Filled In"
       redirect_to edit_admin_merchant_path(merchant)
     end
+  end
 
-    
+  def new 
+
+  end
+
+  def create 
+    Merchant.create!(admin_merchant_params)
+    redirect_to (admin_merchants_path)
   end
 
 

@@ -101,4 +101,14 @@ RSpec.describe "Merchant Invoices Show" do
       expect(page).to have_content("packaged")
     end
   end
+
+  describe 'User story 17' do
+    it 'has the total revenue generated from all items on the invoice' do
+      visit merchant_invoice_path(@merchant1, @invoice1)
+
+      within "#total-revenue" do
+        expect(page).to have_content("Revenue from All Items: $#{@invoice1.total_revenue_in_dollars}")
+      end
+    end
+  end
 end

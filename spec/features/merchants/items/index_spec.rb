@@ -70,7 +70,6 @@ RSpec.describe "Merchant Items Index" do
     it 'shows items by enabled status' do
       visit merchant_items_path(@merchant1)
 
-      save_and_open_page
       within "#enabled-items" do 
         expect(page).to have_content(@item8.id)
         expect(page).to have_content(@item8.name)

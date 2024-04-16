@@ -74,5 +74,30 @@ RSpec.describe "Admin Merchants Index" do
       end
     end
   end
+
+  describe '#us 29' do
+    it 'Creates a new merchant' do
+      # When I visit the admin merchants index (/admin/merchants)
+      visit admin_merchants_path
+      # I see a link to create a new merchant.
+      expect(page).to have_link("New Merchant")
+      # When I click on the link,
+      click_on("New Merchant")
+      # I am taken to a form that allows me to add merchant information.
+      fill_in :name, with: "Nike"
+      # When I fill out the form I click ‘Submit’
+      click_on("Submit")
+      # Then I am taken back to the admin merchants index page
+      expect(current_path).to eq(admin_merchants_path)
+      # And I see the merchant I just created displayed
+      within '.disabled' do
+        
+        expect(page).to have_content("Nike")
+        save_and_open_page
+      end
+      # And I see my merchant was created with a default status of disabled.
+
+    end
+  end
 end
 

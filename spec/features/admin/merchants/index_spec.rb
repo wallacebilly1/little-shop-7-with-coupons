@@ -151,7 +151,7 @@ RSpec.describe "Admin Merchants Index" do
     end
 
     it 'displays the names and total revenue of the top 5 merchants by total revenue generated' do
-      within '.top_merchants' do
+      within '.top-merchants' do
         expect(@merchant6.name).to appear_before(@merchant5.name)
         expect(@merchant5.name).to appear_before(@merchant7.name)
         expect(@merchant7.name).to appear_before(@merchant1.name)
@@ -163,7 +163,7 @@ RSpec.describe "Admin Merchants Index" do
     end
 
     it 'has links to that specific merchants show page' do
-      within '.top_merchants' do
+      within '.top-merchants' do
         expect(page).to have_link(@merchant6.name)
         expect(page).to have_link(@merchant5.name)
         expect(page).to have_link(@merchant7.name)
@@ -177,7 +177,7 @@ RSpec.describe "Admin Merchants Index" do
     end
 
     it 'displays the total revenue for each of the top merchants next to their name' do
-      within '.top_merchants' do
+      within '.top-merchants' do
         expect(page).to have_content("#{@merchant6.name} - $3,000.00 in sales")
         expect(page).to have_content("#{@merchant5.name} - $800.00 in sales")
         expect(page).to have_content("#{@merchant7.name} - $630.00 in sales")

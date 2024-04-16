@@ -54,11 +54,11 @@ RSpec.describe "Merchant Dashboard" do
     @transaction18 = create(:transaction, invoice_id: @invoice6.id)
     @transaction19 = create(:transaction, invoice_id: @invoice7.id)
 
-    @item1 = create(:item, unit_price: 1, merchant_id: @merchant1.id)
-    @item2 = create(:item, unit_price: 23, merchant_id: @merchant1.id)
-    @item3 = create(:item, unit_price: 100, merchant_id: @merchant1.id)
-    @item4 = create(:item, unit_price: 5, merchant_id: @merchant1.id)
-    @item5 = create(:item, unit_price: 12, merchant_id: @merchant1.id)
+    @item1 = create(:item, unit_price: 1, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 1, 12, 0, 0))
+    @item2 = create(:item, unit_price: 23, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 2, 12, 0, 0))
+    @item3 = create(:item, unit_price: 100, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 3, 12, 0, 0))
+    @item4 = create(:item, unit_price: 5, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 4, 12, 0, 0))
+    @item5 = create(:item, unit_price: 12, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 5, 12, 0, 0))
 
     @invoice_item1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice1.id, status: 0)
     @invoice_item2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice1.id, status: 2)
@@ -158,6 +158,47 @@ RSpec.describe "Merchant Dashboard" do
           expect(page).to have_link("#{@invoice4.id}")
           click_on "#{@invoice4.id}"
           expect(current_path).to eq(merchant_invoice_path(@merchant1, @invoice4))
+        end
+      end
+    end
+
+    describe 'User story 5' do
+      it 'displays the formatted date DAY, MONTH DATE, YEAR' do
+        visit merchant_dashboard_index_path(@merchant1)
+
+        within "#items-ready-to-ship" do
+          expect(page).to have_content("Monday, April 1, 2024")
+          expect(page).to have_content("Tuesday, April 2, 2024")
+          expect(page).to have_content("Wednesday, April 3, 2024")
+          expect(page).to have_content("Thursday, April 4, 2024")
+          expect(page).to have_content("Friday, April 5, 2024")
+        end
+      end
+
+      it 'displays the creation date of the invoice next to each item name' do
+        visit merchant_dashboard_index_path(@merchant1)
+
+        within "#items-ready-to-ship" do
+          expect(page).to have_content("#{@item1.name}: Invoice Created On Monday, April 1, 2024")
+          expect(page).to have_content("#{@item2.name}: Invoice Created On Tuesday, April 2, 2024")
+          expect(page).to have_content("#{@item3.name}: Invoice Created On Wednesday, April 3, 2024")
+          expect(page).to have_content("#{@item4.name}: Invoice Created On Thursday, April 4, 2024")
+          expect(page).to have_content("#{@item5.name}: Invoice Created On Friday, April 5, 2024")
+        end
+      end
+
+      # unclear what this is asking? what list? of items?: And I see that the list is ordered from oldest to newest
+      it 'lists items from oldest to newest by invoice creation date' do
+        visit merchant_dashboard_index_path(@merchant1)
+
+        within "#items-ready-to-ship" do
+          expect(@item1.name).to appear_before(@item2.name)
+          expect(@item2.name).to appear_before(@item3.name)
+          expect(@item3.name).to appear_before(@item4.name)
+          expect(@item4.name).to appear_before(@item5.name)
+          expect(@item5.name).to_not appear_before(@item2.name)
+          expect(@item3.name).to_not appear_before(@item2.name)
+          expect(@item4.name).to_not appear_before(@item3.name)
         end
       end
     end

@@ -20,9 +20,9 @@ RSpec.describe "Merchant Dashboard" do
     @invoice3 = @invoices[2]
     @invoice4 = create(:invoice, customer_id: @customer2.id, created_at: Time.utc(2004, 9, 13, 12, 0, 0))
     @invoice5 = create(:invoice, customer_id: @customer3.id, created_at: Time.utc(2006, 1, 12, 1, 0, 0))
-    @invoice6 = create(:invoice, customer_id: @customer4.id)
-    @invoice7 = create(:invoice, customer_id: @customer5.id)
-    @invoice8 = create(:invoice, customer_id: @customer6.id)
+    @invoice6 = create(:invoice, customer_id: @customer4.id, created_at: Time.utc(2024, 4, 5, 12, 0, 0))
+    @invoice7 = create(:invoice, customer_id: @customer5.id, created_at: Time.utc(2024, 4, 6, 12, 0, 0))
+    @invoice8 = create(:invoice, customer_id: @customer6.id, created_at: Time.utc(2024, 4, 7, 12, 0, 0))
 
     @invoice1_transactions = create_list(:transaction, 5, invoice: @invoice1)
     @transaction1 = @invoice1_transactions[0]
@@ -54,11 +54,11 @@ RSpec.describe "Merchant Dashboard" do
     @transaction18 = create(:transaction, invoice_id: @invoice6.id)
     @transaction19 = create(:transaction, invoice_id: @invoice7.id)
 
-    @item1 = create(:item, unit_price: 1, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 1, 12, 0, 0))
-    @item2 = create(:item, unit_price: 23, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 2, 12, 0, 0))
-    @item3 = create(:item, unit_price: 100, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 3, 12, 0, 0))
-    @item4 = create(:item, unit_price: 5, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 4, 12, 0, 0))
-    @item5 = create(:item, unit_price: 12, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 5, 12, 0, 0))
+    @item1 = create(:item, invoice_id: @invoice4.id, unit_price: 1, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 1, 12, 0, 0))
+    @item2 = create(:item, invoice_id: @invoice5.id, unit_price: 23, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 2, 12, 0, 0))
+    @item3 = create(:item, invoice_id: @invoice6.id, unit_price: 100, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 3, 12, 0, 0))
+    @item4 = create(:item, invoice_id: @invoice7.id, unit_price: 5, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 4, 12, 0, 0))
+    @item5 = create(:item, invoice_id: @invoice8.id, unit_price: 12, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 5, 12, 0, 0))
 
     @invoice_item1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice1.id, status: 0)
     @invoice_item2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice1.id, status: 2)
@@ -165,13 +165,13 @@ RSpec.describe "Merchant Dashboard" do
     describe 'User story 5' do
       it 'displays the formatted date DAY, MONTH DATE, YEAR' do
         visit merchant_dashboard_index_path(@merchant1)
-
+save_and_open_page
         within "#items-ready-to-ship" do
-          expect(page).to have_content("Monday, April 1, 2024")
-          expect(page).to have_content("Tuesday, April 2, 2024")
-          expect(page).to have_content("Wednesday, April 3, 2024")
-          expect(page).to have_content("Thursday, April 4, 2024")
+          expect(page).to have_content("Monday, September 13, 2004")
+          expect(page).to have_content("Thursday, January 12, 2004")
           expect(page).to have_content("Friday, April 5, 2024")
+          expect(page).to have_content("Saturday, April 6, 2024")
+          expect(page).to have_content("Saturday, April 6, 2024")
         end
       end
 
@@ -179,11 +179,11 @@ RSpec.describe "Merchant Dashboard" do
         visit merchant_dashboard_index_path(@merchant1)
 
         within "#items-ready-to-ship" do
-          expect(page).to have_content("#{@item1.name}: Invoice Created On Monday, April 1, 2024")
-          expect(page).to have_content("#{@item2.name}: Invoice Created On Tuesday, April 2, 2024")
-          expect(page).to have_content("#{@item3.name}: Invoice Created On Wednesday, April 3, 2024")
-          expect(page).to have_content("#{@item4.name}: Invoice Created On Thursday, April 4, 2024")
-          expect(page).to have_content("#{@item5.name}: Invoice Created On Friday, April 5, 2024")
+          expect(page).to have_content("#{@item1.name}: Invoice Created On Monday, September 13, 2004")
+          expect(page).to have_content("#{@item2.name}: Invoice Created On Thursday, January 12, 2004")
+          expect(page).to have_content("#{@item3.name}: Invoice Created On Friday, April 5, 2024")
+          expect(page).to have_content("#{@item4.name}: Invoice Created On Saturday, April 6, 2024")
+          expect(page).to have_content("#{@item5.name}: Invoice Created On Saturday, April 6, 2024")
         end
       end
 

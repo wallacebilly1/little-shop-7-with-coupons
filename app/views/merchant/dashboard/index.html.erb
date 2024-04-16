@@ -1,6 +1,27 @@
 <h1>Merchant Dashboard</h1>
 
 <p><%= @merchant.name %></p>
-
 <%= link_to 'Merchant Items', merchant_items_path %>
 <%= link_to 'Merchant Invoices', merchant_invoices_path %>
+
+<div id="top-5-customers">
+  <h2>Top 5 <%= @merchant.name %> Customers</h2>
+  <ol>
+    <% @merchant.top_5_customers.each do |customer| %>
+      <div id="merchant-<%= customer.id %>">
+        <li><h3><%= customer.name %></h3></li>
+         <p>Number of Transactions: <%= customer.count_transactions %></p>
+      </div>
+    <% end %>
+  </ol>
+</div>
+
+<section id="items-ready-to-ship">
+  <h2>Packaged Items</h2>
+  <% @merchant.packaged_items.each do |item| %>
+   <p><%= item.name %></p>
+   <section id="item-<%= item.id %>">
+      Invoice ID: <%= link_to "#{item.invoice_id}", merchant_invoice_path(@merchant, item.invoice_id) %>
+   </section>
+  <% end %>
+</section>

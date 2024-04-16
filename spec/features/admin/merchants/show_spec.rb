@@ -25,7 +25,7 @@ RSpec.describe "Admin Merchants Show" do
       # Then I am redirected back to the merchant's admin show page where I see the updated information
       expect(current_path).to eq(admin_merchant_path(@merchant1.id))
       # And I see a flash message stating that the information has been successfully updated.
-      expect(page).to have_content("Succefully Updated")
+      expect(page).to have_content("Successfully Updated")
       expect(page).to have_content("Dollar General")
 
     end
@@ -42,7 +42,7 @@ RSpec.describe "Admin Merchants Show" do
       fill_in :name, with: ""
       click_on "Submit"
       expect(current_path).to eq(edit_admin_merchant_path(@merchant1.id))
-      expect(page).to have_content("Error: All Fields Must Be Filled In")
+      expect(page).to have_content("Please enter a valid name")
     end
   end
 end

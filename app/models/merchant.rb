@@ -7,7 +7,8 @@ class Merchant < ApplicationRecord
 
   enum status: {"Enabled" => 0, "Disabled" => 1}
 
-  
+  validates :name, presence: true
+
   def top_5_customers
     self.customers.select("customers.*, count(*) as count_transactions")
     .where("result = 0")

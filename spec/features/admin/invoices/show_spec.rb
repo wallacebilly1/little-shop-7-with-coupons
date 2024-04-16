@@ -57,12 +57,11 @@ RSpec.describe "Admin Invoices Show" do
     visit admin_invoice_path(@invoice1.id)
   end
 
-  describe '#33' do
+  describe '#User Story 33' do
     it 'displays all information related to that invoice, including status, created_on date, and customer name' do
       expect(page).to have_content("Invoice ##{@invoice1.id}")
       
       within "#invoice-summary" do
-        #need to update to find the specific selected value, rather than just it appearing
         expect(page).to have_field("invoice_status", with: 0)
         expect(page).to have_content("Created On: #{@invoice1.format_date}")
         expect(page).to have_content("Customer: #{@invoice1.customer.name}")
@@ -73,7 +72,7 @@ RSpec.describe "Admin Invoices Show" do
     end
   end
 
-  describe '#34' do
+  describe '#User Story 34' do
     it 'displays all items from that invoice, including item name, quantity, price, and invoice item status' do
       within "#invoice-items" do
         expect(page).to have_content("Items on this Invoice")
@@ -98,7 +97,7 @@ RSpec.describe "Admin Invoices Show" do
     end
   end
 
-  describe '#35' do
+  describe '#User Story 35' do
     it 'displays the total revenue that will be generated for an invoice' do
       @expected_revenue = number_to_currency(@invoice1.total_revenue_in_dollars, unit: "$")
       within "#invoice-summary" do
@@ -107,7 +106,7 @@ RSpec.describe "Admin Invoices Show" do
     end
   end
 
-  describe '#36' do
+  describe '#User Story 36' do
     it 'displays the invoice status as a select field, where I see the current invoice status selected' do
       expect(page).to have_field("invoice_status", with: 0)
     end
@@ -124,10 +123,3 @@ RSpec.describe "Admin Invoices Show" do
     end
   end
 end
-
-
-
-
-
-
-

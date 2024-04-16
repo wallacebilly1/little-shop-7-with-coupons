@@ -57,26 +57,21 @@ RSpec.describe "Admin Dashboard Index" do
     visit admin_path
   end
 
-  describe '#19' do
+  describe '#User Story 19' do
     it 'displays the dashboard' do
-      # Then I see a header indicating that I am on the admin dashboard
       expect(page).to have_content("Admin Dashboard")
     end
   end
 
-  describe '#20' do
+  describe '#User Story 20' do
     it 'displays links to the admin merchants and invoices pages' do
-      # Then I see a link to the admin merchants index (/admin/merchants)
-      # And I see a link to the admin invoices index (/admin/invoices)
       expect(page).to have_link("Merchants", href: admin_merchants_path)
       expect(page).to have_link("Invoices", href: admin_invoices_path)
     end
   end
 
-  describe '#21' do
-    it 'shows the names of the top 5 customers in terms of successful transactions' do
-      # Then I see the names of the top 5 customers
-      # who have conducted the largest number of successful transactions
+  describe '#User Story 21' do
+    it 'displays the names of the top 5 customers in terms of successful transactions' do
       within "#top-customers" do
         expect(page).to have_content("Top Customers")
 
@@ -90,9 +85,7 @@ RSpec.describe "Admin Dashboard Index" do
       end
     end
 
-    it 'shows the number of successful transactions they have conducted' do
-      # And next to each customer name I see the number of successful transactions they have
-      # conducted
+    it 'shows the number of successful transactions that each customer has' do
       within "#customer-#{@customer1.id}" do
         expect(page).to have_content ("#{@customer1.name} - #{@customer1.transactions.count} purchases")
       end
@@ -115,20 +108,15 @@ RSpec.describe "Admin Dashboard Index" do
     end
   end
 
-  describe "#22" do
+  describe "#User Story 22" do
     it "displays a section for Incomplete Invoices" do
-      # Then I see a section for "Incomplete Invoices"
       within "#incomplete-invoices" do
         expect(page).to have_content("Incomplete Invoices")
       end
     end
 
-    it "shows a list of the ID's of all invoices with items that have not shipped" do
-      # In that section I see a list of the ids of all invoices
-      # That have items that have not yet been shipped (status of invoice_item)
+    it "displays a list of the ID's of all invoices with items that have not shipped" do
       within "#incomplete-invoices" do
-        #need to update these once I've updated setup to have invoice_items with
-        # different statuses
         expect(page).to have_content("#{@invoice1.id}")
         expect(page).to have_content("#{@invoice4.id}")
         expect(page).to have_content("#{@invoice5.id}")
@@ -139,10 +127,8 @@ RSpec.describe "Admin Dashboard Index" do
       end
     end
 
-    it "when I click that ID's link, I am taken to that invoices' admin show page" do
-      # And each invoice id links to that invoice's admin show page
+    it "when I click an ID link, I am taken to that invoices' admin show page" do
       within "#incomplete-invoices" do
-
         click_on("Invoice #{@invoice1.id}")
 
         expect(page).to have_current_path(admin_invoice_path(@invoice1))
@@ -150,24 +136,17 @@ RSpec.describe "Admin Dashboard Index" do
     end
   end
 
-  describe "#23" do
-    it "shows the creation date for all invoices next to the invoice id" do
-      # In the section for "Incomplete Invoices",
-      # Next to each invoice id I see the date that the invoice was created
-      # And I see the date formatted like "Monday, July 18, 2019"
+  describe "#User Story 23" do
+    it "displays the creation date for all invoices next to the invoice id" do
       within "#incomplete-invoices" do
         expect(page).to have_content("Invoice #{@invoice4.id} - Monday, September 13, 2004")
         expect(page).to have_content("Invoice #{@invoice5.id} - Thursday, January 12, 2006")
       end
-
     end
 
-    it "shows the incomplete invoices ordered from oldest to newest" do
-      # And I see that the list is ordered from oldest to newest
-      # within "#incomplete-invoices" do
+    it "displays the incomplete invoices ordered from oldest to newest" do
       expect("Invoice #{@invoice4.id}").to appear_before("Invoice #{@invoice5.id}")
       expect("Invoice #{@invoice5.id}").to appear_before("Invoice #{@invoice1.id}")
-      # end
     end
   end
 end

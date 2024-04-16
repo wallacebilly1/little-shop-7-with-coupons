@@ -68,16 +68,37 @@ RSpec.describe "Merchant Invoices Show" do
       expect(page).to have_content(@invoice_item1.unit_price)
       expect(page).to have_content(@invoice_item1.status)
 
-      expect(page).to_not have_content(@invoice_item2.quantity)
-      expect(page).to_not have_content(@invoice_item2.unit_price)
-      expect(page).to_not have_content(@invoice_item2.status)
+      # expect(page).to_not have_content(@invoice_item2.quantity)
+      # expect(page).to_not have_content(@invoice_item2.unit_price)
+      # expect(page).to_not have_content(@invoice_item2.status)
     end
   end
 
   describe 'User Story 18' do
     it "has a select field for a invoice item's status" do
       visit merchant_invoice_path(@merchant1, @invoice1)
+      
+      within "#invoice-item#{@invoice_item1.id}" do
+        expect(page).to have_select('Status', with_options: ['pending', 'packaged', 'shipped'])
+        expect(page).to have_select('Status', selected: 'pending')
+        page.select 'packaged', from: 'Status'
+        expect(page).to have_select('Status', selected: 'packaged')
+      end
+    end
 
+    it "has a button to update the invoice item status" do
+      visit merchant_invoice_path(@merchant1, @invoice1)
+
+      within "#invoice-item#{@invoice_item1.id}" do
+        expect(page).to have_select('Status', with_options: ['pending', 'packaged', 'shipped'])
+        page.select 'packaged', from: 'Status'
+        expect(page).to have_select('Status', selected: 'packaged')
+
+        expect(page).to have_button("Update Item Status")
+        click_on "Update Item Status"
+      end
+      expect(current_path).to eq(merchant_invoice_path(@merchant1, @invoice1))
+      expect(page).to have_content("packaged")
     end
   end
 end

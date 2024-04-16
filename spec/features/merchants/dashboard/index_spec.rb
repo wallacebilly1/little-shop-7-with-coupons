@@ -149,13 +149,12 @@ RSpec.describe "Merchant Dashboard" do
       end
     end
 
-    it "Displays a section for items ready to ship with item names" do
+    it "Displays a section for items invoices with link to invoice show page" do
       visit merchant_dashboard_index_path(@merchant1)
 
-
       within "#items-ready-to-ship" do
-        expect(page).to have_content(@invoice_item4.name)
-        within "#invoice-##{@invoice4.id}" do
+        expect(page).to have_content(@item4.name)
+        within "#item-#{@item4.id}" do
           expect(page).to have_link("#{@invoice4.id}")
           click_on "#{@invoice4.id}"
           expect(current_path).to eq(merchant_invoice_path(@merchant1, @invoice4))

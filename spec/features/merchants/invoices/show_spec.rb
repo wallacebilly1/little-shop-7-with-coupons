@@ -73,4 +73,11 @@ RSpec.describe "Merchant Invoices Show" do
       expect(page).to_not have_content(@invoice_item2.status)
     end
   end
+
+  describe 'User Story 18' do
+    it "has a select field for a invoice item's status" do
+      visit merchant_invoice_path(@merchant1, @invoice1)
+
+    end
+  end
 end

@@ -56,9 +56,11 @@ RSpec.describe Customer, type: :model do
   end
 
   describe "instance methods" do
-    it ".name" do
-      expect(@customer1.name).to eq("#{@customer1.first_name} #{@customer1.last_name}")
-      expect(@customer2.name).to eq("#{@customer2.first_name} #{@customer2.last_name}")
+    describe ".name" do
+      it "combines first and last names" do
+        expect(@customer1.name).to eq("#{@customer1.first_name} #{@customer1.last_name}")
+        expect(@customer2.name).to eq("#{@customer2.first_name} #{@customer2.last_name}")
+      end
     end
   end
 end

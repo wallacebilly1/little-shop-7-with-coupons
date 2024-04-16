@@ -130,7 +130,36 @@ RSpec.describe "Merchant Dashboard" do
       visit merchant_dashboard_index_path(@merchant1)
 
       within "#merchant-#{@customer1.id}" do
-        expect(page).to have_content("Number of Transactions: 7")
+        expect(page).to have_content("Number of Transactions: 21")
+      end
+    end
+  end
+
+  describe 'User Story 4' do
+    it "Displays a section for items ready to ship with item names" do
+      visit merchant_dashboard_index_path(@merchant1)
+
+      within "#items-ready-to-ship" do
+        expect(page).to have_content(@item4.name)
+        expect(page).to have_content(@item5.name)
+
+        expect(page).to_not have_content(@item1.name)
+        expect(page).to_not have_content(@item2.name)
+        expect(page).to_not have_content(@item3.name)
+      end
+    end
+
+    it "Displays a section for items ready to ship with item names" do
+      visit merchant_dashboard_index_path(@merchant1)
+
+
+      within "#items-ready-to-ship" do
+        expect(page).to have_content(@invoice_item4.name)
+        within "#invoice-##{@invoice4.id}" do
+          expect(page).to have_link("#{@invoice4.id}")
+          click_on "#{@invoice4.id}"
+          expect(current_path).to eq(merchant_invoice_path(@merchant1, @invoice4))
+        end
       end
     end
   end

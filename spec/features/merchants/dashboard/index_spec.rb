@@ -20,9 +20,9 @@ RSpec.describe "Merchant Dashboard" do
     @invoice3 = @invoices[2]
     @invoice4 = create(:invoice, customer_id: @customer2.id, created_at: Time.utc(2004, 9, 13, 12, 0, 0))
     @invoice5 = create(:invoice, customer_id: @customer3.id, created_at: Time.utc(2006, 1, 12, 1, 0, 0))
-    @invoice6 = create(:invoice, customer_id: @customer4.id)
-    @invoice7 = create(:invoice, customer_id: @customer5.id)
-    @invoice8 = create(:invoice, customer_id: @customer6.id)
+    @invoice6 = create(:invoice, customer_id: @customer4.id, created_at: Time.utc(2024, 4, 5, 12, 0, 0))
+    @invoice7 = create(:invoice, customer_id: @customer5.id, created_at: Time.utc(2024, 4, 6, 12, 0, 0))
+    @invoice8 = create(:invoice, customer_id: @customer6.id, created_at: Time.utc(2024, 4, 7, 12, 0, 0))
 
     @invoice1_transactions = create_list(:transaction, 5, invoice: @invoice1)
     @transaction1 = @invoice1_transactions[0]
@@ -54,11 +54,17 @@ RSpec.describe "Merchant Dashboard" do
     @transaction18 = create(:transaction, invoice_id: @invoice6.id)
     @transaction19 = create(:transaction, invoice_id: @invoice7.id)
 
-    @item1 = create(:item, unit_price: 1, merchant_id: @merchant1.id)
-    @item2 = create(:item, unit_price: 23, merchant_id: @merchant1.id)
-    @item3 = create(:item, unit_price: 100, merchant_id: @merchant1.id)
-    @item4 = create(:item, unit_price: 5, merchant_id: @merchant1.id)
-    @item5 = create(:item, unit_price: 12, merchant_id: @merchant1.id)
+    @item1 = create(:item, unit_price: 1, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 1, 12, 0, 0))
+    @item2 = create(:item, unit_price: 23, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 2, 12, 0, 0))
+    @item3 = create(:item, unit_price: 100, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 3, 12, 0, 0))
+    @item4 = create(:item, unit_price: 5, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 4, 12, 0, 0))
+    @item5 = create(:item, unit_price: 12, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 5, 12, 0, 0))
+    @item6 = create(:item, unit_price: 12, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 5, 12, 0, 0))
+    @item7 = create(:item, unit_price: 12, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 5, 12, 0, 0))
+    @item8 = create(:item, unit_price: 12, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 5, 12, 0, 0))
+    @item9 = create(:item, unit_price: 12, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 5, 12, 0, 0))
+    @item10 = create(:item, unit_price: 12, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 5, 12, 0, 0))
+
 
     @invoice_item1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice1.id, status: 0)
     @invoice_item2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice1.id, status: 2)
@@ -70,6 +76,11 @@ RSpec.describe "Merchant Dashboard" do
     @invoice_item8 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice5.id, status: 1)
     @invoice_item9 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice6.id, status: 1)
     @invoice_item10 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice7.id, status: 1)
+    @invoice_item11 = create(:invoice_item, item_id: @item6.id, invoice_id: @invoice4.id, status: 1)
+    @invoice_item12 = create(:invoice_item, item_id: @item7.id, invoice_id: @invoice5.id, status: 1)
+    @invoice_item13 = create(:invoice_item, item_id: @item8.id, invoice_id: @invoice6.id, status: 1)
+    @invoice_item14 = create(:invoice_item, item_id: @item9.id, invoice_id: @invoice7.id, status: 1)
+    @invoice_item15 = create(:invoice_item, item_id: @item10.id, invoice_id: @invoice8.id, status: 1)
   end
 
   describe 'User Story 1' do
@@ -158,6 +169,46 @@ RSpec.describe "Merchant Dashboard" do
           expect(page).to have_link("#{@invoice4.id}")
           click_on "#{@invoice4.id}"
           expect(current_path).to eq(merchant_invoice_path(@merchant1, @invoice4))
+        end
+      end
+    end
+
+    describe 'User story 5' do
+      it 'displays the formatted date DAY, MONTH DATE, YEAR' do
+        visit merchant_dashboard_index_path(@merchant1)
+
+        within "#items-ready-to-ship" do
+          expect(page).to have_content("Monday, September 13, 2004")
+          expect(page).to have_content("Thursday, January 12, 2006")
+          expect(page).to have_content("Friday, April 05, 2024")
+          expect(page).to have_content("Saturday, April 06, 2024")
+        end
+      end
+
+      it 'displays the creation date of the invoice next to each item name' do
+        visit merchant_dashboard_index_path(@merchant1)
+
+        within "#items-ready-to-ship" do
+          expect(page).to have_content("Invoice Created On Monday, September 13, 2004")
+          expect(page).to have_content("Invoice Created On Thursday, January 12, 2006")
+          expect(page).to have_content("Invoice Created On Friday, April 05, 2024")
+          expect(page).to have_content("Invoice Created On Saturday, April 06, 2024")
+          expect(page).to have_content("Invoice Created On Saturday, April 06, 2024")
+        end
+      end
+
+      # unclear what this is asking? what list? of items?: And I see that the list is ordered from oldest to newest
+      it 'lists items from oldest to newest by invoice creation date' do
+        visit merchant_dashboard_index_path(@merchant1)
+
+        within "#items-ready-to-ship" do
+          expect(@item6.name).to appear_before(@item7.name)
+          expect(@item7.name).to appear_before(@item8.name)
+          expect(@item8.name).to appear_before(@item9.name)
+          expect(@item9.name).to appear_before(@item10.name)
+          expect(@item10.name).to_not appear_before(@item8.name)
+          expect(@item9.name).to_not appear_before(@item6.name)
+          expect(@item8.name).to_not appear_before(@item6.name)
         end
       end
     end

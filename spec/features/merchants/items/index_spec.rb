@@ -80,10 +80,10 @@ RSpec.describe "Merchant Items Index" do
 
 
   describe 'User story 10' do
-    it 'shows items by enabled status' do
+    it 'displays items with an enabled status' do
       visit merchant_items_path(@merchant1)
 
-      within "#enabled-items" do 
+      within ".enabled-items" do 
         expect(page).to have_content(@item8.id)
         expect(page).to have_content(@item8.name)
         expect(page).to have_content(@item9.id)
@@ -97,7 +97,7 @@ RSpec.describe "Merchant Items Index" do
     it 'shows items by disabled status' do
       visit merchant_items_path(@merchant1)
 
-      within "#disabled-items" do 
+      within ".disabled-items" do 
         expect(page).to have_content(@item6.id)
         expect(page).to have_content(@item6.name)
         expect(page).to have_content(@item7.name)

@@ -1,48 +1,30 @@
-<h1><%= @merchant.name %> Items</h1>
+<h1> <%= @merchant.name %> Items </h1>
 
-<%= link_to 'Create a New Item', new_merchant_item_path(@merchant) %>
+<%= link_to 'Create a New Item', 
+    new_merchant_item_path(@merchant) %>
 
-<% @merchant.items.each do |item| %>
-  <div id="item-<%= item.id %>">
-    <h3><p><%= link_to item.name, merchant_item_path(@merchant, item) %></h3>
-    <p>Description: <%= item.description %></p>
-    <p>Price: <%= item.unit_price %></p>
-    <p>Status: <%= item.status %></p>
+<section class="enabled-items" >
+<h2>Enabled Items:</h2>
+  <% @merchant.items.each do |item| %>
+
     <% if item.status == "Enabled" %>
-      <%= button_to 'Disable', merchant_item_path(@merchant, item), method: :patch, params: {status: "Disabled"} %>
-    <% else %>
-      <%= button_to 'Enable', merchant_item_path(@merchant, item), method: :patch, params: {status: "Enabled"} %>
+      <%= render partial: 'merchant/items/item', 
+          locals: { item: item } %>
     <% end %>
-  </div>
-<% end %>
 
-
-<h3>Enabled Items:</h3>
-<section id="enabled-items">
-  <ol>
-    <% @merchant.items.each do |item| %>
-      <% if item.status == 'Enabled' %>
-        <li>
-          <p>Item ID: <%= item.id %></p>
-          <p>Item Name: <%= item.name %></p>
-        </li>
-      <% end %>
-    <% end %>
-  </ol>
+  <% end %>
 </section>
 
-<h3>Disabled Items:</h3>
-<section id="disabled-items">
-  <ol>
-    <% @merchant.items.each do |item| %>
-      <% if item.status == 'Disabled' %>
-        <li>
-          <p>Item ID: <%= item.id %></p>
-          <p>Item Name: <%= item.name %></p>
-        </li>
-      <% end %>
+<section class="disabled-items" >
+<h2>Disabled Items:</h2>
+  <% @merchant.items.each do |item| %>
+
+    <% if item.status == "Disabled" %>
+      <%= render partial: 'merchant/items/item', 
+          locals: { item: item } %>
     <% end %>
-  </ol>
+
+  <% end %>
 </section>
 
 <h3>Top 5 Items:</h3>

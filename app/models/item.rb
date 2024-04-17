@@ -38,8 +38,4 @@ class Item < ApplicationRecord
 
         formatted_date = date.strftime("%A, %B %d, %Y")  
   end
-
-  def format_invoice_date(invoice)
-    invoice.created_at.strftime("%A, %B %d, %Y")
-  end
 end

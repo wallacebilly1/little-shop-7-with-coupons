@@ -111,16 +111,6 @@ RSpec.describe Item, type: :model do
       end
     end
 
-    describe ".format_invoice_date" do
-      it "formats date day, month, year" do
-        item1 = create(:item)
-        invoice1 = create(:invoice, created_at: Time.utc(2004, 9, 13, 12, 0, 0))
-        invoice_item1 = create(:invoice_item, invoice_id: invoice1.id, item_id: item1.id, quantity: 10, unit_price: 10, status: 1)
-        
-        expect(item1.format_invoice_date(invoice1)).to eq("Monday, September 13, 2004")
-      end
-    end
-
     describe ".top_selling_date" do
       it "shows the top selling formatted date for an item" do
         merchant = Merchant.create(name: "Amazon")

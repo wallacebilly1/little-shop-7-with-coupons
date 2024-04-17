@@ -39,6 +39,6 @@ class Merchant < ApplicationRecord
               .where("transactions.result = ?", 0)
               .group(:id)
               .order(total_revenue: :desc)
-              .limit(5)           
+              .limit(5)
   end
 end

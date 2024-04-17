@@ -24,4 +24,21 @@ class Item < ApplicationRecord
   def order_date
     self.invoices.order(created_at: :asc)
   end
+
+  # # top for one item at a time/instance method
+  # def top_selling_day
+  #   top_selling_day = 
+        # self.joins(:invoices, :transactions)
+      #       .select('invoices.created_at', sum(invoice_items.unit_price & invoice_items.quantity) AS total_revenue)
+      #       .where("transactions.result = ?", 0)
+      #       .group(:id)
+      #       .order('total_revenue DESC')
+      #       .first
+
+  #   top_selling_day.format_date
+  # end
+
+  # def format_date
+  #   self.created_at.strftime("%A, %B %d, %Y")
+  # end
 end

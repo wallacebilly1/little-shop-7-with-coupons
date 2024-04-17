@@ -51,7 +51,7 @@
     <% @merchant.top_five_items.each do |item| %>
       <li><p><%= link_to item.name, merchant_item_path(@merchant, item) %></p>
       <p>Total Item Revenue: <%= item.total_revenue %></p>
-      <p>Top selling date for <%= item.name %> was <%= item.top_selling_day %></p></li>
+      <p>Top selling date for <%= item.name %> was <%= item.name %></p></li>
     <% end %>
   </div>
 </ol>

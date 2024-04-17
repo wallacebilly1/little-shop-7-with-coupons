@@ -26,7 +26,7 @@ class Item < ApplicationRecord
   end
 
   def top_selling_day
-        date = self.invoices
+        date = invoices
                     .joins(:transactions, :invoice_items)
                     .select('invoices.created_at, sum(invoice_items.unit_price * invoice_items.quantity)')
                     .where("transactions.result = ?", 0)

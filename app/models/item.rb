@@ -11,4 +11,13 @@ class Item < ApplicationRecord
 
   enum status: { "Enabled" => 0, 
   "Disabled" => 1 }
+
+  def format_inv_date(invoice_id)
+    invoice = Invoice.find_by(id: invoice_id)
+    invoice.format_date
+  end
+
+  def order_date
+    self.invoices.order(created_at: :asc)
+  end
 end

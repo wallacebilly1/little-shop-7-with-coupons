@@ -1,9 +1,8 @@
 require 'rails_helper'
 
-
-RSpec.describe "Merchant Dashboard" do
+RSpec.describe "Merchant Dashboard Index" do
   before(:each) do
-    @merchant1 = create(:merchant, id: 1)
+    @merchant1 = create(:merchant)
     @merchant2 = create(:merchant, name: "Amazon")
 
     @customers = create_list(:customer, 10)
@@ -65,7 +64,6 @@ RSpec.describe "Merchant Dashboard" do
     @item9 = create(:item, unit_price: 12, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 5, 12, 0, 0))
     @item10 = create(:item, unit_price: 12, merchant_id: @merchant1.id, created_at: Time.utc(2024, 4, 5, 12, 0, 0))
 
-
     @invoice_item1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice1.id, status: 0)
     @invoice_item2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice1.id, status: 2)
     @invoice_item3 = create(:invoice_item, item_id: @item3.id, invoice_id: @invoice2.id, status: 2)
@@ -81,50 +79,40 @@ RSpec.describe "Merchant Dashboard" do
     @invoice_item13 = create(:invoice_item, item_id: @item8.id, invoice_id: @invoice6.id, status: 1)
     @invoice_item14 = create(:invoice_item, item_id: @item9.id, invoice_id: @invoice7.id, status: 1)
     @invoice_item15 = create(:invoice_item, item_id: @item10.id, invoice_id: @invoice8.id, status: 1)
+  
+    visit merchant_dashboard_index_path(@merchant1)
   end
 
-  describe 'User Story 1' do
-    it "displays the merchant name" do
-      visit merchant_dashboard_index_path(@merchant1)
-
+  describe '#User Story 1' do
+    it 'displays the merchants name' do
       expect(page).to have_content(@merchant1.name)
     end
   end
 
-  describe 'User Story 2' do
-    it "displays links for merchant invoices and merchant items" do
-      visit merchant_dashboard_index_path(@merchant1)
-
+  describe '#User Story 2' do
+    it 'displays links for merchant invoices and merchant items' do
       expect(page).to have_link("Merchant Items")
+      
       expect(page).to have_link("Merchant Invoices")
     end
 
-    it "links me to items index" do
-      visit merchant_dashboard_index_path(@merchant1)
-
-      expect(page).to have_link("Merchant Items")
+    it 'when I click on those links it takes me to the respective pages' do
       click_on "Merchant Items"
       expect(current_path).to eq(merchant_items_path(@merchant1))
-    end
 
-    it "links me to invoices index" do
       visit merchant_dashboard_index_path(@merchant1)
-
-      expect(page).to have_link("Merchant Invoices")
+      
       click_on "Merchant Invoices"
       expect(current_path).to eq(merchant_invoices_path(@merchant1))
     end
   end
 
-  describe 'User Story 3' do
-    it "Displays the Merchants Top 5 Customers names (successful transactions)" do
-      visit merchant_dashboard_index_path(@merchant1)
-
+  describe '#User Story 3' do
+    it 'displays the Merchants Top 5 Customer names, ordered by successful transactions' do
       within "#top-5-customers" do
         expect(page).to have_content(@customer1.name)
         expect(page).to have_content(@customer2.name)
         expect(page).to have_content(@customer3.name)
-        
         expect(page).to have_content(@customer4.name)
         expect(page).to have_content(@customer5.name)
 
@@ -137,19 +125,19 @@ RSpec.describe "Merchant Dashboard" do
       end
     end
 
-    it "Displays the number of transactions" do
-      visit merchant_dashboard_index_path(@merchant1)
-
+    it 'displays the number of succesful transactions next to each name' do
       within "#merchant-#{@customer1.id}" do
         expect(page).to have_content("Number of Transactions: 21")
+      end
+
+      within "#merchant-#{@customer4.id}" do
+        expect(page).to have_content("Number of Transactions: 6")
       end
     end
   end
 
-  describe 'User Story 4' do
-    it "Displays a section for items ready to ship with item names" do
-      visit merchant_dashboard_index_path(@merchant1)
-
+  describe '#User Story 4' do
+    it 'displays a section for items ready to ship with item names' do
       within "#items-ready-to-ship" do
         expect(page).to have_content(@item4.name)
         expect(page).to have_content(@item5.name)
@@ -160,9 +148,7 @@ RSpec.describe "Merchant Dashboard" do
       end
     end
 
-    it "Displays a section for items invoices with link to invoice show page" do
-      visit merchant_dashboard_index_path(@merchant1)
-
+    it 'each invoice has a link to its show page' do
       within "#items-ready-to-ship" do
         expect(page).to have_content(@item4.name)
         within "#item-#{@item4.id}" do
@@ -172,44 +158,29 @@ RSpec.describe "Merchant Dashboard" do
         end
       end
     end
+  end
 
-    describe 'User story 5' do
-      it 'displays the formatted date DAY, MONTH DATE, YEAR' do
-        visit merchant_dashboard_index_path(@merchant1)
+  describe '#User story 5' do
+    it 'displays the formatted creation date of the invoice next to each items name' do
 
-        within "#items-ready-to-ship" do
-          expect(page).to have_content("Monday, September 13, 2004")
-          expect(page).to have_content("Thursday, January 12, 2006")
-          expect(page).to have_content("Friday, April 05, 2024")
-          expect(page).to have_content("Saturday, April 06, 2024")
-        end
+      within "#items-ready-to-ship" do
+        expect(page).to have_content("Invoice Created On Monday, September 13, 2004")
+        expect(page).to have_content("Invoice Created On Thursday, January 12, 2006")
+        expect(page).to have_content("Invoice Created On Friday, April 05, 2024")
+        expect(page).to have_content("Invoice Created On Saturday, April 06, 2024")
+        expect(page).to have_content("Invoice Created On Saturday, April 06, 2024")
       end
+    end
 
-      it 'displays the creation date of the invoice next to each item name' do
-        visit merchant_dashboard_index_path(@merchant1)
-
-        within "#items-ready-to-ship" do
-          expect(page).to have_content("Invoice Created On Monday, September 13, 2004")
-          expect(page).to have_content("Invoice Created On Thursday, January 12, 2006")
-          expect(page).to have_content("Invoice Created On Friday, April 05, 2024")
-          expect(page).to have_content("Invoice Created On Saturday, April 06, 2024")
-          expect(page).to have_content("Invoice Created On Saturday, April 06, 2024")
-        end
-      end
-
-      # unclear what this is asking? what list? of items?: And I see that the list is ordered from oldest to newest
-      it 'lists items from oldest to newest by invoice creation date' do
-        visit merchant_dashboard_index_path(@merchant1)
-
-        within "#items-ready-to-ship" do
-          expect(@item6.name).to appear_before(@item7.name)
-          expect(@item7.name).to appear_before(@item8.name)
-          expect(@item8.name).to appear_before(@item9.name)
-          expect(@item9.name).to appear_before(@item10.name)
-          expect(@item10.name).to_not appear_before(@item8.name)
-          expect(@item9.name).to_not appear_before(@item6.name)
-          expect(@item8.name).to_not appear_before(@item6.name)
-        end
+    it 'lists items from oldest to newest by invoice creation date' do
+      within "#items-ready-to-ship" do
+        expect(@item6.name).to appear_before(@item7.name)
+        expect(@item7.name).to appear_before(@item8.name)
+        expect(@item8.name).to appear_before(@item9.name)
+        expect(@item9.name).to appear_before(@item10.name)
+        expect(@item10.name).to_not appear_before(@item8.name)
+        expect(@item9.name).to_not appear_before(@item6.name)
+        expect(@item8.name).to_not appear_before(@item6.name)
       end
     end
   end

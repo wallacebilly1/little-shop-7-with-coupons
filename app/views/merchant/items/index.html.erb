@@ -2,7 +2,7 @@
 
 <%= link_to 'Create a New Item', new_merchant_item_path(@merchant) %>
 
-<% @items.each do |item| %>
+<% @merchant.items.each do |item| %>
   <div id="item-<%= item.id %>">
     <h3><%= item.name %></h3>
     <p>Description: <%= item.description %></p>
@@ -20,7 +20,7 @@
 <h3>Enabled Items:</h3>
 <section id="enabled-items">
   <ol>
-    <% @items.each do |item| %>
+    <% @merchant.items.each do |item| %>
       <% if item.status == 'Enabled' %>
         <li>
           <p>Item ID: <%= item.id %></p>
@@ -34,7 +34,7 @@
 <h3>Disabled Items:</h3>
 <section id="disabled-items">
   <ol>
-    <% @items.each do |item| %>
+    <% @merchant.items.each do |item| %>
       <% if item.status == 'Disabled' %>
         <li>
           <p>Item ID: <%= item.id %></p>

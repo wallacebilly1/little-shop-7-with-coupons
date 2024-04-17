@@ -1,7 +1,6 @@
 class Merchant::ItemsController < ApplicationController 
   def index 
     @merchant = Merchant.find(params[:merchant_id])
-    @items = @merchant.items
   end
 
   def show
@@ -44,7 +43,6 @@ class Merchant::ItemsController < ApplicationController
   end
 
   private
-
   def item_params
     params.permit(:id, :name, :description, :unit_price, :merchant_id, :status)
   end

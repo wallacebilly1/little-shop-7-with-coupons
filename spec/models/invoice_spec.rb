@@ -85,12 +85,6 @@ RSpec.describe Invoice, type: :model do
         expect(Invoice.incomplete_invoices).to contain_exactly(@invoice1, @invoice4, @invoice5, @invoice6, @invoice7, @invoice8)
       end
     end
-
-    describe "#order_date" do
-      it "orders invoices by date from oldest to newest" do
-        expect(Invoice.order_date).to include(@invoice4, @invoice5, @invoice6, @invoice7, @invoice8)
-      end
-    end
   end
 
   describe "instance methods" do

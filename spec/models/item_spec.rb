@@ -80,5 +80,18 @@ RSpec.describe Item, type: :model do
         expect(@item1.format_inv_date(@invoice4.id)).to eq("Monday, September 13, 2004")
       end
     end
+
+
+    describe ".order_date" do
+      it "orders invoices by date from oldest to newest" do
+        item1 = create(:item)
+        invoice1 = create(:invoice, created_at: Time.utc(2004, 9, 13, 12, 0, 0))
+        invoice2 = create(:invoice, created_at: Time.utc(2004, 9, 14, 12, 0, 0))
+        invoice_item1 = create(:invoice_item, invoice_id: invoice1.id, item_id: item1.id, quantity: 10, unit_price: 10, status: 1)
+        invoice_item2 = create(:invoice_item, invoice_id: invoice2.id, item_id: item1.id, quantity: 9, unit_price: 9, status: 1)
+
+        expect(item1.order_date).to eq([invoice1, invoice2])
+      end
+    end
   end
 end

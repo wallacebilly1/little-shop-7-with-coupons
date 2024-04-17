@@ -16,4 +16,11 @@ class Item < ApplicationRecord
     invoice = Invoice.find_by(id: invoice_id)
     invoice.format_date
   end
+
+  def order_date
+    self.invoices
+                .joins(:invoice_items)
+                .select("invoices.*")
+                .order(created_at: :asc)
+  end
 end

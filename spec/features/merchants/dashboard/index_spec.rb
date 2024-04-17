@@ -176,7 +176,7 @@ RSpec.describe "Merchant Dashboard" do
     describe 'User story 5' do
       it 'displays the formatted date DAY, MONTH DATE, YEAR' do
         visit merchant_dashboard_index_path(@merchant1)
-save_and_open_page
+
         within "#items-ready-to-ship" do
           expect(page).to have_content("Monday, September 13, 2004")
           expect(page).to have_content("Thursday, January 12, 2006")

@@ -30,11 +30,4 @@ class Invoice < ApplicationRecord
     formatted_dollars = cents / 100.00
     formatted_dollars
   end
-
-  def self.order_date
-    joins(:invoice_items)
-    .select("invoices.*")
-    .order(created_at: :asc)
-  end
-
 end

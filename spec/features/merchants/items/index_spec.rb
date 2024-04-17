@@ -95,4 +95,18 @@ RSpec.describe "Merchant Items Index" do
       end
     end
   end
+
+  describe 'User story 12' do
+    it 'displays the top 5 items' do
+      visit merchant_items_path(@merchant1)
+
+      within "#top-5-items" do
+        expect(@item.name).to appear_before(@item.name)
+        expect(@item.name).to appear_before(@item.name)
+        expect(@item.name).to appear_before(@item.name)
+        expect(@item.name).to appear_before(@item.name)
+        expect(@item.name).to appear_before(@item.name)
+      end
+    end
+  end
 end

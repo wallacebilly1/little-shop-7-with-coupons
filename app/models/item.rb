@@ -18,9 +18,6 @@ class Item < ApplicationRecord
   end
 
   def order_date
-    self.invoices
-                .joins(:invoice_items)
-                .select("invoices.*")
-                .order(created_at: :asc)
+    self.invoices.order(created_at: :asc)
   end
 end

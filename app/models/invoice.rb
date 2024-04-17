@@ -26,7 +26,9 @@ class Invoice < ApplicationRecord
     .select("SUM(invoice_items.unit_price * invoice_items.quantity) AS revenue, invoices.created_at")
     .group(:id)
     .order("revenue DESC")
+    .order("invoices.created_at DESC")
     .first
+    .created_at
   end
 
   def total_revenue

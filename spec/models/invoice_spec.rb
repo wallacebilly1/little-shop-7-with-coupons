@@ -19,7 +19,6 @@ RSpec.describe Invoice, type: :model do
     @customer5 = @customers[4]
     @customer6 = @customers[5]
 
-
     @invoice1 = create(:invoice, customer: @customer1, created_at:  Time.utc(2004, 9, 13, 12, 0, 0) )
     @invoices = create_list(:invoice, 2, customer: @customer1)
     @invoice2 = @invoices[0]
@@ -85,6 +84,39 @@ RSpec.describe Invoice, type: :model do
         expect(Invoice.incomplete_invoices).to contain_exactly(@invoice1, @invoice4, @invoice5, @invoice6, @invoice7, @invoice8)
       end
     end
+
+    describe '#best_day' do
+      it 'returns a string that displays that merchants best selling day' do
+        
+        # merchant1 = create(:merchant)
+ 
+        # customer1 = Customer.create!(first_name:"Billy", last_name:"W" )
+   
+        # invoice1 = customer1.invoices.create!(status: "completed", created_at: Time.new(2012,12,12))
+        # invoice1 = customer1.invoices.create!(status: "completed", created_at: Time.new(2010,11,1))
+        # invoice1 = customer1.invoices.create!(status: "completed", created_at: Time.new(2020,8,2))
+        # invoice2 = customer1.invoices.create!(status: "completed", created_at: Time.new(2015,3,4))
+        # invoice2 = customer1.invoices.create!(status: "completed", created_at: Time.new(2004,9,22))
+        # invoice2 = customer1.invoices.create!(status: "completed", created_at: Time.new(2002,10,14))
+   
+        # item1 = create(:item, merchant: merchant1)
+        # item2 = create(:item, merchant: merchant1)
+
+        # invoice_item1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice1.id, status: 0)
+        # invoice_item1 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice2.id, status: 0)
+
+  
+        # create_list(:invoice_item, 5, unit_price: 1000, quantity: 5, invoice: invoice1, item: item1)
+        # create_list(:invoice_item, 1, unit_price: 2000, quantity: 3, invoice: invoice1, item: item1)
+        # create_list(:invoice_item, 9, unit_price: 1200, quantity: 2, invoice: invoice2, item: item2)
+        # create_list(:invoice_item, 4, unit_price: 6000, quantity: 4, invoice: invoice2, item: item2)
+  
+        # create(:transaction, result: 1, invoice: invoice1)
+        # create(:transaction, result: 1, invoice: invoice2)
+  
+        expect(Invoice.best_day.strftime("%m/%d/%y")).to eq("09/13/04")
+      end
+    end
   end
 
   describe "instance methods" do
@@ -127,39 +159,6 @@ RSpec.describe Invoice, type: :model do
         expected_revenue = ((10000*5)+(500*10)+(7500*1))/100.00
 
         expect(@inv1.total_revenue_in_dollars).to eq(expected_revenue)
-      end
-    end
-
-    describe '#best_day' do
-      it 'returns a string that displays that merchants best selling day' do
-        
-        merchant1 = create(:merchant)
- 
-        customer1 = Customer.create!(first_name:"Billy", last_name:"W" )
-   
-        invoice1 = customer1.invoices.create!(status: "completed", created_at: Time.new(2012,12,12))
-        invoice1 = customer1.invoices.create!(status: "completed", created_at: Time.new(2010,11,1))
-        invoice1 = customer1.invoices.create!(status: "completed", created_at: Time.new(2020,8,2))
-        invoice2 = customer1.invoices.create!(status: "completed", created_at: Time.new(2015,3,4))
-        invoice2 = customer1.invoices.create!(status: "completed", created_at: Time.new(2004,9,22))
-        invoice2 = customer1.invoices.create!(status: "completed", created_at: Time.new(2002,10,14))
-   
-        item1 = create(:item, merchant: merchant1)
-        item2 = create(:item, merchant: merchant1)
-
-        invoice_item1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice1.id, status: 0)
-        invoice_item1 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice2.id, status: 0)
-
-  
-        create_list(:invoice_item, 5, unit_price: 1000, quantity: 5, invoice: invoice1, item: item1)
-        create_list(:invoice_item, 1, unit_price: 2000, quantity: 3, invoice: invoice1, item: item1)
-        create_list(:invoice_item, 9, unit_price: 1200, quantity: 2, invoice: invoice2, item: item2)
-        create_list(:invoice_item, 4, unit_price: 6000, quantity: 4, invoice: invoice2, item: item2)
-  
-        create(:transaction, result: 1, invoice: invoice1)
-        create(:transaction, result: 1, invoice: invoice2)
-  
-        expect(Invoice.best_day.created_at.strftime("%m/%d/%y")).to eq("09/13/04")
       end
     end
   end

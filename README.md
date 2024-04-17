@@ -22,7 +22,6 @@
 - Created multiple ActiveRecord query methods to produce desired data from user stories
 - Utilized form helpers for all forms to facilitate clean transfer of data between views, models, and controllers
 - Utilized partials to DRY up code
-- Added styling to project via the use of [Tailwind CSS](https://tailwindcss.com/)
 - Adhered to and maintained MVC standards and best practices
 
 ## Ideas for Refactor

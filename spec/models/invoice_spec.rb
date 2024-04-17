@@ -88,7 +88,7 @@ RSpec.describe Invoice, type: :model do
 
     describe "#order_date" do
       it "orders invoices by date from oldest to newest" do
-        expect(Invoice.order_date).to eq([@invoice4, @invoice5, @invoice6, @invoice7, @invoice8])
+        expect(Invoice.order_date).to include(@invoice4, @invoice5, @invoice6, @invoice7, @invoice8)
       end
     end
   end

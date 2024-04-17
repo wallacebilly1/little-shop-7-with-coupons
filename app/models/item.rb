@@ -17,6 +17,10 @@ class Item < ApplicationRecord
     invoice.format_date
   end
 
+  def total_revenue
+    invoice_items.sum("quantity * unit_price")
+  end
+
   def order_date
     self.invoices.order(created_at: :asc)
   end

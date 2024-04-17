@@ -9,8 +9,6 @@ RSpec.describe Merchant, type: :model do
     it { should have_many(:customers) }
   end
 
-
-
   before(:each) do
     @merchant1 = create(:merchant, id: 1)
     @merchant2 = create(:merchant, name: "Amazon")
@@ -69,21 +67,21 @@ RSpec.describe Merchant, type: :model do
     @item4 = create(:item, unit_price: 5, merchant_id: @merchant1.id)
     @item5 = create(:item, unit_price: 12, merchant_id: @merchant1.id)
 
-    @invoice_item1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice1.id, status: 0)
-    @invoice_item2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice1.id, status: 2)
-    @invoice_item3 = create(:invoice_item, item_id: @item3.id, invoice_id: @invoice2.id, status: 2)
-    @invoice_item4 = create(:invoice_item, item_id: @item4.id, invoice_id: @invoice4.id, status: 1)
-    @invoice_item5 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice4.id, status: 1)
-    @invoice_item6 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice4.id, status: 1)
-    @invoice_item7 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice5.id, status: 1)
-    @invoice_item8 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice5.id, status: 1)
-    @invoice_item9 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice6.id, status: 1)
-    @invoice_item10 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice7.id, status: 1)
+    @invoice_item1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice1.id, status: 0, unit_price: 10, quantity: 10)
+    @invoice_item2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice1.id, status: 2, unit_price: 11, quantity: 10)
+    @invoice_item3 = create(:invoice_item, item_id: @item3.id, invoice_id: @invoice2.id, status: 2, unit_price: 12, quantity: 10)
+    @invoice_item4 = create(:invoice_item, item_id: @item4.id, invoice_id: @invoice4.id, status: 1, unit_price: 13, quantity: 10)
+    @invoice_item5 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice4.id, status: 1, unit_price: 14, quantity: 10)
+    @invoice_item6 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice4.id, status: 1, unit_price: 15, quantity: 10)
+    @invoice_item7 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice5.id, status: 1, unit_price: 16, quantity: 10)
+    @invoice_item8 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice5.id, status: 1, unit_price: 17, quantity: 10)
+    @invoice_item9 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice6.id, status: 1, unit_price: 18, quantity: 10)
+    @invoice_item10 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice7.id, status: 1, unit_price: 19, quantity: 10)
   end
 
   describe "class methods" do
     it '.top_five_merchants' do
-      #billy before each
+
       merchant1 = create(:merchant)
       merchant2 = create(:merchant)
       merchant3 = create(:merchant)
@@ -140,6 +138,12 @@ RSpec.describe Merchant, type: :model do
   end
 
   describe "instance methods" do
+    describe "#top_five_items" do
+      it "sorts items into top five" do
+        expect(@merchant1.top_five_items).to eq([@item5, @item2, @item4, @item1, @item3])
+      end
+    end
+  
     describe ".top_5_customers" do
       it "Returns the Top 5 Customers" do
         expect(@merchant1.top_5_customers).to eq([@customer1, @customer2, @customer3, @customer4, @customer5])

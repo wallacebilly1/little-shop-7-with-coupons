@@ -44,3 +44,13 @@
     <% end %>
   </ol>
 </section>
+
+<h3>Top 5 Items:</h3>
+<ol>
+  <div id="top-5-items">
+    <% @merchant.top_five_items.each do |item| %>
+      <li><p><%= link_to item.name, merchant_item_path(@merchant, item) %></p>
+      <p>Total Item Revenue: <%= item.total_revenue %></li></p>
+    <% end %>
+  </div>
+</ol>

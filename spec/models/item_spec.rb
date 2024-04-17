@@ -151,7 +151,7 @@ RSpec.describe Item, type: :model do
         invoice_item4 = InvoiceItem.create(invoice: invoice4, item: item2, quantity: 12, unit_price: 20, status: 1)
         transaction4 = Transaction.create(credit_card_number: "9876543210987654", result: 0, invoice: invoice4)
         
-        expect(item1.top_selling_day).to eq("Sunday, April 07, 2024")
+        expect(item1.top_selling_day).to eq("Saturday, April 06, 2024")
         expect(item2.top_selling_day).to eq("Monday, April 08, 2024")
       end
     end

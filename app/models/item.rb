@@ -25,17 +25,18 @@ class Item < ApplicationRecord
     self.invoices.order(created_at: :asc)
   end
 
-  # top for one item at a time/instance method
   def top_selling_day
-    self.invoices
-        .joins(:transactions, :invoice_items)
-        .select('invoices.created_at, sum(invoice_items.unit_price * invoice_items.quantity)')
-        .where("transactions.result = ?", 0)
-        .group("invoices.created_at")
-        .order(Arel.sql('sum(invoice_items.unit_price * invoice_items.quantity) DESC, invoices.created_at DESC'))
-        .limit(1)
-        .pluck('invoices.created_at')
-        .first.strftime("%A, %B %d, %Y")  
+        date = self.invoices
+                    .joins(:transactions, :invoice_items)
+                    .select('invoices.created_at, sum(invoice_items.unit_price * invoice_items.quantity)')
+                    .where("transactions.result = ?", 0)
+                    .group("invoices.created_at")
+                    .order(Arel.sql('sum(invoice_items.unit_price * invoice_items.quantity) DESC, invoices.created_at DESC'))
+                    .limit(1)        
+                    .first
+                    .created_at
+
+        formatted_date = date.strftime("%A, %B %d, %Y")  
   end
 
   def format_invoice_date(invoice)

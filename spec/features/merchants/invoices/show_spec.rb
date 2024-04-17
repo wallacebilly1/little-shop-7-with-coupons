@@ -25,89 +25,88 @@ RSpec.describe "Merchant Invoices Show" do
     @invoice1 = create(:invoice, customer: @customer1, created_at: Time.utc(2004, 9, 13, 12, 0, 0))
     @invoice2 = create(:invoice, customer: @customer5, created_at: Time.utc(2006, 1, 12, 1, 0, 0))
 
-
     @invoice_item1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice1.id, status: 0)
-    @invoice_item2 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice2.id, status: 2)
+    @invoice_item2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice1.id, status: 0)
+    @invoice_item3 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice2.id, status: 2)
 
+    visit merchant_invoice_path(@merchant1, @invoice1)
   end
 
-  describe 'User Story 15' do
-    it "Displays the invoice id and status" do
-      visit merchant_invoice_path(@merchant1, @invoice1)
-
+  describe '#User Story 15' do
+    it 'displays the invoice id and status' do
       expect(page).to have_content(@invoice1.id)
       expect(page).to have_content(@invoice1.status)
     end
 
-    it "Displays created at in Monday, July 18, 2019 format" do
-      visit merchant_invoice_path(@merchant1, @invoice1)
-
+    it 'displays the invoice creation date in [Monday, July 18, 2019] format' do
       expect(page).to have_content("Monday, September 13, 2004")
     end
 
-    it "Displays the customer first and last name" do
-      visit merchant_invoice_path(@merchant1, @invoice1)
-
+    it 'displays the customers first and last name' do
       expect(page).to have_content(@customer1.first_name)
       expect(page).to have_content(@customer1.last_name)
     end
   end
 
-  describe 'User Story 16' do
-    it "Displays an item name" do
-      visit merchant_invoice_path(@merchant1, @invoice1)
-
+  describe '#User Story 16' do
+    it 'displays all items on that invoice' do
       expect(page).to have_content(@item1.name)
+      expect(page).to have_content(@item2.name)
       expect(page).to_not have_content(@item5.name)
     end
 
-    it "Displays a invoice items quantity, unit price, and status" do
-      visit merchant_invoice_path(@merchant1, @invoice1)
+    it 'displays the quantity, unit_price and status for each item' do
+      within "#invoice-item#{@invoice_item1.id}" do
+        expect(page).to have_content("Item Name: #{@invoice_item1.item.name}")
+        expect(page).to have_content("Total Price: #{@invoice_item1.unit_price}")
+        expect(page).to have_content("Status: #{@invoice_item1.status}")
+      end
 
-      expect(page).to have_content(@invoice_item1.quantity)
-      expect(page).to have_content(@invoice_item1.unit_price)
-      expect(page).to have_content(@invoice_item1.status)
-
-      # expect(page).to_not have_content(@invoice_item2.quantity)
-      # expect(page).to_not have_content(@invoice_item2.unit_price)
-      # expect(page).to_not have_content(@invoice_item2.status)
+      within "#invoice-item#{@invoice_item2.id}" do
+        expect(page).to have_content("Item Name: #{@invoice_item2.item.name}")
+        expect(page).to have_content("Total Price: #{@invoice_item2.unit_price}")
+        expect(page).to have_content("Status: #{@invoice_item2.status}")
+      end
     end
   end
 
-  describe 'User Story 18' do
-    it "has a select field for a invoice item's status" do
-      visit merchant_invoice_path(@merchant1, @invoice1)
-      
+  describe '#User story 17' do
+  it 'displays the total revenue from all items on the invoice' do
+    within "#total-revenue" do
+      expect(page).to have_content("Revenue from all items: $#{@invoice1.total_revenue_in_dollars}")
+      end
+    end
+  end
+
+  describe '#User Story 18' do
+    it "displays each items status as a select field with the current status displayed" do
       within "#invoice-item#{@invoice_item1.id}" do
         expect(page).to have_select('Status', with_options: ['pending', 'packaged', 'shipped'])
         expect(page).to have_select('Status', selected: 'pending')
-        page.select 'packaged', from: 'Status'
-        expect(page).to have_select('Status', selected: 'packaged')
+      end
+      within "#invoice-item#{@invoice_item2.id}" do
+        expect(page).to have_select('Status', with_options: ['pending', 'packaged', 'shipped'])
+        expect(page).to have_select('Status', selected: 'pending')
       end
     end
 
-    it "has a button to update the invoice item status" do
-      visit merchant_invoice_path(@merchant1, @invoice1)
-
+    it "when I click the select field, I can select a new status and click 'Update Item Status' and be redirected to the show page, seeing the status updated" do
       within "#invoice-item#{@invoice_item1.id}" do
         expect(page).to have_select('Status', with_options: ['pending', 'packaged', 'shipped'])
+        expect(page).to have_select('Status', selected: 'pending')
+
         page.select 'packaged', from: 'Status'
         expect(page).to have_select('Status', selected: 'packaged')
 
         expect(page).to have_button("Update Item Status")
         click_on "Update Item Status"
       end
+
       expect(current_path).to eq(merchant_invoice_path(@merchant1, @invoice1))
-      expect(page).to have_content("packaged")
-    end
-  end
 
-  describe 'User story 17' do
-    it 'has the total revenue generated from all items on the invoice' do
-      visit merchant_invoice_path(@merchant1, @invoice1)
-
-      within "#total-revenue" do
-        expect(page).to have_content("Revenue from All Items: $#{@invoice1.total_revenue_in_dollars}")
+      within "#invoice-item#{@invoice_item1.id}" do
+        expect(page).to have_select('Status', selected: 'packaged')
+        expect(page).to_not have_select('Status', selected: 'pending')
       end
     end
   end

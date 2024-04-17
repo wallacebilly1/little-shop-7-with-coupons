@@ -152,11 +152,11 @@ RSpec.describe "Admin Merchants Index" do
 
     it 'displays the total revenue for each of the top merchants next to their name' do
       within '.top-merchants' do
-        expect(page).to have_content("#{@merchant6.name} - $3,000.00 in sales")
-        expect(page).to have_content("#{@merchant5.name} - $800.00 in sales")
-        expect(page).to have_content("#{@merchant7.name} - $630.00 in sales")
-        expect(page).to have_content("#{@merchant1.name} - $250.00 in sales")
-        expect(page).to have_content("#{@merchant2.name} - $80.00 in sales")
+        expect(page).to have_content("#{@merchant6.name} $3,000.00 in sales")
+        expect(page).to have_content("#{@merchant5.name} $800.00 in sales")
+        expect(page).to have_content("#{@merchant7.name} $630.00 in sales")
+        expect(page).to have_content("#{@merchant1.name} $250.00 in sales")
+        expect(page).to have_content("#{@merchant2.name} $80.00 in sales")
       end
     end
   end

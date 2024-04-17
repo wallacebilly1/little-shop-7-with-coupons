@@ -24,4 +24,22 @@ class Item < ApplicationRecord
   def order_date
     self.invoices.order(created_at: :asc)
   end
+
+  def top_selling_day
+        date = invoices
+                    .joins(:transactions, :invoice_items)
+                    .select('invoices.created_at, sum(invoice_items.unit_price * invoice_items.quantity)')
+                    .where("transactions.result = ?", 0)
+                    .group("invoices.created_at")
+                    .order(Arel.sql('sum(invoice_items.unit_price * invoice_items.quantity) DESC, invoices.created_at DESC'))
+                    .limit(1)        
+                    .first
+                    .created_at
+
+        formatted_date = date.strftime("%A, %B %d, %Y")  
+  end
+
+  def format_invoice_date(invoice)
+    invoice.created_at.strftime("%A, %B %d, %Y")
+  end
 end

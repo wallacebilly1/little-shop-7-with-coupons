@@ -1,41 +1,29 @@
 # Little Esty Shop
 
-## Background and Description
+## Contributors
+- Billy - [LinkedIn](https://www.linkedin.com/in/wallacebilly1/) || [GitHub](https://github.com/wallacebilly1)
+- Lance - [LinkedIn](https://www.linkedin.com/in/lance-butler-jr-18b9442a1/) || [GitHub](https://github.com/LJ9332)
+- Mel - [LinkedIn](https://www.linkedin.com/in/melissalanghoff/) || [GitHub](https://github.com/mel-langhoff)
+- Rodrigo - [LinkedIn](https://www.linkedin.com/in/rodrigo-chavez1/) || [GitHub](https://github.com/RodrigoACG)
 
-"Little Esty Shop" is a group project that requires students to build a fictitious e-commerce platform where merchants and admins can manage inventory and fulfill customer invoices.
+## Background
+"Little Esty Shop" is a group project that required us to build a fictitious e-commerce platform where merchants and admins can manage inventory and fulfill customer invoices.
 
 ## Learning Goals
 - Practice designing a normalized database schema and defining model relationships
 - Utilize advanced routing techniques including namespacing to organize and group like functionality together.
 - Utilize advanced active record techniques to perform complex database queries
-- [Optional] Practice consuming a public API while utilizing POROs as a way to apply OOP principles to organize code
 
-## Requirements
-- Must use Rails 7.1.x, Ruby 3.2.2
-- Must use PostgreSQL
-- All code must be tested via feature tests and model tests, respectively
-- Must use GitHub branching, team code reviews via GitHub PR comments, and either GitHub Projects or a project management tool of your group's choice (Trello, Notion, etc.)
-- Must include a thorough README to describe the project
-   - README should include a basic description of the project, a summary of the work completed, and some ideas for a potential contributor to work on/refactor next. Also include the names and GitHub links of all student contributors on your project. 
-- Must deploy completed code to the internet (using Heroku or Render)
-- Continuous Integration / Continuous Deployment is not allowed
-- Use of scaffolding is not allowed
-- Any gems added to the project must be approved by an instructor
-  - Pre-approved gems are `capybara, pry, faker, factory_bot_rails, orderly, simplecov, shoulda-matchers, launchy`
+## Summary of Work Completed
+- Built functionality detailed in [36 User Stories](./doc/user_stories.md)
+- Developed all work using Test-Driven-Development, including the use of RSPec, Capybara, Shoulda-Matchers, and SimpleCov to enhnace our testing
+- Built database and associations from scratch to include 5 tables and 1 join table
+- Used resources to support advanced and nested routing operations
+- Created multiple ActiveRecord query methods to produce desired data from user stories
+- Utilized form helpers for all forms to facilitate clean transfer of data between views, models, and controllers
+- Utilized partials to DRY up code
+- Added styling to project via the use of [Tailwind CSS](https://tailwindcss.com/)
 
-## Setup
-
-* Fork this repository
-* Clone your fork
-* From the command line, install gems and set up your DB:
-    * `bundle`
-    * `rails db:create`
-* Run the test suite with `bundle exec rspec`.
-* Run your development server with `rails s` to see the app in action.
-
-## Phases
-
-1. [Database Setup](./doc/db_setup.md)
-1. [User Stories](./doc/user_stories.md)
-1. [Extensions](./doc/extensions.md)
-1. [Evaluation](./doc/evaluation.md)
+## Ideas for Refactor
+- Further DRY up code by adding in additional partials to views
+- Update "form_with url" forms to be "form_with model" forms where possible

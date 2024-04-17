@@ -21,7 +21,7 @@ RSpec.describe "Merchant Items Index" do
   end
 
   describe 'User Story 6' do
-    it "lists all of the names of the merchats items" do
+    it "lists all of the names of the merchants items" do
       visit merchant_items_path(@merchant1)
 
       expect(page).to have_content(@item1.name)
@@ -30,6 +30,19 @@ RSpec.describe "Merchant Items Index" do
       expect(page).to_not have_content(@item4.name)
     end
   end
+
+  describe '#User Story 7' do
+    it "displays a link on each items name that takes me to that items show page" do
+      visit merchant_items_path(@merchant1)
+
+      expect(page).to have_link(@item1.name)
+      expect(page).to have_link(@item2.name)
+
+      click_on @item1.name
+
+      expect(current_path).to eq merchant_item_path(@merchant1, @item1)
+    end
+  end 
 
   describe 'User Story 9' do
     it "has a enable button for an item" do
@@ -67,10 +80,10 @@ RSpec.describe "Merchant Items Index" do
 
 
   describe 'User story 10' do
-    it 'shows items by enabled status' do
+    it 'displays items with an enabled status' do
       visit merchant_items_path(@merchant1)
 
-      within "#enabled-items" do 
+      within ".enabled-items" do 
         expect(page).to have_content(@item8.id)
         expect(page).to have_content(@item8.name)
         expect(page).to have_content(@item9.id)
@@ -84,7 +97,7 @@ RSpec.describe "Merchant Items Index" do
     it 'shows items by disabled status' do
       visit merchant_items_path(@merchant1)
 
-      within "#disabled-items" do 
+      within ".disabled-items" do 
         expect(page).to have_content(@item6.id)
         expect(page).to have_content(@item6.name)
         expect(page).to have_content(@item7.name)

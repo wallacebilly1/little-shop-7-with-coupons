@@ -1,7 +1,6 @@
 class Merchant::ItemsController < ApplicationController 
   def index 
     @merchant = Merchant.find(params[:merchant_id])
-    @items = @merchant.items
   end
 
   def show
@@ -39,12 +38,12 @@ class Merchant::ItemsController < ApplicationController
       redirect_to merchant_item_path
       flash[:notice] = "Item successfully updated! :)"
     else
-      redirect_to edit_merchant_item_path(merchant, item)      
+      redirect_to edit_merchant_item_path(merchant, item)   
+      flash[:alert] = "Please ensure all fields are complete"
     end
   end
 
   private
-
   def item_params
     params.permit(:id, :name, :description, :unit_price, :merchant_id, :status)
   end

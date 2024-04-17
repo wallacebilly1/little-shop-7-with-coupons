@@ -1,0 +1,18 @@
+<%= link_to "#{merchant.name}", 
+    admin_merchant_path(merchant), 
+    method: :get 
+%> <br>
+
+<% if merchant.status == "Enabled" %>
+  <%= button_to "Disable #{merchant.name}", 
+      admin_merchant_path(merchant), 
+      method: :patch, 
+      params: {status: "Disabled"}  
+  %><br>
+<% else %>
+  <%= button_to "Enable #{merchant.name}", 
+      admin_merchant_path(merchant), 
+      method: :patch, 
+      params: {status: "Enabled"}  
+  %><br>
+<% end %>

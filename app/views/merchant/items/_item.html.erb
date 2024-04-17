@@ -1,0 +1,29 @@
+<div id="item-<%= item.id %>">
+
+<h3><%= link_to "#{item.name}", 
+    merchant_item_path(@merchant, item), 
+    method: :get 
+%> </h3>
+
+<ul>
+  <li> <b> ID: </b> <%= item.id %>
+  <li> <b> Description: </b> <%= item.description %>
+  <li> <b> Price: </b> <%= number_to_currency(item.unit_price/100.00) %>
+  <li> <b> Status: </b> <%= item.status %>
+</ul>
+
+<% if item.status == "Enabled" %>
+  <%= button_to "Disable #{item.name}", 
+      merchant_item_path(@merchant, item), 
+      method: :patch, 
+      params: {status: "Disabled"} 
+  %><br>
+<% else %>
+  <%= button_to "Enable #{item.name}", 
+      merchant_item_path(@merchant, item), 
+      method: :patch, 
+      params: {status: "Enabled"} 
+  %><br>
+<% end %>
+
+</div>

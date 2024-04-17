@@ -3,15 +3,15 @@
 <p>Invoice ID: <%= @invoice.id %></p>
 <p>Invoice Status: <%= @invoice.status %></p>
 <p>Invoice created on: <%= @invoice.format_date %></p>
-<p>Customer Name: <%= @customer.first_name %> <%= @customer.last_name %>
+<p>Customer Name: <%= @invoice.customer.name %>
 
 <h3>Invoice Items</h3>
 <% @invoice.invoice_items.each do |invoice_item|%>
   <div id="invoice-item<%= invoice_item.id %>">
-    <p>Items Name: <%= invoice_item.item.name %></p>
+    <p>Item Name: <%= invoice_item.item.name %></p>
     <p>Quantity: <%= invoice_item.quantity %></p>
     <p>Total Price: <%= invoice_item.unit_price %></p>
-    <p>Invoice Items Status: <%= invoice_item.status %></p>
+    <p>Status: <%= invoice_item.status %></p>
 
     <%= form_with url: merchant_invoice_item_path(params[:merchant_id], invoice_item.id), method: :patch, data: { turbo: false } do |f| %>
       <%= f.label :status, "Status" %>
@@ -23,6 +23,5 @@
 <% end %>
 
 <div id="total-revenue">
-  <h3>Total Revenue from Invoice <%= @invoice.id %></h3>
-  <p>Revenue from All Items: $<%= @total_revenue %><p>
+  <p> <%= "Revenue from all items: $#{@invoice.total_revenue_in_dollars}" %> </p>
 </div>

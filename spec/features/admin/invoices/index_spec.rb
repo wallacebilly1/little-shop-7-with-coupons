@@ -54,13 +54,11 @@ RSpec.describe "Admin Invoices Index" do
     @invoice_item6 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice4.id, status: 1)
     @invoice_item7 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice5.id, status: 1)
 
-    
+    visit admin_invoices_path
   end
 
-  describe '#32' do
+  describe '#User Story 32' do
     it 'displays a list of all invoices in the system with a link to that admin invoices show page' do
-      visit admin_invoices_path
-
       expect(page).to have_content("Invoices")
 
       within "#invoices" do

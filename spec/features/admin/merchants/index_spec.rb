@@ -251,7 +251,7 @@ RSpec.describe "Admin Merchants Index" do
       visit admin_merchants_path
       # Then next to each of the 5 merchants by revenue I see the date with the most revenue for each merchant.
       within '.top_merchants' do
-        save_and_open_page
+        # save_and_open_page
         # require 'pry'; binding.pry
         expect(page).to have_content("Top selling date for #{merchant6.name} was #{invoice6.created_at.strftime("%m/%d/%y")}")
         expect(page).to have_content("Top selling date for #{merchant5.name} was #{invoice5.created_at.strftime("%m/%d/%y")}")

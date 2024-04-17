@@ -13,8 +13,8 @@ RSpec.describe "Merchant Items Show" do
     @item4 = @items_list2[1]
   end
 
-  describe 'User Story 7' do
-    it "list a merchant item and their attributes" do
+  describe '#User Story 7' do
+    it "displays a merchants item and its attributes" do
       visit merchant_item_path(@merchant1, @item1)
 
       expect(page).to have_content(@item1.name)

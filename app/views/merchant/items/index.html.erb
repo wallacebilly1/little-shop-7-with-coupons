@@ -4,7 +4,7 @@
 
 <% @merchant.items.each do |item| %>
   <div id="item-<%= item.id %>">
-    <h3><%= item.name %></h3>
+    <h3><p><%= link_to item.name, merchant_item_path(@merchant, item) %></h3>
     <p>Description: <%= item.description %></p>
     <p>Price: <%= item.unit_price %></p>
     <p>Status: <%= item.status %></p>

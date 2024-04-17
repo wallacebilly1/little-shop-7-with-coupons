@@ -29,7 +29,7 @@ class Item < ApplicationRecord
   # def top_selling_day
   #   top_selling_day = 
         # self.joins(:invoices, :transactions)
-      #       .select('invoices.created_at', sum(invoice_items.unit_price & invoice_items.quantity) AS total_revenue)
+      #       .select('invoices.*', sum(invoice_items.unit_price & invoice_items.quantity) AS total_revenue)
       #       .where("transactions.result = ?", 0)
       #       .group(:id)
       #       .order('total_revenue DESC')

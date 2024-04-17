@@ -110,5 +110,36 @@ RSpec.describe Item, type: :model do
         expect(item1.order_date).to eq([invoice1, invoice2])
       end
     end
+
+    describe ".top_selling_date" do
+      it "shows the top selling formatted date for an item" do
+        merchant = Merchant.create(name: "Amazon")
+
+        customer1 = Customer.create(first_name: "John", last_name: "Doe")
+        customer2 = Customer.create(first_name: "Jane", last_name: "Doe")
+  
+        item1 = Item.create(name: "Item 1", description: "Description 1", unit_price: 10, merchant: merchant)
+        item2 = Item.create(name: "Item 2", description: "Description 2", unit_price: 20, merchant: merchant)
+        item3 = Item.create(name: "Item 3", description: "Description 3", unit_price: 30, merchant: merchant)
+        item4 = Item.create(name: "Item 4", description: "Description 4", unit_price: 40, merchant: merchant)
+  
+        invoice1 = Invoice.create(status: 1, customer: customer1, created_at: Time.utc(2024, 4, 5, 12, 0, 0))
+        invoice2 = Invoice.create(status: 1, customer: customer2, created_at: Time.utc(2024, 4, 6, 12, 0, 0))
+        invoice3 = Invoice.create(status: 1, customer: customer1, created_at: Time.utc(2024, 4, 7, 12, 0, 0))
+        invoice4 = Invoice.create(status: 1, customer: customer2, created_at: Time.utc(2024, 4, 8, 12, 0, 0))
+  
+        invoice_item1 = InvoiceItem.create(invoice: invoice1, item: item1, quantity: 5, unit_price: 10, status: 1)
+        invoice_item2 = InvoiceItem.create(invoice: invoice2, item: item2, quantity: 10, unit_price: 20, status: 1)
+        invoice_item3 = InvoiceItem.create(invoice: invoice3, item: item3, quantity: 15, unit_price: 30, status: 1)
+        invoice_item4 = InvoiceItem.create(invoice: invoice4, item: item4, quantity: 20, unit_price: 40, status: 1)
+  
+        transaction1 = Transaction.create(credit_card_number: "1234567890123456", result: 0, invoice: invoice1)
+        transaction2 = Transaction.create(credit_card_number: "9876543210987654", result: 0, invoice: invoice2)
+        transaction3 = Transaction.create(credit_card_number: "1234567890123456", result: 0, invoice: invoice3)
+        transaction4 = Transaction.create(credit_card_number: "9876543210987654", result: 0, invoice: invoice4)
+        
+        expect()
+      end
+    end
   end
 end

@@ -11,7 +11,7 @@ RSpec.describe "Merchant Items Index" do
     @items_list2 = create_list(:item, 2, merchant: @merchant2 )
     @item3 = @items_list2[0]
     @item4 = @items_list2[1]
-    @item5 = create(:item, merchant_id: @merchant1.id, status: 1)
+    @item5 = create(:item, merchant_id: @merchant1.id, status: 0)
     @item6 = create(:item, unit_price: 1, merchant_id: @merchant1.id, status: 1)
     @item7 = create(:item, unit_price: 23, merchant_id: @merchant1.id, status: 1)
     @item8 = create(:item, unit_price: 100, merchant_id: @merchant1.id, status: 0)
@@ -44,7 +44,7 @@ RSpec.describe "Merchant Items Index" do
       expect(page).to have_content("Enabled")
     end
 
-    xit "has a disable button for an item" do 
+    it "has a disable button for an item" do 
       visit merchant_items_path(@merchant1)
 
       within "#item-#{@item5.id}" do
@@ -77,17 +77,14 @@ RSpec.describe "Merchant Items Index" do
         expect(page).to have_content(@item9.name)
         expect(page).to have_content(@item10.id)
         expect(page).to have_content(@item10.name)
-        expect(page).to_not have_content(@item5.name)
         expect(page).to_not have_content(@item6.name)
       end
     end
 
-    it 'shows items by disaabled status' do
+    it 'shows items by disabled status' do
       visit merchant_items_path(@merchant1)
 
       within "#disabled-items" do 
-        expect(page).to have_content(@item5.id)
-        expect(page).to have_content(@item5.name)
         expect(page).to have_content(@item6.id)
         expect(page).to have_content(@item6.name)
         expect(page).to have_content(@item7.name)

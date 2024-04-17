@@ -31,4 +31,10 @@ class Invoice < ApplicationRecord
     formatted_dollars
   end
 
+  def self.order_date
+    joins(:invoice_items)
+    .select("invoices.*")
+    .order(:created_at)
+  end
+
 end

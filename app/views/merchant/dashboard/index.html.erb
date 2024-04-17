@@ -19,7 +19,7 @@
 <section id="items-ready-to-ship">
   <h2>Packaged Items</h2>
   <% @merchant.packaged_items.each do |item| %>
-   <p><%= item.name %></p>
+   <p><%= item.name %>: Invoice Created On <%= item.format_inv_date(item.invoice_id) %></p>
    <section id="item-<%= item.id %>">
       Invoice ID: <%= link_to "#{item.invoice_id}", merchant_invoice_path(@merchant, item.invoice_id) %>
    </section>

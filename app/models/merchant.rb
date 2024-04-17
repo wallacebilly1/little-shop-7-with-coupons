@@ -28,9 +28,10 @@ class Merchant < ApplicationRecord
   end
 
   def packaged_items
-    self.items.joins(:invoice_items)
-    .where("invoice_items.status = 1")
-    .select("invoice_items.invoice_id, items.*")
+    self.items.joins(:invoices)
+    .where.not("invoice_items.status = 2")
+    .select("invoice_items.invoice_id, items.*, invoices.created_at as invoice_date")
+    .order('invoice_date')
   end
 
   def top_five_items

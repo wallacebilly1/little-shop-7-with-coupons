@@ -32,7 +32,7 @@
          <%= number_to_currency(merchant.total_revenue / 100.00) %> 
              in sales
          <%= "Top selling date for #{merchant.name} was 
-             #{merchant.invoices.best_day.created_at.strftime("%m/%d/%y")}" %>
+             #{merchant.invoices.best_day.strftime("%m/%d/%y")}" %>
       <% end %>
     </li>
   </ul>

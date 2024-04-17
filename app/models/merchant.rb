@@ -29,18 +29,17 @@ class Merchant < ApplicationRecord
 
   def packaged_items
     self.items.joins(:invoices)
-    .where.not("invoice_items.status = 2")
-    .select("invoice_items.invoice_id, items.*, invoices.created_at as invoice_date")
-    .order('invoice_date')
+              .where("invoice_items.status = 1")
+              .select("invoice_items.invoice_id, items.*, invoices.created_at as invoice_date")
+              .order('invoices.created_at')
   end
 
   def top_five_items
-    self.items
-              .joins(:invoices, :transactions)            
+    self.items.joins(:invoices, :transactions)            
               .select('items.*, sum(invoice_items.unit_price * invoice_items.quantity) AS total_revenue')
               .where("transactions.result = ?", 0)
               .group(:id)
               .order(total_revenue: :desc)
-              .limit(5)           
+              .limit(5)
   end
 end

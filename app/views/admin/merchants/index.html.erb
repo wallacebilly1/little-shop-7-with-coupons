@@ -26,14 +26,14 @@
 
 <section class="top-merchants"> 
   <h2> Top Merchants: </h2>
-  <ul> <% @merchants.top_five_merchants.each do |merchant| %>
+  <ol> <% @merchants.top_five_merchants.each do |merchant| %>
     <li> <%= link_to "#{merchant.name}", 
-             admin_merchant_path(merchant) %> - 
+             admin_merchant_path(merchant) %> </br>
          <%= number_to_currency(merchant.total_revenue / 100.00) %> 
-             in sales
+             in sales </br>
          <%= "Top selling date for #{merchant.name} was 
              #{merchant.invoices.best_day.strftime("%m/%d/%y")}" %>
       <% end %>
     </li>
-  </ul>
+  </ol>
 </section>

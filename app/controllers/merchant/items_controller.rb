@@ -38,7 +38,8 @@ class Merchant::ItemsController < ApplicationController
       redirect_to merchant_item_path
       flash[:notice] = "Item successfully updated! :)"
     else
-      redirect_to edit_merchant_item_path(merchant, item)      
+      redirect_to edit_merchant_item_path(merchant, item)   
+      flash[:alert] = "Please ensure all fields are complete"
     end
   end
 

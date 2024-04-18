@@ -5,9 +5,7 @@ class Invoice < ApplicationRecord
   has_many :items, through: :invoice_items
   has_many :merchants, through: :items
 
-  enum status: { "in progress" => 0, 
-                 "completed" => 1, 
-                 "cancelled" => 2 }
+  enum status: ["in progress", "completed", "cancelled"]
 
   def format_date
     self.created_at.strftime("%A, %B %d, %Y")
@@ -23,10 +21,9 @@ class Invoice < ApplicationRecord
 
   def self.best_day
     self.joins(:invoice_items)
-    .select("SUM(invoice_items.unit_price * invoice_items.quantity) AS revenue, invoices.created_at")
+    .select("invoices.created_at, sum(invoice_items.unit_price * invoice_items.quantity) as revenue")
     .group(:id)
-    .order("revenue DESC")
-    .order("invoices.created_at DESC")
+    .order("revenue desc", "invoices.created_at desc")
     .first
     .created_at
   end

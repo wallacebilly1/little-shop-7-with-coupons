@@ -4,8 +4,6 @@ RSpec.describe Customer, type: :model do
   describe "relationships" do
     it { should have_many(:invoices) }
     it { should have_many(:transactions) }
-    it { should have_many(:invoice_items) }
-    it { should have_many(:items) }
     it { should have_many(:merchants) }
   end
 
@@ -18,40 +16,55 @@ RSpec.describe Customer, type: :model do
     @customer5 = @customers[4]
     @customer6 = @customers[5]
 
-    @invoices = create_list(:invoice, 3, customer: @customer1)
-    @invoice1 = @invoices[0]
-    @invoice2 = @invoices[1]
-    @invoice3 = @invoices[2]
-    @invoice4 = create(:invoice, customer_id: @customer2.id)
-    @invoice5 = create(:invoice, customer_id: @customer3.id)
-    @invoice6 = create(:invoice, customer_id: @customer4.id)
-    @invoice7 = create(:invoice, customer_id: @customer5.id)
-    @invoice8 = create(:invoice, customer_id: @customer6.id)
+    @invoice_list1 = create_list(:invoice, 3, customer: @customer1)
+    @invoice1 = @invoice_list1[0]
+    @invoice2 = @invoice_list1[1]
+    @invoice3 = @invoice_list1[2]
+    @invoice_list2 = create_list(:invoice, 3, customer: @customer2)
+    @invoice4 = @invoice_list2[0]
+    @invoice5 = @invoice_list2[1]
+    @invoice6 = @invoice_list2[2]
+    @invoice7 = create(:invoice, customer_id: @customer3.id)
+    @invoice8 = create(:invoice, customer_id: @customer3.id)
+    @invoice9 = create(:invoice, customer_id: @customer4.id)
+    @invoice10 = create(:invoice, customer_id: @customer4.id)
+    @invoice11 = create(:invoice, customer_id: @customer5.id)
+    @invoice12 = create(:invoice, customer_id: @customer5.id)
+    @invoice13 = create(:invoice, customer_id: @customer6.id)
+    @invoice14 = create(:invoice, customer_id: @customer6.id)
+    @invoice15 = create(:invoice, customer_id: @customer1.id)
 
-    @invoice1_transactions = create_list(:transaction, 4, invoice: @invoice1)
-    @invoice4_transactions = create_list(:transaction, 3, invoice: @invoice4)
-    @invoice5_transactions = create_list(:transaction, 2, invoice: @invoice5)
-    @transaction1 = @invoice1_transactions[0]
-    @transaction2 = @invoice1_transactions[1]
-    @transaction3 = @invoice1_transactions[2]
-    @transaction4 = @invoice1_transactions[3]
-    @transaction5 = @invoice4_transactions[0]
-    @transaction6 = @invoice4_transactions[1]
-    @transaction7 = @invoice4_transactions[2]
-    @transaction8 = @invoice5_transactions[0]
-    @transaction9 = @invoice5_transactions[1]
-    @transaction10 = create(:transaction, invoice_id: @invoice2.id)
-    @transaction11 = create(:transaction, invoice_id: @invoice3.id)
-    @transaction12 = create(:transaction, invoice_id: @invoice6.id)
-    @transaction13 = create(:transaction, invoice_id: @invoice7.id)
-    @transaction14 = create(:transaction, invoice_id: @invoice7.id)
+    #1 - 4trans; 2 - 3trans, 3 - 1, 4 - 2, 5 - 2, 6 -2
+    create(:transaction, invoice_id: @invoice1.id, result: 0)
+    create(:transaction, invoice_id: @invoice2.id, result: 0)
+    create(:transaction, invoice_id: @invoice3.id, result: 0)
+    create(:transaction, invoice_id: @invoice4.id, result: 0)
+    create(:transaction, invoice_id: @invoice5.id, result: 0)
+    create(:transaction, invoice_id: @invoice6.id, result: 0)
+    create(:transaction, invoice_id: @invoice7.id, result: 0)
+    create(:transaction, invoice_id: @invoice8.id, result: 1)
+    create(:transaction, invoice_id: @invoice9.id, result: 0)
+    create(:transaction, invoice_id: @invoice10.id, result: 0)
+    create(:transaction, invoice_id: @invoice11.id, result: 0)
+    create(:transaction, invoice_id: @invoice12.id, result: 0)
+    create(:transaction, invoice_id: @invoice13.id, result: 0)
+    create(:transaction, invoice_id: @invoice14.id, result: 0)
+    create(:transaction, invoice_id: @invoice15.id, result: 0)
   end
 
   describe "class methods" do
-    it "#top_customers" do
-      top_customers = Customer.top_customers
+    describe "#top_customers" do
+      it "displays the top 5 customers in terms of successful transactions" do
+        top_customers = Customer.top_customers
 
-      expect(top_customers).to contain_exactly(@customer1, @customer2, @customer3, @customer4, @customer5)
+        expect(top_customers).to eq([@customer1, @customer2, @customer4, @customer5, @customer6])
+        
+        expect(@customer1.transactions.count).to eq 4
+        expect(@customer2.transactions.count).to eq 3
+        expect(@customer4.transactions.count).to eq 2
+        expect(@customer5.transactions.count).to eq 2
+        expect(@customer6.transactions.count).to eq 2
+      end
     end
   end
 

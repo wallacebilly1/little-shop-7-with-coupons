@@ -1,16 +1,18 @@
 class Customer < ApplicationRecord
   has_many :invoices
   has_many :transactions, through: :invoices
-  has_many :invoice_items, through: :invoices
-  has_many :items, through: :invoice_items
-  has_many :merchants, through: :items
+  has_many :merchants, through: :invoices
+
+  def self.top_customers
+    self.joins(:transactions)
+        .where('result = ?', 0)
+        .select("customers.*, count('transactions.result') as top_result")
+        .group(:id)
+        .order("top_result desc")
+        .limit(5)
+  end
 
   def name
     "#{self.first_name} #{self.last_name}"
-  end
-
-  def self.top_customers
-    select("customers.*, count(*)").joins(:transactions)
-    .group(:id).order("count desc").limit(5)
   end
 end

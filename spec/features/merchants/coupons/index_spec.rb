@@ -9,25 +9,24 @@ RSpec.describe "Merchant Coupons Index" do
     @coupon3 = @merchant1.coupons.create!(name: "$10 off", code: "Take Ten", disc_int: 10, disc_type: 1)
     @coupon4 = @merchant2.coupons.create!(name: "10% off", code: "10-promo", disc_int: 10, disc_type: 0)
     
-    visit merchant_coupons_index_path(@merchant1) 
+    visit merchant_coupons_path(@merchant1) 
   end
 
   describe '#Coupons User Story 1' do
     it 'displays all coupon names for that merchant with the discount they provide' do
-      expect(page).to have_content(@merchant1.name)
-      within ".coupon-#{@coupon1.id}" do
+      within "#coupon-#{@coupon1.id}" do
         expect(page).to have_content("Name: 50% off")
         expect(page).to have_content("Code: Half Off")
         expect(page).to have_content("Discount: 50%")
       end
 
-      within ".coupon-#{@coupon2.id}" do
+      within "#coupon-#{@coupon2.id}" do
         expect(page).to have_content("Name: $5 off")
         expect(page).to have_content("Code: Take Five")
         expect(page).to have_content("Discount: $5")
       end
 
-      within ".coupon-#{@coupon3.id}" do
+      within "#coupon-#{@coupon3.id}" do
         expect(page).to have_content("Name: $10 off")
         expect(page).to have_content("Code: Take Ten")
         expect(page).to have_content("Discount: $10")

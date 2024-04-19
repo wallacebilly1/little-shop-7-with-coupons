@@ -36,8 +36,15 @@ RSpec.describe "Merchant Coupons New" do
       end
     end
 
-    xit "gives an error message when trying to submit the form without all fields entered" do
-      
+    it "gives an error message when trying to submit the form without all fields entered" do
+      fill_in :coupon_name, with: "$20 Off"
+      fill_in :coupon_code, with: ""
+      fill_in :coupon_disc_int, with: 20
+      page.select '$', from: :coupon_disc_type
+      click_on "Create Coupon"
+
+      expect(current_path).to eq new_merchant_coupon_path(@merchant1)
+      expect(page).to have_content("Please ensure all fields are complete")
     end
     
     xit "gives an error message when trying to create a coupon with a code that already exists in the database" do

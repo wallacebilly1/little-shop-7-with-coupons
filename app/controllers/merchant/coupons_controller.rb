@@ -15,7 +15,7 @@ class Merchant::CouponsController < ApplicationController
 
   def create
     @merchant = Merchant.find(params[:merchant_id])
-    coupon = Coupon.new(coupon_params)
+    coupon = @merchant.coupons.new(coupon_params)
     if coupon.save
       redirect_to merchant_coupons_path(@merchant)
     else
@@ -26,6 +26,8 @@ class Merchant::CouponsController < ApplicationController
 
   private
   def coupon_params
-    params.permit(:name, :code, :disc_int, :disc_type, :merchant_id)
+    params.require(:coupon)
+          .permit(:name, :code, :disc_int, :disc_type, :merchant_id)
+          .merge(disc_type: params[:coupon][:disc_type].to_i)
   end
 end

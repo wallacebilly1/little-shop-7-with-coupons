@@ -26,7 +26,6 @@ RSpec.describe "Merchant Coupons New" do
       fill_in :coupon_disc_int, with: 20
       page.select '$', from: :coupon_disc_type
       click_on "Create Coupon"
-      save_and_open_page
 
       expect(current_path).to eq merchant_coupons_path(@merchant1)
 

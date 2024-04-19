@@ -58,8 +58,20 @@ RSpec.describe "Merchant Coupons New" do
       expect(page).to have_content("Please select a new coupon code, that one is already in use.")
     end
 
-    xit "gives an error message when trying to create a coupon when 5 active coupons already exist for that merchant" do
-      # likely save this test til I've built out the status functionality.
+    it "gives an error message when trying to create a coupon when 5 active coupons already exist for that merchant" do
+      @coupon4 = @merchant1.coupons.create!(name: "15% off", code: "15-promo", disc_int: 15, disc_type: 0)
+      @coupon5 = @merchant1.coupons.create!(name: "25% off", code: "25-promo", disc_int: 25, disc_type: 0)
+
+      expect(@merchant1.coupons.count).to eq 5
+
+      fill_in :coupon_name, with: "80% off"
+      fill_in :coupon_code, with: "80 Off"
+      fill_in :coupon_disc_int, with: 80
+      page.select '%', from: :coupon_disc_type
+      click_on "Create Coupon"
+
+      expect(current_path).to eq new_merchant_coupon_path(@merchant1)
+      expect(page).to have_content("Sorry, only 5 coupons allowed per merchant.")
     end
   end
 end

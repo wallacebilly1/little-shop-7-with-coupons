@@ -47,4 +47,19 @@ RSpec.describe "Merchant Coupons Index" do
       expect(current_path).to eq(merchant_coupon_path(@merchant1,@coupon1))
     end
   end
+
+  describe "#Coupons User Story 2" do
+    it "displays a link to create a new coupon that takes me to a coupon creation page" do
+      expect(page).to have_link("Create a new coupon")
+
+      click_on("Create a new coupon")
+
+      expect(current_path).to eq(new_merchant_coupon_path(@merchant1))
+
+      expect(find("form")).to have_content("Name:")
+      expect(find("form")).to have_content("Code:")
+      expect(find("form")).to have_content("Amount:")
+      expect(find("form")).to have_content("Discount Type:")
+    end
+  end
 end

@@ -1,3 +1,7 @@
-<p>Coupon ID: <%= @coupon.id %></p>
-<p>Coupon Name: <%= @coupon.status %></p>
-<p>Coupon Discount: <%= @coupon.formatted_disc %></p>
+<h2> Coupon Information </h2>
+
+<p>Name: <%= @coupon.name %></p>
+<p>Code: <%= @coupon.code %></p>
+<p>Discount: <%= @coupon.formatted_disc %></p>
+<p>Status: <%= @coupon.status.capitalize %></p>
+<p>Number of Uses: <%= @coupon.successful_uses_count %></p>

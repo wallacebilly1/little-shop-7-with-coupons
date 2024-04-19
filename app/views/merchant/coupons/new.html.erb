@@ -1,0 +1,17 @@
+<h1>New Coupon</h1>
+
+<%= form_with model: [@merchant, @coupon], data: { turbo: false }, local: true do |f| %>
+  <p><%= f.label :name, 'Name:' %></p>
+  <p><%= f.text_field :name %></p>
+
+  <p><%= f.label :code, 'Code:' %></p>
+  <p><%= f.text_field :code %></p>
+
+  <p><%= f.label :disc_int, 'Discount Amount:' %></p>
+  <p><%= f.number_field :disc_int %></p>
+
+  <p><%= f.label :disc_type, 'Discount Type:' %></p>
+  <p><%= f.select(:disc_type, [['%', 0], ['$', 1]]) %></p>
+
+  <p><%= f.submit %></p>
+<% end %>

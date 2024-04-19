@@ -9,4 +9,12 @@ class Coupon < ApplicationRecord
 
   enum status: [ :active, :inactive]
   enum disc_type: [ :percent, :dollar]
+
+  def formatted_disc
+    if disc_type == "percent"
+      "#{disc_int}%"
+    else 
+      "$#{disc_int}"
+    end
+  end
 end

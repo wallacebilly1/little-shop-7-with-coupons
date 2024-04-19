@@ -24,4 +24,11 @@ class Coupon < ApplicationRecord
         .where("result=0")
         .count
   end
+
+  def pending_invoices?
+    results = self.invoices
+                  .where("status = 0")
+                  .count
+    results > 0
+  end
 end

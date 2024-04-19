@@ -55,5 +55,15 @@ RSpec.describe Coupon, type: :model do
         expect(@coupon2.successful_uses_count).to eq 1
       end
     end
+
+    describe ".pending_invoices?" do
+      it "returns a boolean to describe if any invoices that the coupon is on have an 'in progress' status" do
+        expect(@coupon1.pending_invoices?).to eq false
+
+        @invoice1 = @coupon1.invoices.create!(customer_id: @customer1.id, status: 0)
+
+        expect(@coupon1.pending_invoices?).to eq true
+      end
+    end
   end
 end

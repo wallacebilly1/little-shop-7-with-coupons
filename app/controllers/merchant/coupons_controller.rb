@@ -27,12 +27,17 @@ class Merchant::CouponsController < ApplicationController
     elsif coupon.errors[:code].any?
       redirect_to new_merchant_coupon_path(@merchant)
       flash[:notice] = "Please select a new coupon code, that one is already in use."
-    elsif coupon.errors[:code].any?
-      redirect_to new_merchant_coupon_path(@merchant)
-      flash[:notice] = "Please select a new coupon code, that one is already in use."
-    else 
-      redirect_to new_merchant_coupon_path(@merchant)
-      flash[:notice] = "Coupon error: please try again."
+    end
+  end
+
+  def update
+    @merchant = Merchant.find(params[:merchant_id])
+    coupon = Coupon.find(params[:id])
+    if coupon.pending_invoices?
+      redirect_to merchant_coupon_path(@merchant, coupon)
+      flash[:error] = "Error: Cannot disable a coupon that is added to an in progress invoice"
+    elsif coupon.update(status: params[:status])
+      redirect_to merchant_coupon_path(@merchant, coupon)
     end
   end
 

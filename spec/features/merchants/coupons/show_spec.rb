@@ -38,4 +38,28 @@ RSpec.describe "Merchant Coupons Show" do
       expect(page).to have_content("Number of Uses: 3")
     end
   end
+
+  describe "#Coupons User Story 4" do
+    it "displays a button to disable that coupon" do
+      expect(page).to have_button("Deactivate Coupon")
+    end
+
+    it "when I click the disable button, I am redirected to that coupons show page, where I see the status is now listed as disabled" do
+      click_on "Deactivate Coupon"
+
+      expect(current_path).to eq merchant_coupon_path(@merchant1, @coupon1)
+      expect(page).to have_content("Status: Inactive")
+    end
+
+    it "will not allow you to disable a coupon if there are pending invoices with that coupon" do
+      @invoice1 = @coupon1.invoices.create!(customer_id: @customer1.id, status: 0)
+
+      visit merchant_coupon_path(@merchant1, @coupon1)
+
+      click_on "Deactivate Coupon"
+      expect(current_path).to eq merchant_coupon_path(@merchant1, @coupon1)
+      expect(page).to have_content("Error: Cannot disable a coupon that is added to an in progress invoice")
+      expect(page).to have_content("Status: Active")
+    end
+  end
 end

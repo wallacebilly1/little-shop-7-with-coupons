@@ -21,9 +21,12 @@ class Merchant::CouponsController < ApplicationController
     elsif [coupon_params[:name], coupon_params[:code], coupon_params[:disc_int], coupon_params[:disc_type]].any?(&:nil?) 
       redirect_to new_merchant_coupon_path(@merchant)
       flash[:error] = "Please ensure all fields are complete"
-    else
+    elsif coupon.errors[:code].any?
       redirect_to new_merchant_coupon_path(@merchant)
-      flash[:notice] = "Failed to Create Coupon"
+      flash[:notice] = "Please select a new coupon code, that one is already in use."
+    else 
+      redirect_to new_merchant_coupon_path(@merchant)
+      flash[:notice] = "Coupon error: please try again."
     end
   end
 

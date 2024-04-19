@@ -184,4 +184,16 @@ RSpec.describe "Merchant Dashboard Index" do
       end
     end
   end
+
+  describe "Coupons User Story 1" do
+    it "displays a link to view all of that merchants coupons" do
+      within ".coupons" do
+        expect(page).to have_link("View Your Coupons")
+
+        click_on "View Your Coupons"
+
+        expect(current_path).to eq(merchant_coupons_path(@merchant1))
+      end
+    end
+  end
 end

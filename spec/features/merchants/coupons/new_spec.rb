@@ -70,7 +70,7 @@ RSpec.describe "Merchant Coupons New" do
       page.select '%', from: :coupon_disc_type
       click_on "Create Coupon"
 
-      expect(current_path).to eq new_merchant_coupon_path(@merchant1)
+      expect(current_path).to eq merchant_coupons_path(@merchant1)
       expect(page).to have_content("Sorry, only 5 coupons allowed per merchant.")
     end
   end

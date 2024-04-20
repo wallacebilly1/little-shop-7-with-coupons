@@ -43,4 +43,12 @@ class Merchant < ApplicationRecord
               .order(total_revenue: :desc)
               .limit(5)
   end
+
+  def can_activate?
+    result = self.coupons
+                 .where("status = ?", 0)
+                 .count
+    result < 5
+  end
+
 end

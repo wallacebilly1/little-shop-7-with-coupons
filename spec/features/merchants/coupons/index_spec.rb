@@ -4,10 +4,10 @@ RSpec.describe "Merchant Coupons Index" do
   before(:each) do
     @merchant1 = create(:merchant)
     @merchant2 = create(:merchant)
-    @coupon1 = @merchant1.coupons.create!(name: "50% off", code: "Half Off", disc_int: 50, disc_type: 0)
-    @coupon2 = @merchant1.coupons.create!(name: "$5 off", code: "Take Five", disc_int: 5, disc_type: 1)
-    @coupon3 = @merchant1.coupons.create!(name: "$10 off", code: "Take Ten", disc_int: 10, disc_type: 1)
-    @coupon4 = @merchant2.coupons.create!(name: "10% off", code: "10-promo", disc_int: 10, disc_type: 0)
+    @coupon1 = @merchant1.coupons.create!(name: "50% off", code: "Half Off", disc_int: 50, disc_type: 0, status: 0)
+    @coupon2 = @merchant1.coupons.create!(name: "$5 off", code: "Take Five", disc_int: 5, disc_type: 1, status: 1)
+    @coupon3 = @merchant1.coupons.create!(name: "$10 off", code: "Take Ten", disc_int: 10, disc_type: 1, status: 1)
+    @coupon4 = @merchant2.coupons.create!(name: "10% off", code: "10-promo", disc_int: 10, disc_type: 0, status: 0)
     
     visit merchant_coupons_path(@merchant1) 
   end
@@ -60,6 +60,22 @@ RSpec.describe "Merchant Coupons Index" do
       expect(find("form")).to have_content("Code:")
       expect(find("form")).to have_content("Amount:")
       expect(find("form")).to have_content("Discount Type:")
+    end
+  end
+
+  describe "#Coupons User Story 6" do
+    it "displays separate sections for active and inactive coupons" do
+      within "#active-coupons" do
+        expect(page).to have_content("Name: 50% off")
+        expect(page).to_not have_content("Name: $5 off")
+        expect(page).to_not have_content("Name: $10 off")
+      end
+
+      within "#inactive-coupons" do
+      expect(page).to have_content("Name: $5 off")
+      expect(page).to have_content("Name: $10 off")
+      expect(page).to_not have_content("Name: 50% off")
+      end
     end
   end
 end

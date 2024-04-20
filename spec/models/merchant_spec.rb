@@ -160,7 +160,7 @@ RSpec.describe Merchant, type: :model do
       end
     end
 
-    describe "#can_activate?" do
+    describe ".can_activate?" do
       it "returns a boolean for whether a coupon can be activated (aka if 5 active coupons already exist for that merchant)" do
         @merchant3 = create(:merchant)
         @coup1 = create(:coupon, merchant: @merchant3, status: 0)
@@ -173,6 +173,30 @@ RSpec.describe Merchant, type: :model do
         @coup5 = create(:coupon, merchant: @merchant3, status: 0)
 
         expect(@merchant3.can_activate?).to eq false
+      end
+    end
+
+    describe ".active_coupons" do
+      it "returns a list of all active coupons for that merchant" do
+        @merchant3 = create(:merchant)
+        @coup1 = create(:coupon, merchant: @merchant3, status: 0)
+        @coup2 = create(:coupon, merchant: @merchant3, status: 1)
+        @coup3 = create(:coupon, merchant: @merchant3, status: 1)
+        @coup4 = create(:coupon, merchant: @merchant3, status: 0)
+
+        expect(@merchant3.active_coupons).to match_array([@coup1, @coup4])
+      end
+    end
+
+    describe ".inactive_coupons" do
+      it "returns a list of all inactive coupons for that merchant" do
+        @merchant3 = create(:merchant)
+        @coup1 = create(:coupon, merchant: @merchant3, status: 0)
+        @coup2 = create(:coupon, merchant: @merchant3, status: 1)
+        @coup3 = create(:coupon, merchant: @merchant3, status: 1)
+        @coup4 = create(:coupon, merchant: @merchant3, status: 0)
+
+        expect(@merchant3.inactive_coupons).to match_array([@coup2, @coup3])
       end
     end
   end

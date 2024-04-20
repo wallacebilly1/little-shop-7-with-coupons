@@ -2,10 +2,24 @@
 
 <%= link_to 'Create a new coupon', new_merchant_coupon_path(@merchant) %>
 
-<% @merchant.coupons.each do |coupon|%>
-  <div id="coupon-<%= coupon.id %>">
-    <h3> Name: <%= link_to "#{coupon.name}", merchant_coupon_path(@merchant, coupon) %> </h3>
-    <p> Code: <%= coupon.code %> <p>
-    <p> Discount: <%= coupon.formatted_disc %> <p>
-  </div>
-<% end %>
+<section id="active-coupons">
+  <h1> Active Coupons </h1>
+  <% @merchant.active_coupons.each do |coupon| %>
+    <div id="coupon-<%= coupon.id %>">
+      <h3> Name: <%= link_to "#{coupon.name}", merchant_coupon_path(@merchant, coupon) %> </h3>
+      <p> Code: <%= coupon.code %> <p>
+      <p> Discount: <%= coupon.formatted_disc %> <p>
+    </div>
+  <% end %> 
+</section>
+
+<section id="inactive-coupons">
+  <h1> Inactive Coupons </h1>
+  <% @merchant.inactive_coupons.each do |coupon| %>
+    <div id="coupon-<%= coupon.id %>">
+      <h3> Name: <%= link_to "#{coupon.name}", merchant_coupon_path(@merchant, coupon) %> </h3>
+      <p> Code: <%= coupon.code %> <p>
+      <p> Discount: <%= coupon.formatted_disc %> <p>
+    </div>
+  <% end %> 
+</section>

@@ -184,7 +184,7 @@ RSpec.describe Merchant, type: :model do
         @coup3 = create(:coupon, merchant: @merchant3, status: 1)
         @coup4 = create(:coupon, merchant: @merchant3, status: 0)
 
-        expect(@merchant3.active_coupons).to match_array([@coup2, @coup3])
+        expect(@merchant3.active_coupons).to match_array([@coup1, @coup4])
       end
     end
 
@@ -196,7 +196,7 @@ RSpec.describe Merchant, type: :model do
         @coup3 = create(:coupon, merchant: @merchant3, status: 1)
         @coup4 = create(:coupon, merchant: @merchant3, status: 0)
 
-        expect(@merchant3.inactive_coupons).to match_array([@coup1, @coup4])
+        expect(@merchant3.inactive_coupons).to match_array([@coup2, @coup3])
       end
     end
   end

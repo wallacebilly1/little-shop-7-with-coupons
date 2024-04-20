@@ -16,10 +16,10 @@ class Merchant::CouponsController < ApplicationController
   def create
     @merchant = Merchant.find(params[:merchant_id])
     coupon = @merchant.coupons.new(coupon_params)
-    if @merchant.can_activate? == false
-      redirect_to merchant_coupons_path(@merchant)
-      flash[:error] = "Sorry, only 5 coupons allowed per merchant."
-    elsif coupon.save
+    # if @merchant.can_activate? == false
+    #   redirect_to merchant_coupons_path(@merchant)
+    #   flash[:error] = "Sorry, only 5 coupons allowed per merchant."
+    if coupon.save
       redirect_to merchant_coupons_path(@merchant)
     elsif [coupon_params[:name], coupon_params[:code], coupon_params[:disc_int], coupon_params[:disc_type]].any?(&:nil?) 
       redirect_to new_merchant_coupon_path(@merchant)

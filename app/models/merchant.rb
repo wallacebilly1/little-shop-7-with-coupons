@@ -52,10 +52,10 @@ class Merchant < ApplicationRecord
   end
 
   def active_coupons
-    self.coupons.where("status = ?", 1)
+    self.coupons.where("status = ?", 0)
   end
 
   def inactive_coupons
-    self.coupons.where("status = ?", 0)
+    self.coupons.where("status = ?", 1)
   end
 end

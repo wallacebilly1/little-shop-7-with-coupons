@@ -51,4 +51,11 @@ class Merchant < ApplicationRecord
     result < 5
   end
 
+  def active_coupons
+    self.coupons.where("status = ?", 1)
+  end
+
+  def inactive_coupons
+    self.coupons.where("status = ?", 0)
+  end
 end

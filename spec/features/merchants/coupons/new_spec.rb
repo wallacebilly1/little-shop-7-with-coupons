@@ -59,10 +59,14 @@ RSpec.describe "Merchant Coupons New" do
     end
 
     it "gives an error message when trying to create a coupon when 5 active coupons already exist for that merchant" do
-      @coupon4 = @merchant1.coupons.create!(name: "15% off", code: "15-promo", disc_int: 15, disc_type: 0)
-      @coupon5 = @merchant1.coupons.create!(name: "25% off", code: "25-promo", disc_int: 25, disc_type: 0)
+      @merchant3 = create(:merchant)
+      @coup1 = create(:coupon, merchant: @merchant3, status: 0)
+      @coup2 = create(:coupon, merchant: @merchant3, status: 0)
+      @coup3 = create(:coupon, merchant: @merchant3, status: 0)
+      @coup4 = create(:coupon, merchant: @merchant3, status: 0)
+      @coup5 = create(:coupon, merchant: @merchant3, status: 0)
 
-      expect(@merchant1.coupons.count).to eq 5
+      visit new_merchant_coupon_path(@merchant3)
 
       fill_in :coupon_name, with: "80% off"
       fill_in :coupon_code, with: "80 Off"
@@ -70,7 +74,7 @@ RSpec.describe "Merchant Coupons New" do
       page.select '%', from: :coupon_disc_type
       click_on "Create Coupon"
 
-      expect(current_path).to eq merchant_coupons_path(@merchant1)
+      expect(current_path).to eq merchant_coupons_path(@merchant3)
       expect(page).to have_content("Sorry, only 5 coupons allowed per merchant.")
     end
   end

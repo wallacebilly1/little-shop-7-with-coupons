@@ -33,9 +33,12 @@ class Merchant::CouponsController < ApplicationController
   def update
     @merchant = Merchant.find(params[:merchant_id])
     coupon = Coupon.find(params[:id])
-    if coupon.pending_invoices?
+    if coupon.pending_invoices? && coupon.status == "active"
       redirect_to merchant_coupon_path(@merchant, coupon)
       flash[:error] = "Error: Cannot disable a coupon that is added to an in progress invoice"
+    elsif @merchant.can_activate? == false && coupon.status == "inactive"
+      redirect_to merchant_coupons_path(@merchant)
+      flash[:error] = "Sorry, only 5 active coupons are allowed. Please deactivate one of the codes below if you would like to activate a new coupon."
     elsif coupon.update(status: params[:status])
       redirect_to merchant_coupon_path(@merchant, coupon)
     end

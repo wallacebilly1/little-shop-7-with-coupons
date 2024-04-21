@@ -14,7 +14,7 @@
   </div>
   <p> Created On: <%= @invoice.format_date %> </p>
   <p> Customer: <%= @invoice.customer.name %> </p>
-  <p> Total Revenue: <%= number_to_currency(@invoice.revenue_subtotal_in_dollars, 
+  <p> Total Revenue: <%= number_to_currency(@invoice.revenue_subtotal, 
                          unit: "$") %> </p>
 </div>
 

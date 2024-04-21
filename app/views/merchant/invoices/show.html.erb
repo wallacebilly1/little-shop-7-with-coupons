@@ -23,5 +23,13 @@
 <% end %>
 
 <div id="revenue">
-  <p> <%= "Invoice Subtotal: $#{@invoice.revenue_subtotal_in_dollars}" %> </p>
+  <p> <%= "Invoice Subtotal: #{number_to_currency(@invoice.revenue_subtotal)}" %> </p>
+  <% if @invoice.coupon.present? %>
+   <p><%= "Coupon Name: " %>
+      <%= link_to "#{@invoice.coupon.name}", merchant_coupon_path(@merchant, @invoice.coupon) %>
+    </p>
+  <p><%= "Coupon Code: #{@invoice.coupon.code}" %></p>
+  <p><%= "Coupon Discount: #{@invoice.coupon.formatted_disc}" %></p>
+  <p><%= "Invoice Total Revenue (after coupon): #{number_to_currency(@invoice.revenue_grand_total)}" %></p>
+  <% end %>
 </div>

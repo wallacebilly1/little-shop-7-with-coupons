@@ -10,7 +10,8 @@
   <div id="invoice-item<%= invoice_item.id %>">
     <p>Item Name: <%= invoice_item.item.name %></p>
     <p>Quantity: <%= invoice_item.quantity %></p>
-    <p>Total Price: <%= invoice_item.unit_price %></p>
+    <p>Unit Price: <%= number_to_currency(invoice_item.unit_price/100.00) %></p>
+    <p>Total Price: <%= number_to_currency(invoice_item.unit_price/100.00*invoice_item.quantity) %></p>
     <p>Status: <%= invoice_item.status %></p>
 
     <%= form_with url: merchant_invoice_item_path(params[:merchant_id], invoice_item.id), method: :patch, data: { turbo: false } do |f| %>

@@ -70,10 +70,10 @@ RSpec.describe "Merchant Invoices Show" do
     end
   end
 
-  describe '#User story 17' do
+  describe '#User Story 17' do
   it 'displays the total revenue from all items on the invoice' do
-    within "#total-revenue" do
-      expect(page).to have_content("Revenue from all items: $#{@invoice1.total_revenue_in_dollars}")
+    within "#revenue" do
+      expect(page).to have_content("Invoice Subtotal: $#{@invoice1.revenue_subtotal_in_dollars}")
       end
     end
   end
@@ -107,6 +107,43 @@ RSpec.describe "Merchant Invoices Show" do
       within "#invoice-item#{@invoice_item1.id}" do
         expect(page).to have_select('Status', selected: 'packaged')
         expect(page).to_not have_select('Status', selected: 'pending')
+      end
+    end
+  end
+
+  describe "Coupons User Story 7" do
+    it "displays the subtotal for that invoice" do
+      within "#revenue" do
+        expect(page).to have_content("Invoice Subtotal: $#{@invoice1.revenue_subtotal_in_dollars}")
+      end
+    end
+
+    it "displays the grand total revenue after the coupon is applied" do
+      within "#revenue" do
+        expect(page).to have_content("Invoice Total Revenue (after coupon): $#{@invoice1.revenue_grand_total_in_dollars}")
+      end
+    end
+
+    it "displays the name and code of the coupon used for that order, with a link to that coupon's show page" do
+      within "#revenue" do
+        expect(page).to have_content("Coupon Name: #{@coupon1.name}")
+        expect(page).to have_link("#{@coupon1.name}")
+        expect(page).to have_content("Coupon Discount: #{@coupon1.formatted_disc}")
+        expect(page).to have_content("Coupon Discount: #{@coupon1.formatted_disc}")
+
+        click_on "#{@coupon1.name}"
+
+        expect(current_path).to eq merchant_coupon_path(@merchant1, @coupon1)
+      end
+    end
+
+    it "doesn't display coupon information or grand total revenue, if a coupon is not present on invoice" do
+      visit merchant_invoice_path(@merchant2, @invoice5) 
+
+      within "#revenue" do
+        expect(page).to_not have_content("Invoice Total Revenue (after coupon)")
+        expect(page).to_not have_content("Coupon Name:")
+        expect(page).to_not have_content("Coupon Discount:")
       end
     end
   end

@@ -22,6 +22,6 @@
   </div>
 <% end %>
 
-<div id="total-revenue">
-  <p> <%= "Revenue from all items: $#{@invoice.total_revenue_in_dollars}" %> </p>
+<div id="revenue">
+  <p> <%= "Invoice Subtotal: $#{@invoice.revenue_subtotal_in_dollars}" %> </p>
 </div>

@@ -117,7 +117,7 @@ RSpec.describe Invoice, type: :model do
       end
     end
 
-    describe ".total_revenue_in_dollars" do
+    describe ".revenue_subtotal_in_dollars" do
       it "returns the total revenue from all invoice items in dollars" do
         @cust1 = create(:customer)
         @inv1 = create(:invoice, customer_id: @cust1.id)
@@ -131,7 +131,7 @@ RSpec.describe Invoice, type: :model do
 
         expected_revenue = ((10000*5)+(500*10)+(7500*1))/100.00
 
-        expect(@inv1.total_revenue_in_dollars).to eq(expected_revenue)
+        expect(@inv1.revenue_subtotal_in_dollars).to eq(expected_revenue)
       end
     end
   end

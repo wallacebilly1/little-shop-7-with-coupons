@@ -33,8 +33,18 @@ class Invoice < ApplicationRecord
     invoice_items.sum("quantity * unit_price")
   end
 
-  def total_revenue_in_dollars
+  def grand_total_revenue
+
+  end
+
+  def revenue_subtotal_in_dollars
     cents = self.total_revenue
+    formatted_dollars = cents / 100.00
+    formatted_dollars
+  end
+
+  def revenue_grand_total_in_dollars
+    cents = self.grand_total_revenue
     formatted_dollars = cents / 100.00
     formatted_dollars
   end

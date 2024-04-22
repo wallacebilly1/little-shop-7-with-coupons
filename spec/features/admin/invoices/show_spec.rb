@@ -135,13 +135,21 @@ RSpec.describe "Admin Invoices Show" do
       @coupon1.invoices << @invoice1
       visit admin_invoice_path(@invoice1.id)
 
-      within "#coupon" do
-        expect(page).to have_content()
+      within "#revenue" do
+        expect(page).to have_content("Coupon Name: 50% Off")
+        expect(page).to have_content("Coupon Code: Half Off")
+        expect(page).to have_content("Coupon Discount: 50%")
       end
     end
 
     it 'displays the revenue subtotal and grand total for this invoice' do
+      @coupon1.invoices << @invoice1
+      visit admin_invoice_path(@invoice1.id)
 
+      within "#revenue" do
+        expect(page).to have_content("Invoice Subtotal: #{number_to_currency(@invoice1.revenue_subtotal)}")
+        expect(page).to have_content("Invoice Total Revenue (after coupon): #{number_to_currency(@invoice1.revenue_grand_total)}")
+      end
     end
   end
 end

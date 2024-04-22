@@ -29,13 +29,23 @@ class Invoice < ApplicationRecord
     .created_at
   end
 
-  def total_revenue
-    invoice_items.sum("quantity * unit_price")
+  def revenue_subtotal
+    invoice_items.sum("quantity * unit_price")/100.00
   end
 
-  def total_revenue_in_dollars
-    cents = self.total_revenue
-    formatted_dollars = cents / 100.00
-    formatted_dollars
+  def revenue_grand_total
+    if self.coupon.disc_type_before_type_cast == 0
+      discount = coupon.disc_int/100.00
+      total = revenue_subtotal - (revenue_subtotal * discount)
+      total
+    elsif self.coupon.disc_type_before_type_cast == 1
+      discount = coupon.disc_int
+      total = (revenue_subtotal - discount)
+      if total <= 0
+        total = 0
+      else 
+        total
+      end
+    end
   end
 end

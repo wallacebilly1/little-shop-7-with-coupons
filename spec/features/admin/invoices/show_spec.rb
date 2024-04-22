@@ -99,7 +99,7 @@ RSpec.describe "Admin Invoices Show" do
 
   describe '#User Story 35' do
     it 'displays the total revenue that will be generated for an invoice' do
-      @expected_revenue = number_to_currency(@invoice1.total_revenue_in_dollars, unit: "$")
+      @expected_revenue = number_to_currency(@invoice1.revenue_subtotal, unit: "$")
       within "#invoice-summary" do
         expect(page).to have_content("Total Revenue: #{@expected_revenue}")
       end

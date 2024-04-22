@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "Merchant Invoices Show" do
   before(:each) do
-    @merchant1 = create(:merchant, id: 1)
-    @merchant2 = create(:merchant, id: 2)
+    @merchant1 = create(:merchant)
+    @merchant2 = create(:merchant)
 
     @items_list1 = create_list(:item, 4, merchant: @merchant1 )
     @item1 = @items_list1[0]
@@ -15,12 +15,12 @@ RSpec.describe "Merchant Invoices Show" do
     @item5 = @items_list2[0]
     @item6 = @items_list2[1]
 
-    @customers = create_list(:customer, 4)
+    @customers = create_list(:customer, 5)
     @customer1 = @customers[0]
     @customer2 = @customers[1]
     @customer3 = @customers[2]
     @customer4 = @customers[3]
-    @customer5 = create(:customer) 
+    @customer5 = @customers[4]
 
     @invoice1 = create(:invoice, customer: @customer1, created_at: Time.utc(2004, 9, 13, 12, 0, 0))
     @invoice2 = create(:invoice, customer: @customer5, created_at: Time.utc(2006, 1, 12, 1, 0, 0))
@@ -28,6 +28,9 @@ RSpec.describe "Merchant Invoices Show" do
     @invoice_item1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice1.id, status: 0)
     @invoice_item2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice1.id, status: 0)
     @invoice_item3 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice2.id, status: 2)
+
+    @coupon1 = @merchant1.coupons.create!(name: "$10 off", code: "Ten Off", disc_int: 10, disc_type: 1, status: 0)
+    @coupon1.invoices << @invoice1
 
     visit merchant_invoice_path(@merchant1, @invoice1)
   end
@@ -58,22 +61,22 @@ RSpec.describe "Merchant Invoices Show" do
     it 'displays the quantity, unit_price and status for each item' do
       within "#invoice-item#{@invoice_item1.id}" do
         expect(page).to have_content("Item Name: #{@invoice_item1.item.name}")
-        expect(page).to have_content("Total Price: #{@invoice_item1.unit_price}")
+        expect(page).to have_content("Unit Price: #{number_to_currency(@invoice_item1.unit_price/100.00)}")
         expect(page).to have_content("Status: #{@invoice_item1.status}")
       end
 
       within "#invoice-item#{@invoice_item2.id}" do
         expect(page).to have_content("Item Name: #{@invoice_item2.item.name}")
-        expect(page).to have_content("Total Price: #{@invoice_item2.unit_price}")
+        expect(page).to have_content("Unit Price: #{number_to_currency(@invoice_item2.unit_price/100.00)}")
         expect(page).to have_content("Status: #{@invoice_item2.status}")
       end
     end
   end
 
-  describe '#User story 17' do
+  describe '#User Story 17' do
   it 'displays the total revenue from all items on the invoice' do
-    within "#total-revenue" do
-      expect(page).to have_content("Revenue from all items: $#{@invoice1.total_revenue_in_dollars}")
+    within "#revenue" do
+      expect(page).to have_content("Invoice Subtotal: #{number_to_currency(@invoice1.revenue_subtotal)}")
       end
     end
   end
@@ -107,6 +110,43 @@ RSpec.describe "Merchant Invoices Show" do
       within "#invoice-item#{@invoice_item1.id}" do
         expect(page).to have_select('Status', selected: 'packaged')
         expect(page).to_not have_select('Status', selected: 'pending')
+      end
+    end
+  end
+
+  describe "Coupons User Story 7" do
+    it "displays the subtotal for that invoice" do
+      within "#revenue" do
+        expect(page).to have_content("Invoice Subtotal: #{number_to_currency(@invoice1.revenue_subtotal)}")
+      end
+    end
+
+    it "displays the grand total revenue after the coupon is applied" do
+      within "#revenue" do
+        expect(page).to have_content("Invoice Total Revenue (after coupon): #{number_to_currency(@invoice1.revenue_grand_total)}")
+      end
+    end
+
+    it "displays the name and code of the coupon used for that order, with a link to that coupon's show page" do
+      within "#revenue" do
+        expect(page).to have_content("Coupon Name: #{@coupon1.name}")
+        expect(page).to have_link("#{@coupon1.name}")
+        expect(page).to have_content("Coupon Discount: #{@coupon1.formatted_disc}")
+        expect(page).to have_content("Coupon Discount: #{@coupon1.formatted_disc}")
+
+        click_on "#{@coupon1.name}"
+
+        expect(current_path).to eq merchant_coupon_path(@merchant1, @coupon1)
+      end
+    end
+
+    it "doesn't display coupon information or grand total revenue, if a coupon is not present on invoice" do
+      visit merchant_invoice_path(@merchant2, @invoice2) 
+
+      within "#revenue" do
+        expect(page).to_not have_content("Invoice Total Revenue (after coupon)")
+        expect(page).to_not have_content("Coupon Name:")
+        expect(page).to_not have_content("Coupon Discount:")
       end
     end
   end

@@ -1,6 +1,6 @@
 <h1> Invoice #<%= @invoice.id %></h1>
 
-<div id="invoice-summary">
+<section id="invoice-summary">
   <div id="update-invoice">
     <p> <%= form_with(model: [ :admin, @invoice ]) do |f| %> </p>
       <p> Status: <%= f.select(:status, [['In Progress', 0], 
@@ -14,11 +14,9 @@
   </div>
   <p> Created On: <%= @invoice.format_date %> </p>
   <p> Customer: <%= @invoice.customer.name %> </p>
-  <p> Total Revenue: <%= number_to_currency(@invoice.revenue_subtotal, 
-                         unit: "$") %> </p>
-</div>
+</section>
 
-<div id="invoice-items">
+<section id="invoice-items">
   <h3> Items on this Invoice </h3>
   <ul><% @invoice.invoice_items.each do |invoice_item| %>
     <div id="item-<%= invoice_item.id %>">
@@ -26,8 +24,21 @@
            Quantity: <%= invoice_item.quantity %> - 
            Unit Price: <%= number_to_currency(invoice_item.unit_price_in_dollars, 
                            unit: "$") %> - 
+           Total Price: <%= number_to_currency(invoice_item.unit_price_in_dollars*invoice_item.quantity) %> -
            Status: <%= invoice_item.status %> 
       </li>
     </div>
   <% end %> </ul>
-</div>
+</section>
+
+<section id="revenue">
+  <p> <%= "Invoice Subtotal: #{number_to_currency(@invoice.revenue_subtotal)}" %> </p>
+  <% if @invoice.coupon.present? %>
+   <p><%= "Coupon Name: " %>
+      <%= link_to "#{@invoice.coupon.name}", merchant_coupon_path(@invoice.coupon.merchant, @invoice.coupon) %>
+    </p>
+  <p><%= "Coupon Code: #{@invoice.coupon.code}" %></p>
+  <p><%= "Coupon Discount: #{@invoice.coupon.formatted_disc}" %></p>
+  <p><%= "Invoice Total Revenue (after coupon): #{number_to_currency(@invoice.revenue_grand_total)}" %></p>
+  <% end %>
+</section>

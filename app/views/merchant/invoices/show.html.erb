@@ -1,29 +1,33 @@
-<h1>Invoice Show Page</h1>
+<h1> Invoice #<%= @invoice.id %> </h1>
 
-<p>Invoice ID: <%= @invoice.id %></p>
-<p>Invoice Status: <%= @invoice.status %></p>
-<p>Invoice created on: <%= @invoice.format_date %></p>
-<p>Customer Name: <%= @invoice.customer.name %>
+<section id="invoice-summary">
+  <p>Invoice ID: <%= @invoice.id %></p>
+  <p>Invoice Status: <%= @invoice.status %></p>
+  <p>Invoice created on: <%= @invoice.format_date %></p>
+  <p>Customer Name: <%= @invoice.customer.name %>
+</section>
 
-<h3>Invoice Items</h3>
-<% @invoice.invoice_items.each do |invoice_item|%>
-  <div id="invoice-item<%= invoice_item.id %>">
-    <p>Item Name: <%= invoice_item.item.name %></p>
-    <p>Quantity: <%= invoice_item.quantity %></p>
-    <p>Unit Price: <%= number_to_currency(invoice_item.unit_price/100.00) %></p>
-    <p>Total Price: <%= number_to_currency(invoice_item.unit_price/100.00*invoice_item.quantity) %></p>
-    <p>Status: <%= invoice_item.status %></p>
+<section id="invoice-items">
+  <h3>Invoice Items</h3>
+  <% @invoice.invoice_items.each do |invoice_item|%>
+    <div id="invoice-item<%= invoice_item.id %>">
+      <p>Item Name: <%= invoice_item.item.name %></p>
+      <p>Quantity: <%= invoice_item.quantity %></p>
+      <p>Unit Price: <%= number_to_currency(invoice_item.unit_price/100.00) %></p>
+      <p>Total Price: <%= number_to_currency(invoice_item.unit_price/100.00*invoice_item.quantity) %></p>
+      <p>Status: <%= invoice_item.status %></p>
 
-    <%= form_with url: merchant_invoice_item_path(params[:merchant_id], invoice_item.id), method: :patch, data: { turbo: false } do |f| %>
-      <%= f.label :status, "Status" %>
-      <%= f.select :status, ["pending", "packaged", "shipped"], selected: invoice_item.status %>
-      
-      <%= f.submit "Update Item Status" %>
-    <% end %>
-  </div>
-<% end %>
+      <%= form_with url: merchant_invoice_item_path(params[:merchant_id], invoice_item.id), method: :patch, data: { turbo: false } do |f| %>
+        <%= f.label :status, "Status" %>
+        <%= f.select :status, ["pending", "packaged", "shipped"], selected: invoice_item.status %>
+        
+        <%= f.submit "Update Item Status" %>
+      <% end %>
+    </div>
+  <% end %>
+</section>
 
-<div id="revenue">
+<section id="revenue">
   <p> <%= "Invoice Subtotal: #{number_to_currency(@invoice.revenue_subtotal)}" %> </p>
   <% if @invoice.coupon.present? %>
    <p><%= "Coupon Name: " %>
@@ -33,4 +37,4 @@
   <p><%= "Coupon Discount: #{@invoice.coupon.formatted_disc}" %></p>
   <p><%= "Invoice Total Revenue (after coupon): #{number_to_currency(@invoice.revenue_grand_total)}" %></p>
   <% end %>
-</div>
+</section>

@@ -3,7 +3,7 @@
 ## Contributors
 - Billy - [LinkedIn](https://www.linkedin.com/in/wallacebilly1/) || [GitHub](https://github.com/wallacebilly1)
 
-#### Original Contributors (Little Esty Shop Group Project)
+### Original Contributors (Little Esty Shop Group Project)
 _This project started as a group project featuring the below team members.  Everything after forking down the original group project repo was completed by Billy._
 - Lance - [LinkedIn](https://www.linkedin.com/in/lance-butler-jr-18b9442a1/) || [GitHub](https://github.com/LJ9332)
 - Mel - [LinkedIn](https://www.linkedin.com/in/melissalanghoff/) || [GitHub](https://github.com/mel-langhoff)

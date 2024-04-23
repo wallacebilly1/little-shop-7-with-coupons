@@ -1,19 +1,35 @@
 <h1> Invoice #<%= @invoice.id %> </h1>
-<h2> Merchant: <%= @merchant.name %> </h2>
 
-<section id="invoice-summary">
-  <p>Invoice ID: <%= @invoice.id %></p>
-  <p>Invoice Status: <%= @invoice.status %></p>
-  <p>Invoice created on: <%= @invoice.format_date %></p>
-  <p>Customer Name: <%= @invoice.customer.name %>
-</section>
+<div class="columns-2">
+  <section id="invoice-summary" class="break-after-column">
+    <h3> Invoice Summary </h3>
+    <p> Invoice ID: <%= @invoice.id %></p>
+    <p> Invoice Status: <%= @invoice.status %></p>
+    <p> Invoice created on: <%= @invoice.format_date %></p>
+    <p> Customer Name: <%= @invoice.customer.name %>
+  </section>
+
+  <section id="invoice-revenue">
+    <h3> Invoice Revenue </h3>
+    <p> <%= "Invoice Subtotal: #{number_to_currency(@invoice.revenue_subtotal)}" %> </p>
+    <p> <%= "Your Item's Subtotal: #{number_to_currency(@invoice.merchant_revenue_subtotal(@merchant))}" %> </p>
+    <% if @invoice.coupon.present? %>
+    <p><%= "Coupon Name: " %>
+        <%= link_to "#{@invoice.coupon.name}", merchant_coupon_path(@merchant, @invoice.coupon) %>
+      </p>
+    <p><%= "Coupon Code: #{@invoice.coupon.code}" %></p>
+    <p><%= "Coupon Discount: #{@invoice.coupon.formatted_disc}" %></p>
+    <p> <b> <%= "Merchant Total Revenue (after coupon): #{number_to_currency(@invoice.merchant_revenue_grand_total(@merchant))}" %> </b> </p>
+    <% end %>
+  </section>
+</div>
 
 <section id="invoice-items">
   <h3>Invoice Items</h3>
   <% @invoice.invoice_items.each do |invoice_item|%>
     <div id="invoice-item<%= invoice_item.id %>">
+      <p> <h4> Item Name: <%= invoice_item.item.name %> </h4> </p>
       <p>Merchant: <%= invoice_item.item.merchant.name %></p>
-      <p>Item Name: <%= invoice_item.item.name %></p>
       <p>Quantity: <%= invoice_item.quantity %></p>
       <p>Unit Price: <%= number_to_currency(invoice_item.unit_price_in_dollars) %></p>
       <p>Total Price: <%= number_to_currency(invoice_item.unit_price_in_dollars*invoice_item.quantity) %></p>
@@ -23,21 +39,10 @@
         <%= f.label :status, "Status" %>
         <%= f.select :status, ["pending", "packaged", "shipped"], selected: invoice_item.status %>
         
-        <%= f.submit "Update Item Status" %>
-      <% end %>
+        <%= f.submit "Update Item Status", class: "bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400" %>
+      <% end %> </br>
     </div>
   <% end %>
 </section>
 
-<section id="revenue">
-  <p> <%= "Invoice Subtotal: #{number_to_currency(@invoice.revenue_subtotal)}" %> </p>
-  <p> <%= "Your Item's Subtotal: #{number_to_currency(@invoice.merchant_revenue_subtotal(@merchant))}" %> </p>
-  <% if @invoice.coupon.present? %>
-   <p><%= "Coupon Name: " %>
-      <%= link_to "#{@invoice.coupon.name}", merchant_coupon_path(@merchant, @invoice.coupon) %>
-    </p>
-  <p><%= "Coupon Code: #{@invoice.coupon.code}" %></p>
-  <p><%= "Coupon Discount: #{@invoice.coupon.formatted_disc}" %></p>
-  <p><%= "Merchant Total Revenue (after coupon): #{number_to_currency(@invoice.merchant_revenue_grand_total(@merchant))}" %></p>
-  <% end %>
-</section>
+

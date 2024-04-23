@@ -13,5 +13,5 @@
   <p><%= f.label :disc_type, 'Discount Type:', value: nil %></p>
   <p><%= f.select(:disc_type, [['%', 0], ['$', 1]]) %></p>
 
-  <p><%= f.submit %></p>
+     <%= f.submit "Create Coupon", class: "bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400" %>
 <% end %>

@@ -1,39 +1,42 @@
 <h1> <%= @merchant.name %> Items </h1>
 
-<%= link_to 'Create a New Item', 
-    new_merchant_item_path(@merchant) %>
+<h3 class="bg-teal-500 text-white py-2 px-4 rounded-md w-32 flex items-center">
+  <%= button_to 'Create a New Item', new_merchant_item_path(@merchant), method: :get, class: "text-white underline-none" %>
+</h3>
 
-<section class="enabled-items" >
-<h2>Enabled Items:</h2>
-  <% @merchant.items.each do |item| %>
-
-    <% if item.status == "Enabled" %>
-      <%= render partial: 'merchant/items/item', 
-          locals: { item: item } %>
-    <% end %>
-
-  <% end %>
-</section>
-
-<section class="disabled-items" >
-<h2>Disabled Items:</h2>
-  <% @merchant.items.each do |item| %>
-
-    <% if item.status == "Disabled" %>
-      <%= render partial: 'merchant/items/item', 
-          locals: { item: item } %>
-    <% end %>
-
-  <% end %>
-</section>
-
-<h3>Top 5 Items:</h3>
+<h2>Top 5 Items:</h2>
 <ol>
   <div id="top-5-items">
     <% @merchant.top_five_items.each do |item| %>
       <li><p><%= link_to item.name, merchant_item_path(@merchant, item) %></p>
       <p>Total Item Revenue: <%= item.total_revenue %></p>
-      <p>Top selling date for <%= item.name %> was <%= item.top_selling_day %></p></li>
+      <p>Top selling date: <%= item.top_selling_day %></p></li>
     <% end %>
   </div>
 </ol>
+
+<div class="columns-2">
+  <div class="break-after-column">
+    <section class="enabled-items" >
+    <h2>Enabled Items:</h2>
+      <% @merchant.items.each do |item| %>
+        <% if item.status == "Enabled" %>
+          <%= render partial: 'merchant/items/item', 
+              locals: { item: item } %>
+        <% end %>
+      <% end %>
+    </section>
+  </div>
+
+  <section class="disabled-items" >
+  <h2>Disabled Items:</h2>
+    <% @merchant.items.each do |item| %>
+      <% if item.status == "Disabled" %>
+        <%= render partial: 'merchant/items/item', 
+            locals: { item: item } %>
+      <% end %>
+    <% end %>
+  </section>
+</div>
+
+

@@ -74,7 +74,7 @@ RSpec.describe "Merchant Items Index" do
     it 'has a link to create a new item' do
       visit merchant_items_path(@merchant1)
 
-      expect(page).to have_link('Create a New Item', href: new_merchant_item_path(@merchant1))
+      expect(page).to have_button('Create a New Item')
     end
   end
 
@@ -224,11 +224,11 @@ RSpec.describe "Merchant Items Index" do
         visit merchant_items_path(@merchant1)
   
         within "#top-5-items" do
-          expect(page).to have_content("Top selling date for #{@item1.name} was #{@item1.top_selling_day}")
-          expect(page).to have_content("Top selling date for #{@item2.name} was #{@item2.top_selling_day}")
-          expect(page).to have_content("Top selling date for #{@item3.name} was #{@item3.top_selling_day}")
-          expect(page).to have_content("Top selling date for #{@item4.name} was #{@item4.top_selling_day}")
-          expect(page).to have_content("Top selling date for #{@item5.name} was #{@item5.top_selling_day}")
+          expect(page).to have_content("#{@item1.top_selling_day}")
+          expect(page).to have_content("#{@item2.top_selling_day}")
+          expect(page).to have_content("#{@item3.top_selling_day}")
+          expect(page).to have_content("#{@item4.top_selling_day}")
+          expect(page).to have_content("#{@item5.top_selling_day}")
         end
       end
     end

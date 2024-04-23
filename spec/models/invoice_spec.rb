@@ -7,6 +7,7 @@ RSpec.describe Invoice, type: :model do
     it { should have_many(:invoice_items) }
     it { should have_many(:items) }
     it { should have_many(:merchants) }
+    it { should belong_to(:coupon).optional }
   end
 
   describe "class methods" do
@@ -93,14 +94,17 @@ RSpec.describe Invoice, type: :model do
   describe "instance methods" do
     before(:each) do
       @merch1 = create(:merchant)
+      @merch2 = create(:merchant)
       @cust1 = create(:customer)
       @inv1 = create(:invoice, customer_id: @cust1.id, created_at:  Time.utc(2004, 9, 13, 12, 0, 0))
       @it1 = create(:item, unit_price: 10000, merchant_id: @merch1.id)
       @it2 = create(:item, unit_price: 500, merchant_id: @merch1.id)
       @it3 = create(:item, unit_price: 7500, merchant_id: @merch1.id)
+      @it4 = create(:item, unit_price: 1000, merchant_id: @merch2.id)
       @inv_it1 = @inv1.invoice_items.create!(item_id: @it1.id, quantity: 5, unit_price: @it1.unit_price, status: 0)
       @inv_it2 = @inv1.invoice_items.create!(item_id: @it2.id, quantity: 10, unit_price: @it2.unit_price, status: 0)
       @inv_it3 = @inv1.invoice_items.create!(item_id: @it3.id, quantity: 1, unit_price: @it3.unit_price, status: 0)
+      @inv_it4 = @inv1.invoice_items.create!(item_id: @it4.id, quantity: 2, unit_price: @it4.unit_price, status: 0)
       @coupon1 = @merch1.coupons.create!(name: "$10 off", code: "Ten Off", disc_int: 10, disc_type: 1, status: 0)
       @coupon1.invoices << @inv1
       
@@ -109,6 +113,7 @@ RSpec.describe Invoice, type: :model do
       @inv_it4 = @inv2.invoice_items.create!(item_id: @it1.id, quantity: 5, unit_price: @it1.unit_price, status: 0)
       @inv_it5 = @inv2.invoice_items.create!(item_id: @it2.id, quantity: 10, unit_price: @it2.unit_price, status: 0)
       @inv_it6 = @inv2.invoice_items.create!(item_id: @it3.id, quantity: 1, unit_price: @it3.unit_price, status: 0)
+      @inv_it7 = @inv2.invoice_items.create!(item_id: @it4.id, quantity: 2, unit_price: @it4.unit_price, status: 0)
       @coupon2 = @merch1.coupons.create!(name: "20% off", code: "Twenty Percet ", disc_int: 20, disc_type: 0, status: 0)
       @coupon2.invoices << @inv2
     end
@@ -121,7 +126,7 @@ RSpec.describe Invoice, type: :model do
 
     describe ".revenue_subtotal" do
       it "returns the total revenue from all invoice items in dollars" do
-        expected_revenue = ((10000*5)+(500*10)+(7500*1))/100.00
+        expected_revenue = ((10000*5)+(500*10)+(7500*1)+(2*1000))/100.00
 
         expect(@inv1.revenue_subtotal).to eq(expected_revenue)
       end
@@ -135,7 +140,7 @@ RSpec.describe Invoice, type: :model do
         expect(@inv1.revenue_grand_total).to eq(grand_total)
       end
 
-      it "returns the grand total revenue from all invoice items after a $ off coupon discount is applied" do
+      it "returns the grand total revenue from all invoice items after a % off coupon discount is applied" do
         subtotal = @inv2.revenue_subtotal
         grand_total = (subtotal - (subtotal * 0.20))
 
@@ -147,6 +152,45 @@ RSpec.describe Invoice, type: :model do
         @coupon1.invoices << @inv1
 
         expect(@inv1.revenue_grand_total).to eq(0)
+      end
+    end
+
+    describe ".merchant_revenue_subtotal" do
+      it "returns the total revenue from all invoice items for that merchant in dollars" do
+        merch1_rev = ((10000*5)+(500*10)+(7500*1))/100.00
+        merch2_rev = (2*1000)/100.00
+
+        expect(@inv1.merchant_revenue_subtotal(@merch1)).to eq(merch1_rev)
+        expect(@inv1.merchant_revenue_subtotal(@merch2)).to eq(merch2_rev)
+      end
+    end
+
+    describe ".merchant_revenue_grand_total" do
+      it "returns the grand total revenue from all invoice items after a $ off coupon discount is applied to that merchant's items" do
+        merch1_subtotal = @inv1.merchant_revenue_subtotal(@merch1)
+        merch1_grand_total = (merch1_subtotal - 10)
+        merch2_subtotal = @inv1.merchant_revenue_subtotal(@merch2)
+
+        expect(@inv1.merchant_revenue_grand_total(@merch1)).to eq(merch1_grand_total)
+        expect(@inv1.merchant_revenue_grand_total(@merch2)).to eq(merch2_subtotal)
+      end
+
+      it "returns the grand total revenue from all invoice items after a % off coupon discount is applied to that merchant's items" do
+        merch1_subtotal = @inv2.merchant_revenue_subtotal(@merch1)
+        merch1_grand_total = (merch1_subtotal - (merch1_subtotal * 0.20))
+        merch2_subtotal = @inv2.merchant_revenue_subtotal(@merch2)
+
+        expect(@inv2.merchant_revenue_grand_total(@merch1)).to eq(merch1_grand_total)
+        expect(@inv2.merchant_revenue_grand_total(@merch2)).to eq(merch2_subtotal)
+      end
+
+      it "will not let a grand_total drop below $0 if the coupon is larger than the revenue_subtotal and other merchant's items are unaffected by coupon" do
+        @coupon1 = @merch1.coupons.create!(name: "$10,000 off", code: "Ten Thousand Off", disc_int: 10000, disc_type: 1, status: 0)
+        @coupon1.invoices << @inv1
+        merch2_rev = (2*1000)/100.00
+
+        expect(@inv1.merchant_revenue_grand_total(@merch1)).to eq(0)
+        expect(@inv1.merchant_revenue_grand_total(@merch2)).to eq(merch2_rev)
       end
     end
   end

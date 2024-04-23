@@ -39,6 +39,12 @@ RSpec.describe "Admin Invoices Show" do
     @transaction13 = create(:transaction, invoice_id: @invoice7.id)
 
     @merchant1 = create(:merchant, name: "Amazon")
+    @merchant2 = create(:merchant)
+
+    @coupon1 = @merchant1.coupons.create!(name: "50% Off", code: "Half Off", disc_int: 50, disc_type: 0, status: 0)
+    @coupon2 = @merchant1.coupons.create!(name: "$5 Off", code: "Take Five", disc_int: 5, disc_type: 1, status: 1)
+    @coupon3 = @merchant1.coupons.create!(name: "$10 Off", code: "Take Ten", disc_int: 10, disc_type: 1)
+    @coupon4 = @merchant2.coupons.create!(name: "10% Off", code: "10-promo", disc_int: 10, disc_type: 0)
 
     @item1 = create(:item, unit_price: 1, merchant_id: @merchant1.id)
     @item2 = create(:item, unit_price: 23, merchant_id: @merchant1.id)
@@ -100,8 +106,8 @@ RSpec.describe "Admin Invoices Show" do
   describe '#User Story 35' do
     it 'displays the total revenue that will be generated for an invoice' do
       @expected_revenue = number_to_currency(@invoice1.revenue_subtotal, unit: "$")
-      within "#invoice-summary" do
-        expect(page).to have_content("Total Revenue: #{@expected_revenue}")
+      within "#revenue" do
+        expect(page).to have_content("Invoice Subtotal: #{@expected_revenue}")
       end
     end
   end
@@ -120,6 +126,29 @@ RSpec.describe "Admin Invoices Show" do
       expect(current_path).to eq(admin_invoice_path(@invoice1.id))
       expect(page).to have_field("invoice_status", with: 1)
       expect(page).to_not have_field("invoice_status", with: 0)
+    end
+  end
+
+  describe '#Coupons User Story 8' do
+    it 'displays the name, code, and discount of a coupon, if used on that invoice' do
+      @coupon1.invoices << @invoice1
+      visit admin_invoice_path(@invoice1.id)
+
+      within "#revenue" do
+        expect(page).to have_content("Coupon Name: 50% Off")
+        expect(page).to have_content("Coupon Code: Half Off")
+        expect(page).to have_content("Coupon Discount: 50%")
+      end
+    end
+
+    it 'displays the revenue subtotal and grand total for this invoice' do
+      @coupon1.invoices << @invoice1
+      visit admin_invoice_path(@invoice1.id)
+
+      within "#revenue" do
+        expect(page).to have_content("Invoice Subtotal: #{number_to_currency(@invoice1.revenue_subtotal)}")
+        expect(page).to have_content("Invoice Total Revenue (after coupon): #{number_to_currency(@invoice1.revenue_grand_total)}")
+      end
     end
   end
 end

@@ -23,13 +23,13 @@ default: &default
 
 development:
   <<: *default
-  database: little_esty_shop_7_development
+  database: little_shop_7_with_coupons_development
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
   # the same name as the operating system user running Rails.
-  #username: little_esty_shop_7
+  #username: little_shop_7_with_coupons
 
   # The password associated with the postgres role (username).
   #password:
@@ -57,7 +57,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: little_esty_shop_7_test
+  database: little_shop_7_with_coupons_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -81,6 +81,6 @@ test:
 #
 production:
   <<: *default
-  database: little_esty_shop_7_production
-  username: little_esty_shop_7
+  database: little_shop_7_with_coupons_production
+  username: little_shop_7_with_coupons
   password: <%= ENV["LITTLE_ESTY_SHOP_7_DATABASE_PASSWORD"] %>

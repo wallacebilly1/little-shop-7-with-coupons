@@ -28,6 +28,7 @@ RSpec.describe "Merchant Invoices Show" do
     @invoice_item1 = create(:invoice_item, item_id: @item1.id, invoice_id: @invoice1.id, status: 0)
     @invoice_item2 = create(:invoice_item, item_id: @item2.id, invoice_id: @invoice1.id, status: 0)
     @invoice_item3 = create(:invoice_item, item_id: @item5.id, invoice_id: @invoice2.id, status: 2)
+    @invoice_item4 = create(:invoice_item, item_id: @item6.id, invoice_id: @invoice1.id, status: 0)
 
     @coupon1 = @merchant1.coupons.create!(name: "$10 off", code: "Ten Off", disc_int: 10, disc_type: 1, status: 0)
     @coupon1.invoices << @invoice1
@@ -121,9 +122,9 @@ RSpec.describe "Merchant Invoices Show" do
       end
     end
 
-    it "displays the grand total revenue after the coupon is applied" do
+    it "displays that merchant's grand total revenue after the coupon is applied" do
       within "#revenue" do
-        expect(page).to have_content("Invoice Total Revenue (after coupon): #{number_to_currency(@invoice1.revenue_grand_total)}")
+        expect(page).to have_content("Merchant Total Revenue (after coupon): #{number_to_currency(@invoice1.merchant_revenue_grand_total(@merchant1))}")
       end
     end
 
@@ -131,7 +132,6 @@ RSpec.describe "Merchant Invoices Show" do
       within "#revenue" do
         expect(page).to have_content("Coupon Name: #{@coupon1.name}")
         expect(page).to have_link("#{@coupon1.name}")
-        expect(page).to have_content("Coupon Discount: #{@coupon1.formatted_disc}")
         expect(page).to have_content("Coupon Discount: #{@coupon1.formatted_disc}")
 
         click_on "#{@coupon1.name}"
@@ -144,7 +144,7 @@ RSpec.describe "Merchant Invoices Show" do
       visit merchant_invoice_path(@merchant2, @invoice2) 
 
       within "#revenue" do
-        expect(page).to_not have_content("Invoice Total Revenue (after coupon)")
+        expect(page).to_not have_content("Merchant Total Revenue (after coupon)")
         expect(page).to_not have_content("Coupon Name:")
         expect(page).to_not have_content("Coupon Discount:")
       end

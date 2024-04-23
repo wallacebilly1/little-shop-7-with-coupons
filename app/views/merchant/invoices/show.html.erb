@@ -1,4 +1,5 @@
 <h1> Invoice #<%= @invoice.id %> </h1>
+<h2> Merchant: <%= @merchant.name %> </h2>
 
 <section id="invoice-summary">
   <p>Invoice ID: <%= @invoice.id %></p>
@@ -11,6 +12,7 @@
   <h3>Invoice Items</h3>
   <% @invoice.invoice_items.each do |invoice_item|%>
     <div id="invoice-item<%= invoice_item.id %>">
+      <p>Merchant: <%= invoice_item.item.merchant.name %></p>
       <p>Item Name: <%= invoice_item.item.name %></p>
       <p>Quantity: <%= invoice_item.quantity %></p>
       <p>Unit Price: <%= number_to_currency(invoice_item.unit_price_in_dollars) %></p>
@@ -29,12 +31,13 @@
 
 <section id="revenue">
   <p> <%= "Invoice Subtotal: #{number_to_currency(@invoice.revenue_subtotal)}" %> </p>
+  <p> <%= "Your Item's Subtotal: #{number_to_currency(@invoice.merchant_revenue_subtotal(@merchant))}" %> </p>
   <% if @invoice.coupon.present? %>
    <p><%= "Coupon Name: " %>
       <%= link_to "#{@invoice.coupon.name}", merchant_coupon_path(@merchant, @invoice.coupon) %>
     </p>
   <p><%= "Coupon Code: #{@invoice.coupon.code}" %></p>
   <p><%= "Coupon Discount: #{@invoice.coupon.formatted_disc}" %></p>
-  <p><%= "Invoice Total Revenue (after coupon): #{number_to_currency(@invoice.revenue_grand_total)}" %></p>
+  <p><%= "Merchant Total Revenue (after coupon): #{number_to_currency(@invoice.merchant_revenue_grand_total(@merchant))}" %></p>
   <% end %>
 </section>

@@ -1,13 +1,16 @@
-# Little Esty Shop
+# Little Shop with Coupons
 
 ## Contributors
 - Billy - [LinkedIn](https://www.linkedin.com/in/wallacebilly1/) || [GitHub](https://github.com/wallacebilly1)
+
+#### Original Contributors (Little Esty Shop Group Project)
+_This project started as a group project featuring the below team members.  Everything after forking down the original group project repo was completed by Billy._
 - Lance - [LinkedIn](https://www.linkedin.com/in/lance-butler-jr-18b9442a1/) || [GitHub](https://github.com/LJ9332)
 - Mel - [LinkedIn](https://www.linkedin.com/in/melissalanghoff/) || [GitHub](https://github.com/mel-langhoff)
 - Rodrigo - [LinkedIn](https://www.linkedin.com/in/rodrigo-chavez1/) || [GitHub](https://github.com/RodrigoACG)
 
 ## Background
-"Little Esty Shop" is a group project that required us to build a fictitious e-commerce platform where merchants and admins can manage inventory and fulfill customer invoices.
+"Little Esty Shop" is a group project that required us to build a fictitious e-commerce platform where merchants and admins can manage inventory and fulfill customer invoices.  From there, we were tasked with expanding the shop in our own repo, to include CRUD actions for coupons and revenue calculations for individual vendors and invoices.
 
 ## Learning Goals
 - Practice designing a normalized database schema and defining model relationships
@@ -16,6 +19,7 @@
 
 ## Summary of Work Completed
 - Built functionality detailed in [36 User Stories](./doc/user_stories.md)
+- Added functionality detailed in [8 User Stories](https://backend.turing.edu/module2/projects/coupon_codes/)
 - Developed all work using Test-Driven-Development, including the use of RSPec, Capybara, Shoulda-Matchers, Orderly, and SimpleCov to enhnace our testing
 - Built database and associations from scratch to include 5 tables and 1 join table
 - Used resources to support advanced and nested routing operations

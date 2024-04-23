@@ -83,4 +83,4 @@ production:
   <<: *default
   database: little_shop_7_with_coupons_production
   username: little_shop_7_with_coupons
-  password: <%= ENV["LITTLE_ESTY_SHOP_7_DATABASE_PASSWORD"] %>
+  password: <%= ENV["LITTLE_SHOP_7_WITH_COUPONS_DATABASE_PASSWORD"] %>

@@ -48,4 +48,28 @@ class Invoice < ApplicationRecord
       end
     end
   end
+
+  def merchant_revenue_subtotal(merchant)
+    self.items
+        .where(merchant: merchant)
+        .sum("invoice_items.unit_price * invoice_items.quantity")/100.00
+  end
+
+  def merchant_revenue_grand_total(merchant)
+    if self.coupon.nil? || self.coupon.merchant != merchant
+      merchant_revenue_subtotal(merchant)
+    elsif self.coupon.disc_type_before_type_cast == 0 
+      discount = coupon.disc_int/100.00
+      total = merchant_revenue_subtotal(merchant) - (merchant_revenue_subtotal(merchant) * discount)
+      total
+    elsif self.coupon.disc_type_before_type_cast == 1
+      discount = coupon.disc_int
+      total = (merchant_revenue_subtotal(merchant) - discount)
+      if total <= 0
+        total = 0
+      else 
+        total
+      end
+    end
+  end
 end

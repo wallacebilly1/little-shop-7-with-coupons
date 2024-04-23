@@ -129,7 +129,6 @@ RSpec.describe "Admin Invoices Show" do
     end
   end
 
-
   describe '#Coupons User Story 8' do
     it 'displays the name, code, and discount of a coupon, if used on that invoice' do
       @coupon1.invoices << @invoice1

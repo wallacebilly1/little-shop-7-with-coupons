@@ -1,28 +1,7 @@
-<h1>Merchants</h1>
-<h3> <%= link_to 'New Merchant', 
-         new_admin_merchant_path, 
-         method: :get 
-     %> </h3> <br>
-
-<section class="enabled" >
-  <h2>Enabled Merchants:</h2>
-  <% @merchants.each do |merchant| %>
-    <% if merchant.status == "Enabled" %>
-      <%= render partial: 'admin/merchants/merchant', 
-          locals: { merchant: merchant } %>
-    <% end %>
-  <% end %>
-</section>
-
-<section class="disabled">
-  <h2>Disabled Merchants:</h2>
-  <% @merchants.each do |merchant| %>
-    <% if merchant.status == "Disabled" %>
-      <%= render partial: 'admin/merchants/merchant', 
-          locals: { merchant: merchant } %>
-    <% end %>
-  <% end %>
-</section>
+<h1> All Merchants </h1>
+<h3 class="bg-teal-500 text-white py-2 px-4 rounded-md w-32 flex items-center">
+  <%= button_to 'New Merchant', new_admin_merchant_path, method: :get, class: "text-white underline-none" %>
+</h3>
 
 <section class="top-merchants"> 
   <h2> Top Merchants: </h2>
@@ -37,3 +16,28 @@
     </li>
   </ol>
 </section>
+
+<div class="columns-2">
+  <div class="break-after-column">
+    <section class="enabled">
+      <h2>Enabled Merchants:</h2>
+      <% @merchants.each do |merchant| %>
+        <% if merchant.status == "Enabled" %>
+          <%= render partial: 'admin/merchants/merchant', 
+              locals: { merchant: merchant } %>
+        <% end %>
+      <% end %>
+    </section> 
+  </div>
+
+  <section class="disabled">
+    <h2>Disabled Merchants:</h2>
+    <% @merchants.each do |merchant| %>
+      <% if merchant.status == "Disabled" %>
+        <%= render partial: 'admin/merchants/merchant', 
+            locals: { merchant: merchant } %>
+      <% end %>
+    <% end %>
+  </section>
+</div>
+

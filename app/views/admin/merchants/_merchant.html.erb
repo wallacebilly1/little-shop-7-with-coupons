@@ -1,18 +1,22 @@
-<%= link_to "#{merchant.name}", 
-    admin_merchant_path(merchant), 
-    method: :get 
-%> <br>
+<div id="merchant-<%=merchant.id%>">
+  <%= link_to "#{merchant.name}", 
+      admin_merchant_path(merchant), 
+      method: :get 
+  %> <br>
 
-<% if merchant.status == "Enabled" %>
-  <%= button_to "Disable #{merchant.name}", 
-      admin_merchant_path(merchant), 
-      method: :patch, 
-      params: {status: "Disabled"}  
-  %><br>
-<% else %>
-  <%= button_to "Enable #{merchant.name}", 
-      admin_merchant_path(merchant), 
-      method: :patch, 
-      params: {status: "Enabled"}  
-  %><br>
-<% end %>
+  <% if merchant.status == "Enabled" %>
+    <div class="bg-red-500 text-white py-2 px-4 rounded-md w-20 h-10 flex items-center">
+      <%= button_to "Disable", 
+        admin_merchant_path(merchant), 
+        method: :patch, 
+        params: {status: "Disabled"}  
+      %></div>
+  <% else %>
+    <div class="bg-green-500 text-white py-2 px-4 rounded-md w-20 h-10 flex items-center">
+      <%= button_to "Enable", 
+        admin_merchant_path(merchant), 
+        method: :patch, 
+        params: {status: "Enabled"}  
+      %></div>
+  <% end %>
+</div>

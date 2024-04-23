@@ -1,7 +1,5 @@
-<h1> Invoices </h1>
-
-<div id="invoices">
-  <h1> Invoices </h1>
+<h1> All Invoices </h1>
+<div id="invoices", class="columns-4">
   <ul><% @invoices.each do |invoice| %>
     <div id="invoice-<%= invoice.id %>">
       <li> <%= link_to "Invoice ##{invoice.id}",

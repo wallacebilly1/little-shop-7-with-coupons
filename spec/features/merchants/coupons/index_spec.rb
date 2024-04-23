@@ -50,7 +50,7 @@ RSpec.describe "Merchant Coupons Index" do
 
   describe "#Coupons User Story 2" do
     it "displays a link to create a new coupon that takes me to a coupon creation page" do
-      expect(page).to have_link("Create a new coupon")
+      expect(page).to have_button("Create a new coupon")
 
       click_on("Create a new coupon")
 

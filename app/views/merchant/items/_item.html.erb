@@ -13,17 +13,21 @@
 </ul>
 
 <% if item.status == "Enabled" %>
-  <%= button_to "Disable #{item.name}", 
+  <div class="bg-red-500 text-white py-2 px-4 rounded-md w-20 h-10 flex items-center">
+    <%= button_to "Disable", 
       merchant_item_path(@merchant, item), 
       method: :patch, 
-      params: {status: "Disabled"} 
-  %><br>
+      params: {status: "Disabled"}  
+    %>
+  </div>
 <% else %>
-  <%= button_to "Enable #{item.name}", 
+  <div class="bg-green-500 text-white py-2 px-4 rounded-md w-20 h-10 flex items-center">
+    <%= button_to "Enable", 
       merchant_item_path(@merchant, item), 
       method: :patch, 
-      params: {status: "Enabled"} 
-  %><br>
+      params: {status: "Enabled"}  
+    %>
+  </div>
 <% end %>
 
 </div>

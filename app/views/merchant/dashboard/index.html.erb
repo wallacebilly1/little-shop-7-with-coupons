@@ -1,29 +1,58 @@
-<h1>Merchant Dashboard</h1>
+<h1> <%=@merchant.name%> Merchant Dashboard</h1>
 
-<p><%= @merchant.name %></p>
-<%= link_to 'Merchant Items', merchant_items_path %>
-<%= link_to 'Merchant Invoices', merchant_invoices_path %>
-<%= link_to 'Merchant Coupons', merchant_coupons_path %>
-
-<div id="top-5-customers">
-  <h2>Top 5 <%= @merchant.name %> Customers</h2>
-  <ol>
-    <% @merchant.top_5_customers.each do |customer| %>
-      <div id="merchant-<%= customer.id %>">
-        <li><h3><%= customer.name %></h3></li>
-         <p>Number of Transactions: <%= customer.count_transactions %></p>
-      </div>
-    <% end %>
-  </ol>
-</div>
+<section id="top-5-customers">
+  <h2>Top 5 Customers</h2>
+  <table class="w-full">
+    <thead class="bg-gray-500 text-white">
+      <tr>
+        <th class="text-left px-4 py-2">Customer Name</th>
+        <th class="text-right px-4 py-2">Number of Transactions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @merchant.top_5_customers.each do |customer| %>
+        <div id="customer-<%=customer.id%>">
+          <tr>
+            <td class="text-left px-4 py-2">
+              <%= customer.name %>
+            </td>
+            <td class="text-right px-4 py-2">
+              <%= customer.count_transactions %>
+            </td>
+          </tr>
+        </div>
+      <% end %>
+    </tbody>
+  </table>
+</section>
 
 <section id="items-ready-to-ship">
   <h2>Packaged Items</h2>
-  <% @merchant.packaged_items.each do |item| %>
-    <% item.order_date %>
-    <p><%= item.name %>: Invoice Created On <%= item.format_inv_date(item.invoice_id) %></p>
-    <section id="item-<%= item.id %>">
-      Invoice ID: <%= link_to "#{item.invoice_id}", merchant_invoice_path(@merchant, item.invoice_id) %>
-    </section>
-  <% end %>
+  <table class="w-full">
+    <thead class="bg-gray-500 text-white">
+      <tr>
+        <th class="text-left px-4 py-2">Item Name</th>
+        <th class="text-left px-4 py-2">Invoice ID</th>
+        <th class="text-right px-4 py-2">Invoice Creation Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @merchant.packaged_items.each do |item| %>
+        <div id="item-<%=item.id%>">
+          <% item.order_date %>
+          <tr>
+            <td class="text-left px-4 py-2">
+              <%= item.name %>
+            </td>
+            <td class="text-left px-4 py-2">
+              <%= link_to item.invoice_id, merchant_invoice_path(@merchant, item.invoice_id) %>
+            </td>
+            <td class="text-right px-4 py-2">
+              <%= item.format_inv_date(item.invoice_id) %>
+            </td>
+          </tr>
+        </div>
+      <% end %>
+    </tbody>
+  </table>
 </section>

@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>LittleEstyShop7</title>
+    <title>Little Shop 7 With Coupons</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body class="prose">
+    <% if request.fullpath.start_with?('/admin') %>
+      <%= render 'layouts/admin_navbar' %>
+    <% elsif request.fullpath.start_with?('/merchants') %>
+      <%= render 'layouts/merchant_navbar' %>
+    <% end %>
+    
     <% flash.each do |type, message| %>
       <p><%= message %></p>
     <% end %>

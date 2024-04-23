@@ -91,18 +91,18 @@ RSpec.describe "Merchant Dashboard Index" do
 
   describe '#User Story 2' do
     it 'displays links for merchant invoices and merchant items' do
-      expect(page).to have_link("Merchant Items")
+      expect(page).to have_link("Items")
       
-      expect(page).to have_link("Merchant Invoices")
+      expect(page).to have_link("Invoices")
     end
 
     it 'when I click on those links it takes me to the respective pages' do
-      click_on "Merchant Items"
+      click_on "Items"
       expect(current_path).to eq(merchant_items_path(@merchant1))
 
       visit merchant_dashboard_index_path(@merchant1)
       
-      click_on "Merchant Invoices"
+      click_on "Invoices"
       expect(current_path).to eq(merchant_invoices_path(@merchant1))
     end
   end
@@ -126,12 +126,12 @@ RSpec.describe "Merchant Dashboard Index" do
     end
 
     it 'displays the number of succesful transactions next to each name' do
-      within "#merchant-#{@customer1.id}" do
-        expect(page).to have_content("Number of Transactions: 21")
+      within "#customer-#{@customer1.id}" do
+        expect(page).to have_content("21")
       end
 
-      within "#merchant-#{@customer4.id}" do
-        expect(page).to have_content("Number of Transactions: 6")
+      within "#customer-#{@customer4.id}" do
+        expect(page).to have_content("6")
       end
     end
   end
@@ -164,11 +164,11 @@ RSpec.describe "Merchant Dashboard Index" do
     it 'displays the formatted creation date of the invoice next to each items name' do
 
       within "#items-ready-to-ship" do
-        expect(page).to have_content("Invoice Created On Monday, September 13, 2004")
-        expect(page).to have_content("Invoice Created On Thursday, January 12, 2006")
-        expect(page).to have_content("Invoice Created On Friday, April 05, 2024")
-        expect(page).to have_content("Invoice Created On Saturday, April 06, 2024")
-        expect(page).to have_content("Invoice Created On Saturday, April 06, 2024")
+        expect(page).to have_content("Monday, September 13, 2004")
+        expect(page).to have_content("Thursday, January 12, 2006")
+        expect(page).to have_content("Friday, April 05, 2024")
+        expect(page).to have_content("Saturday, April 06, 2024")
+        expect(page).to have_content("Saturday, April 06, 2024")
       end
     end
 
@@ -187,9 +187,9 @@ RSpec.describe "Merchant Dashboard Index" do
 
   describe "Coupons User Story 1" do
     it "displays a link to view all of that merchants coupons" do
-      expect(page).to have_link("Merchant Coupons")
+      expect(page).to have_link("Coupons")
 
-      click_on "Merchant Coupons"
+      click_on "Coupons"
 
       expect(current_path).to eq(merchant_coupons_path(@merchant1))
     end

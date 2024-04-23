@@ -1,27 +1,26 @@
 <h1>Admin Dashboard</h1>
 
-<%= link_to 'Merchants', admin_merchants_path , method: :get %>
-<%= link_to 'Invoices', admin_invoices_path , method: :get %>
+<div class="gap-5 columns-2">
+  <div id="top-customers", class="break-after-column">
+    <h2> Top Customers </h2>
+    <ol> <% @customers.top_customers.each do |customer| %>
+      <div id="customer-<%= customer.id %>">
+        <li> <%= customer.name %> - 
+            <%= customer.transactions.count %> purchases
+        </li>
+      </div>
+    <% end %> </ol>
+  </div>
 
-<div id="top-customers">
-  <h1> Top Customers </h1>
-  <ol> <% @customers.top_customers.each do |customer| %>
-    <div id="customer-<%= customer.id %>">
-      <li> <%= customer.name %> - 
-           <%= customer.transactions.count %> purchases
-      </li>
-    </div>
-  <% end %> </ol>
-</div>
-
-<div id="incomplete-invoices">
-  <h1> Incomplete Invoices </h1>
-  <ul><% Invoice.incomplete_invoices.each do |invoice| %>
-    <div id="invoice-<%= invoice.id %>">
-      <li> <%= link_to "Invoice #{invoice.id}", 
-           admin_invoice_path(invoice.id) %> - 
-           <%= invoice.format_date %> 
-      </li>
-    </div>
-  <% end %> </ul>
+  <div id="incomplete-invoices">
+    <h2> Incomplete Invoices </h2>
+    <ul><% Invoice.incomplete_invoices.each do |invoice| %>
+      <div id="invoice-<%= invoice.id %>">
+        <li> <%= link_to "Invoice #{invoice.id}", 
+            admin_invoice_path(invoice.id) %> - 
+            <%= invoice.format_date %> 
+        </li>
+      </div>
+    <% end %> </ul>
+  </div>
 </div>

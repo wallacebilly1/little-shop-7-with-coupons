@@ -1,25 +1,31 @@
-<h1>Merchant Coupons</h1>
+<h1> <%= @merchant.name %> Coupons</h1>
 
-<%= link_to 'Create a new coupon', new_merchant_coupon_path(@merchant) %>
+<h3 class="bg-teal-500 text-white py-2 px-4 rounded-md w-32 flex items-center">
+  <%= button_to 'Create a new coupon', new_merchant_coupon_path(@merchant), method: :get, class: "text-white underline-none" %>
+</h3>
 
-<section id="active-coupons">
-  <h1> Active Coupons </h1>
-  <% @merchant.active_coupons.each do |coupon| %>
-    <div id="coupon-<%= coupon.id %>">
-      <h3> Name: <%= link_to "#{coupon.name}", merchant_coupon_path(@merchant, coupon) %> </h3>
-      <p> Code: <%= coupon.code %> <p>
-      <p> Discount: <%= coupon.formatted_disc %> <p>
-    </div>
-  <% end %> 
-</section>
+<div class="columns-2">
+  <div class="break-after-column">
+    <section id="active-coupons">
+      <h2> Active Coupons </h2>
+      <% @merchant.active_coupons.each do |coupon| %>
+        <div id="coupon-<%= coupon.id %>">
+          <p> <b> Name: <%= link_to "#{coupon.name}", merchant_coupon_path(@merchant, coupon) %> </b> </p>
+          <p> Code: <%= coupon.code %> <p>
+          <p> Discount: <%= coupon.formatted_disc %> <p>
+        </div>
+      <% end %> 
+    </section>
+  </div>
 
-<section id="inactive-coupons">
-  <h1> Inactive Coupons </h1>
-  <% @merchant.inactive_coupons.each do |coupon| %>
-    <div id="coupon-<%= coupon.id %>">
-      <h3> Name: <%= link_to "#{coupon.name}", merchant_coupon_path(@merchant, coupon) %> </h3>
-      <p> Code: <%= coupon.code %> <p>
-      <p> Discount: <%= coupon.formatted_disc %> <p>
-    </div>
-  <% end %> 
-</section>
+  <section id="inactive-coupons">
+    <h2> Inactive Coupons </h2>
+    <% @merchant.inactive_coupons.each do |coupon| %>
+      <div id="coupon-<%= coupon.id %>">
+        <p> <b> Name: <%= link_to "#{coupon.name}", merchant_coupon_path(@merchant, coupon) %> </b> </p>
+        <p> Code: <%= coupon.code %> <p>
+        <p> Discount: <%= coupon.formatted_disc %> <p>
+      </div>
+    <% end %> 
+  </section>
+</div>

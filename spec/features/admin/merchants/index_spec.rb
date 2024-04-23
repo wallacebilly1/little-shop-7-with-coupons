@@ -77,16 +77,20 @@ RSpec.describe "Admin Merchants Index" do
   describe '#User Story 27' do
     it 'has a button to enable/disable each merchant next to their name that when clicked, updates the status' do
       within ".enabled" do
-        expect(page).to have_button("Disable #{@merchant1.name}")
+        within "#merchant-#{@merchant1.id}" do 
+          expect(page).to have_button("Disable")
 
-        click_on("Disable #{@merchant1.name}")
+          click_on("Disable")
+        end
       end
 
       expect(current_path).to eq(admin_merchants_path)
 
       within ".disabled" do
-        expect(page).to have_content(@merchant1.name)
-        expect(page).to have_button("Enable #{@merchant1.name}")
+        within "#merchant-#{@merchant1.id}" do 
+          expect(page).to have_content(@merchant1.name)
+          expect(page).to have_button("Enable")
+        end
       end
     end
   end
@@ -108,7 +112,7 @@ RSpec.describe "Admin Merchants Index" do
 
   describe '#User Story 29' do
     it 'has a link to create a new merchant, which creates new merchants with a default status of disabled' do
-      expect(page).to have_link("New Merchant")
+      expect(page).to have_button("New Merchant")
 
       click_on("New Merchant")
 

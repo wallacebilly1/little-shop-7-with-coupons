@@ -76,7 +76,7 @@ RSpec.describe "Merchant Invoices Show" do
 
   describe '#User Story 17' do
   it 'displays the total revenue from all items on the invoice' do
-    within "#revenue" do
+    within "#invoice-revenue" do
       expect(page).to have_content("Invoice Subtotal: #{number_to_currency(@invoice1.revenue_subtotal)}")
       end
     end
@@ -117,19 +117,19 @@ RSpec.describe "Merchant Invoices Show" do
 
   describe "Coupons User Story 7" do
     it "displays the subtotal for that invoice" do
-      within "#revenue" do
+      within "#invoice-revenue" do
         expect(page).to have_content("Invoice Subtotal: #{number_to_currency(@invoice1.revenue_subtotal)}")
       end
     end
 
     it "displays that merchant's grand total revenue after the coupon is applied" do
-      within "#revenue" do
+      within "#invoice-revenue" do
         expect(page).to have_content("Merchant Total Revenue (after coupon): #{number_to_currency(@invoice1.merchant_revenue_grand_total(@merchant1))}")
       end
     end
 
     it "displays the name and code of the coupon used for that order, with a link to that coupon's show page" do
-      within "#revenue" do
+      within "#invoice-revenue" do
         expect(page).to have_content("Coupon Name: #{@coupon1.name}")
         expect(page).to have_link("#{@coupon1.name}")
         expect(page).to have_content("Coupon Discount: #{@coupon1.formatted_disc}")
@@ -143,7 +143,7 @@ RSpec.describe "Merchant Invoices Show" do
     it "doesn't display coupon information or grand total revenue, if a coupon is not present on invoice" do
       visit merchant_invoice_path(@merchant2, @invoice2) 
 
-      within "#revenue" do
+      within "#invoice-revenue" do
         expect(page).to_not have_content("Merchant Total Revenue (after coupon)")
         expect(page).to_not have_content("Coupon Name:")
         expect(page).to_not have_content("Coupon Discount:")
